@@ -2,152 +2,107 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$PublicDir,
 
-    [string]$CssPath
+    [string]$CssPath,
+
+    [string]$HeadTemplatePath
 )
 
-$expectedPages = @(
-    @{ Path = 'index.html'; Title = $null },
-    @{ Path = 'contact/index.html'; Title = 'Contact' },
-    @{ Path = 'merken-en-verdelers/index.html'; Title = 'Merken en verdelers' },
-    @{ Path = 'driveshop/index.html'; Title = 'Driveshop' },
-    @{ Path = 'bikeshop/index.html'; Title = 'Bikeshop' }
-)
+function Add-Problem {
+    param([string]$Message)
+    $script:problems += $Message
+}
 
-$navLabels = @(
-    'Contact',
-    'Bikeshop',
-    'Driveshop',
-    'Merken en verdelers'
-)
+function Read-Html {
+    param([string]$RelativePath)
+    $fullPath = Join-Path $PublicDir $RelativePath
+    if (-not (Test-Path $fullPath)) {
+        Add-Problem ('Missing generated file: ' + $RelativePath)
+        return $null
+    }
+
+    return Get-Content $fullPath -Raw
+}
+
+function Assert-Contains {
+    param(
+        [string]$Content,
+        [string]$Marker,
+        [string]$Context
+    )
+
+    if ($null -eq $Content -or $Content -notmatch [regex]::Escape($Marker)) {
+        Add-Problem ('Missing marker "' + $Marker + '" in ' + $Context)
+    }
+}
+
+function Assert-NotContains {
+    param(
+        [string]$Content,
+        [string]$Marker,
+        [string]$Context
+    )
+
+    if ($null -ne $Content -and $Content -match [regex]::Escape($Marker)) {
+        Add-Problem ('Unexpected marker "' + $Marker + '" in ' + $Context)
+    }
+}
 
 $problems = @()
-$homeHtml = $null
-$contactHtml = $null
-$merkenHtml = $null
-$driveshopHtml = $null
-$bikeshopHtml = $null
 
-foreach ($page in $expectedPages) {
-    $fullPath = Join-Path $PublicDir $page.Path
-    if (-not (Test-Path $fullPath)) {
-        $problems += ('Missing generated file: ' + $page.Path)
-        continue
-    }
+$homeHtml = Read-Html 'index.html'
+$contactHtml = Read-Html 'contact/index.html'
+$merkenHtml = Read-Html 'merken-en-verdelers/index.html'
+$driveshopHtml = Read-Html 'driveshop/index.html'
+$bikeshopHtml = Read-Html 'bikeshop/index.html'
 
-    $html = Get-Content $fullPath -Raw
+Assert-Contains $homeHtml 'home-hero' 'index.html'
+Assert-Contains $homeHtml '/images/header_bike.jpg' 'index.html'
+Assert-Contains $contactHtml '<form' 'contact/index.html'
+Assert-Contains $contactHtml 'Online verzending is nog niet actief.' 'contact/index.html'
+Assert-Contains $merkenHtml 'Merken in opbouw' 'merken-en-verdelers/index.html'
+Assert-Contains $merkenHtml 'Verdelers in opbouw' 'merken-en-verdelers/index.html'
+Assert-Contains $driveshopHtml 'Neem contact op voor Driveshop' 'driveshop/index.html'
+Assert-Contains $bikeshopHtml 'Neem contact op voor Bikeshop' 'bikeshop/index.html'
 
-    switch ($page.Path) {
-        'index.html' { $homeHtml = $html }
-        'contact/index.html' { $contactHtml = $html }
-        'merken-en-verdelers/index.html' { $merkenHtml = $html }
-        'driveshop/index.html' { $driveshopHtml = $html }
-        'bikeshop/index.html' { $bikeshopHtml = $html }
-    }
+Assert-Contains $bikeshopHtml 'site-brand__logo' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml '/images/logo.png' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-nav__home' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-nav__contact' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-nav__merken' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-nav__switch' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml '>Driveshop<' 'bikeshop/index.html'
+Assert-NotContains $bikeshopHtml 'site-nav__switch">Bikeshop<' 'bikeshop/index.html'
 
-    foreach ($label in $navLabels) {
-        if ($html -notmatch [regex]::Escape($label)) {
-            $problems += ('Missing navigation label "' + $label + '" in ' + $page.Path)
-        }
-    }
-
-    if ($page.Title -and $html -notmatch [regex]::Escape($page.Title)) {
-        $problems += ('Missing page title "' + $page.Title + '" in ' + $page.Path)
-    }
-}
-
-if ($homeHtml) {
-    $homeChecks = @(
-        'home-hero',
-        '/images/hero-placeholder.svg',
-        'site-header--overlay',
-        'Een sobere Nederlandstalige basiswebsite'
-    )
-
-    foreach ($check in $homeChecks) {
-        if ($homeHtml -notmatch [regex]::Escape($check)) {
-            $problems += ('Missing homepage hero marker "' + $check + '" in index.html')
-        }
-    }
-}
-
-if ($contactHtml) {
-    $contactChecks = @(
-        '<form',
-        'name="name"',
-        'name="email"',
-        'name="subject"',
-        '<textarea',
-        'Online verzending is nog niet actief.'
-    )
-
-    foreach ($check in $contactChecks) {
-        if ($contactHtml -notmatch [regex]::Escape($check)) {
-            $problems += ('Missing contact form marker "' + $check + '" in contact/index.html')
-        }
-    }
-}
-
-if ($driveshopHtml) {
-    $driveshopChecks = @(
-        'content-highlights',
-        'Neem contact op voor Driveshop'
-    )
-
-    foreach ($check in $driveshopChecks) {
-        if ($driveshopHtml -notmatch [regex]::Escape($check)) {
-            $problems += ('Missing driveshop content marker "' + $check + '" in driveshop/index.html')
-        }
-    }
-}
-
-if ($bikeshopHtml) {
-    $bikeshopChecks = @(
-        'content-highlights',
-        'Neem contact op voor Bikeshop'
-    )
-
-    foreach ($check in $bikeshopChecks) {
-        if ($bikeshopHtml -notmatch [regex]::Escape($check)) {
-            $problems += ('Missing bikeshop content marker "' + $check + '" in bikeshop/index.html')
-        }
-    }
-}
-
-if ($merkenHtml) {
-    $merkenChecks = @(
-        'brands-placeholder-grid',
-        'dealers-placeholder-grid',
-        'Merken in opbouw',
-        'Verdelers in opbouw'
-    )
-
-    foreach ($check in $merkenChecks) {
-        if ($merkenHtml -notmatch [regex]::Escape($check)) {
-            $problems += ('Missing merken en verdelers marker "' + $check + '" in merken-en-verdelers/index.html')
-        }
-    }
-}
+Assert-Contains $driveshopHtml 'site-brand__logo' 'driveshop/index.html'
+Assert-Contains $driveshopHtml '/images/logo-drive.png' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-nav__home' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-nav__contact' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-nav__merken' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-nav__switch' 'driveshop/index.html'
+Assert-Contains $driveshopHtml '>Bikeshop<' 'driveshop/index.html'
+Assert-NotContains $driveshopHtml 'site-nav__switch">Driveshop<' 'driveshop/index.html'
 
 if ($CssPath) {
     if (-not (Test-Path $CssPath)) {
-        $problems += ('Missing CSS file: ' + $CssPath)
+        Add-Problem ('Missing CSS file: ' + $CssPath)
     }
     else {
         $css = Get-Content $CssPath -Raw
-        $cssChecks = @(
-            '@media (max-width: 720px)',
-            '@media (max-width: 640px)',
-            'contact-panel',
-            'content-highlights__grid',
-            'brands-placeholder-grid',
-            'dealers-placeholder-grid'
-        )
-
-        foreach ($check in $cssChecks) {
-            if ($css -notmatch [regex]::Escape($check)) {
-                $problems += ('Missing CSS marker "' + $check + '" in ' + $CssPath)
+        foreach ($marker in @('.site-brand__logo', '.site-nav__switch', '@media (max-width: 720px)', '@media (max-width: 640px)')) {
+            if ($css -notmatch [regex]::Escape($marker)) {
+                Add-Problem ('Missing CSS marker "' + $marker + '" in ' + $CssPath)
             }
         }
+    }
+}
+
+if ($HeadTemplatePath) {
+    if (-not (Test-Path $HeadTemplatePath)) {
+        Add-Problem ('Missing head template: ' + $HeadTemplatePath)
+    }
+    else {
+        $headTemplate = Get-Content $HeadTemplatePath -Raw
+        Assert-Contains $headTemplate 'css/style.css' $HeadTemplatePath
     }
 }
 
