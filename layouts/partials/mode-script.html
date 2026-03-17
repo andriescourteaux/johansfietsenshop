@@ -1,0 +1,65 @@
+<script id="site-mode-script">
+(() => {
+  const body = document.body;
+  if (!body) {
+    return;
+  }
+
+  const validModes = ['bike', 'drive'];
+  const storedMode = window.localStorage.getItem('site-mode');
+  const url = new URL(window.location.href);
+  const queryMode = url.searchParams.get('mode');
+  const bodyMode = body.dataset.siteMode;
+  const isShared = body.dataset.sharedPage === 'true';
+
+  let activeMode = validModes.includes(bodyMode) ? bodyMode : 'bike';
+
+  if (isShared) {
+    if (validModes.includes(queryMode)) {
+      activeMode = queryMode;
+    }
+    else if (validModes.includes(storedMode)) {
+      activeMode = storedMode;
+    }
+  }
+
+  if (!validModes.includes(activeMode)) {
+    activeMode = 'bike';
+  }
+
+  body.dataset.siteMode = activeMode;
+  window.localStorage.setItem('site-mode', activeMode);
+
+  const applyHref = (selector) => {
+    const element = document.querySelector(selector);
+    if (!element) {
+      return;
+    }
+
+    element.href = activeMode === 'drive' ? element.dataset.driveHref : element.dataset.bikeHref;
+  };
+
+  const logo = document.querySelector('.site-brand__logo');
+  if (logo) {
+    logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
+    logo.alt = activeMode === 'drive' ? 'Driveshop logo' : 'Bikeshop logo';
+  }
+
+  const heroImage = document.querySelector('.home-hero__image');
+  if (heroImage) {
+    heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
+  }
+
+  applyHref('.site-brand');
+  applyHref('.site-nav__home');
+  applyHref('.site-nav__contact');
+  applyHref('.site-nav__merken');
+  applyHref('.overview-card--merken');
+
+  const switchLink = document.querySelector('.site-nav__switch');
+  if (switchLink) {
+    switchLink.href = activeMode === 'drive' ? switchLink.dataset.driveHref : switchLink.dataset.bikeHref;
+    switchLink.textContent = activeMode === 'drive' ? switchLink.dataset.driveLabel : switchLink.dataset.bikeLabel;
+  }
+})();
+</script>

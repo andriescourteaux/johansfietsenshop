@@ -1,13 +1,15 @@
+{{- $siteMode := partial "site-mode.html" . -}}
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     {{ partial "head.html" . }}
 </head>
-<body class="page page--{{ .Kind }}">
+<body class="page page--{{ .Kind }}" data-site-mode="{{ $siteMode.mode }}" data-shared-page="{{ if $siteMode.isShared }}true{{ else }}false{{ end }}">
     {{ partial "header.html" . }}
     <main>
         {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
+    {{ partial "mode-script.html" . }}
 </body>
 </html>
