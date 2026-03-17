@@ -1,0 +1,47 @@
+{{- $rel := .RelPermalink -}}
+{{- $mode := "bike" -}}
+{{- $isShared := true -}}
+
+{{- if or (eq $rel "/driveshop/") (hasPrefix $rel "/driveshop/") -}}
+  {{- $mode = "drive" -}}
+  {{- $isShared = false -}}
+{{- else if or (eq $rel "/bikeshop/") (hasPrefix $rel "/bikeshop/") -}}
+  {{- $mode = "bike" -}}
+  {{- $isShared = false -}}
+{{- end -}}
+
+{{- $bikeHomeHref := "/?mode=bike" -}}
+{{- $driveHomeHref := "/?mode=drive" -}}
+{{- $bikeContactHref := "/contact/?mode=bike" -}}
+{{- $driveContactHref := "/contact/?mode=drive" -}}
+{{- $bikeBrandsHref := "/merken-en-verdelers/" -}}
+{{- $driveBrandsHref := "/merken-en-verdelers/" -}}
+{{- $bikeSwitchHref := "/driveshop/" -}}
+{{- $driveSwitchHref := "/bikeshop/" -}}
+
+{{- $data := dict
+  "mode" $mode
+  "isBike" (eq $mode "bike")
+  "isDrive" (eq $mode "drive")
+  "isShared" $isShared
+  "logoPath" (cond (eq $mode "drive") "/images/logo-drive.png" "/images/logo.png")
+  "logoBikePath" "/images/logo.png"
+  "logoDrivePath" "/images/logo-drive.png"
+  "homeHref" (cond (eq $mode "drive") $driveHomeHref $bikeHomeHref)
+  "contactHref" (cond (eq $mode "drive") $driveContactHref $bikeContactHref)
+  "brandsHref" (cond (eq $mode "drive") $driveBrandsHref $bikeBrandsHref)
+  "switchHref" (cond (eq $mode "drive") $driveSwitchHref $bikeSwitchHref)
+  "switchLabel" (cond (eq $mode "drive") "Bikeshop" "Driveshop")
+  "homeBikeHref" $bikeHomeHref
+  "homeDriveHref" $driveHomeHref
+  "contactBikeHref" $bikeContactHref
+  "contactDriveHref" $driveContactHref
+  "brandsBikeHref" $bikeBrandsHref
+  "brandsDriveHref" $driveBrandsHref
+  "switchBikeHref" $bikeSwitchHref
+  "switchDriveHref" $driveSwitchHref
+  "switchBikeLabel" "Driveshop"
+  "switchDriveLabel" "Bikeshop"
+-}}
+
+{{- return $data -}}

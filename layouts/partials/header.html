@@ -1,11 +1,14 @@
-<header class="site-header{{ if .IsHome }} site-header--overlay{{ end }}">
+{{- $siteMode := partial "site-mode.html" . -}}
+<header class="site-header{{ if .IsHome }} site-header--overlay{{ end }}" data-site-mode="{{ $siteMode.mode }}">
     <div class="container site-header__inner">
-        <a class="site-brand" href="{{ "/" | relLangURL }}">Site2</a>
+        <a class="site-brand" href="{{ $siteMode.homeHref }}" data-bike-href="{{ $siteMode.homeBikeHref }}" data-drive-href="{{ $siteMode.homeDriveHref }}">
+            <img class="site-brand__logo" src="{{ $siteMode.logoPath }}" data-bike-src="{{ $siteMode.logoBikePath }}" data-drive-src="{{ $siteMode.logoDrivePath }}" alt="{{ if $siteMode.isDrive }}Driveshop{{ else }}Bikeshop{{ end }} logo">
+        </a>
         <nav class="site-nav" aria-label="Hoofdnavigatie">
-            <a href="{{ "/contact/" | relLangURL }}">Contact</a>
-            <a href="{{ "/bikeshop/" | relLangURL }}">Bikeshop</a>
-            <a href="{{ "/driveshop/" | relLangURL }}">Driveshop</a>
-            <a href="{{ "/merken-en-verdelers/" | relLangURL }}">Merken en verdelers</a>
+            <a class="site-nav__item site-nav__home" href="{{ $siteMode.homeHref }}" data-bike-href="{{ $siteMode.homeBikeHref }}" data-drive-href="{{ $siteMode.homeDriveHref }}">Home</a>
+            <a class="site-nav__item site-nav__contact" href="{{ $siteMode.contactHref }}" data-bike-href="{{ $siteMode.contactBikeHref }}" data-drive-href="{{ $siteMode.contactDriveHref }}">Contact</a>
+            <a class="site-nav__item site-nav__merken" href="{{ $siteMode.brandsHref }}" data-bike-href="{{ $siteMode.brandsBikeHref }}" data-drive-href="{{ $siteMode.brandsDriveHref }}">Merken en verdelers</a>
+            <a class="site-nav__item site-nav__switch" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="{{ $siteMode.switchBikeLabel }}" data-drive-label="{{ $siteMode.switchDriveLabel }}">{{ $siteMode.switchLabel }}</a>
         </nav>
     </div>
 </header>

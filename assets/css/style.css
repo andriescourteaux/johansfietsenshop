@@ -15,7 +15,7 @@
 
 body {
     margin: 0;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Georgia, "Roboto", serif;
     color: var(--text);
     background: linear-gradient(180deg, #f7f2ea 0%, #efe7d8 100%);
 }
@@ -416,4 +416,27 @@ h1 {
     .dealers-placeholder-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    max-width: min(14rem, 42vw);
+}
+
+.site-brand__logo {
+    display: block;
+    width: auto;
+    height: clamp(2.75rem, 6vw, 4.75rem);
+    object-fit: contain;
+}
+
+.site-nav__item {
+    display: inline-flex;
+    align-items: center;
+}
+
+.site-nav__switch {
+    padding-bottom: 0.12rem;
+    border-bottom: 1px solid currentColor;
 }
