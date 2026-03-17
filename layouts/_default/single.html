@@ -4,6 +4,48 @@
         <p class="eyebrow">Pagina</p>
         <h1>{{ .Title }}</h1>
         <div class="page-copy">{{ .Content }}</div>
+
+        {{ if .Params.highlights }}
+        <section class="content-highlights">
+            <h2>Highlights</h2>
+            <div class="content-highlights__grid">
+                {{ range .Params.highlights }}
+                <article class="content-card">
+                    <h3>{{ . }}</h3>
+                    <p>Meer detail volgt zodra de basisinhoud verder wordt ingevuld.</p>
+                </article>
+                {{ end }}
+            </div>
+        </section>
+        {{ end }}
+
+        {{ if .Params.brands }}
+        <section class="placeholder-group">
+            <div>
+                <h2>{{ .Params.brands_heading }}</h2>
+                <div class="brands-placeholder-grid">
+                    {{ range .Params.brands }}
+                    <article class="content-card">
+                        <h3>{{ . }}</h3>
+                        <p>Merkinformatie volgt binnenkort.</p>
+                    </article>
+                    {{ end }}
+                </div>
+            </div>
+            <div>
+                <h2>{{ .Params.dealers_heading }}</h2>
+                <div class="dealers-placeholder-grid">
+                    {{ range .Params.dealers }}
+                    <article class="content-card">
+                        <h3>{{ . }}</h3>
+                        <p>Verdelerinformatie volgt binnenkort.</p>
+                    </article>
+                    {{ end }}
+                </div>
+            </div>
+        </section>
+        {{ end }}
+
         {{ if .Params.showContactForm }}
         <div class="contact-panel">
             <div class="contact-panel__details">
@@ -33,6 +75,14 @@
                 <button type="submit" disabled>Verzenden</button>
             </form>
         </div>
+        {{ end }}
+
+        {{ if .Params.cta_title }}
+        <aside class="page-cta">
+            <h2>{{ .Params.cta_title }}</h2>
+            <p>{{ .Params.cta_text }}</p>
+            <a class="page-cta__link" href="{{ "/contact/" | relLangURL }}">Ga naar contact</a>
+        </aside>
         {{ end }}
     </div>
 </section>

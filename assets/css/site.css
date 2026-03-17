@@ -352,3 +352,59 @@ h1 {
     cursor: not-allowed;
     opacity: 0.72;
 }
+
+.content-highlights,
+.placeholder-group,
+.page-cta {
+    margin-top: 2.5rem;
+}
+
+.content-highlights h2,
+.placeholder-group h2,
+.page-cta h2 {
+    margin: 0 0 1rem;
+    font-size: 1.35rem;
+}
+
+.content-highlights__grid,
+.brands-placeholder-grid,
+.dealers-placeholder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.placeholder-group {
+    display: grid;
+    gap: 2rem;
+}
+
+.content-card {
+    padding: 1.4rem;
+    border: 1px solid var(--border);
+    background: rgba(255, 253, 249, 0.95);
+}
+
+.content-card h3 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.content-card p,
+.page-cta p {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.page-cta {
+    padding: 1.75rem;
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(239, 230, 214, 0.66), rgba(255, 253, 249, 0.96));
+}
+
+.page-cta__link {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: var(--accent);
+}

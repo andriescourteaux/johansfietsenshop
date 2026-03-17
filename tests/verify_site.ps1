@@ -23,6 +23,9 @@ $navLabels = @(
 $problems = @()
 $homeHtml = $null
 $contactHtml = $null
+$merkenHtml = $null
+$driveshopHtml = $null
+$bikeshopHtml = $null
 
 foreach ($page in $expectedPages) {
     $fullPath = Join-Path $PublicDir $page.Path
@@ -33,12 +36,12 @@ foreach ($page in $expectedPages) {
 
     $html = Get-Content $fullPath -Raw
 
-    if ($page.Path -eq 'index.html') {
-        $homeHtml = $html
-    }
-
-    if ($page.Path -eq 'contact/index.html') {
-        $contactHtml = $html
+    switch ($page.Path) {
+        'index.html' { $homeHtml = $html }
+        'contact/index.html' { $contactHtml = $html }
+        'merken-en-verdelers/index.html' { $merkenHtml = $html }
+        'driveshop/index.html' { $driveshopHtml = $html }
+        'bikeshop/index.html' { $bikeshopHtml = $html }
     }
 
     foreach ($label in $navLabels) {
@@ -80,6 +83,47 @@ if ($contactHtml) {
     foreach ($check in $contactChecks) {
         if ($contactHtml -notmatch [regex]::Escape($check)) {
             $problems += ('Missing contact form marker "' + $check + '" in contact/index.html')
+        }
+    }
+}
+
+if ($driveshopHtml) {
+    $driveshopChecks = @(
+        'content-highlights',
+        'Neem contact op voor Driveshop'
+    )
+
+    foreach ($check in $driveshopChecks) {
+        if ($driveshopHtml -notmatch [regex]::Escape($check)) {
+            $problems += ('Missing driveshop content marker "' + $check + '" in driveshop/index.html')
+        }
+    }
+}
+
+if ($bikeshopHtml) {
+    $bikeshopChecks = @(
+        'content-highlights',
+        'Neem contact op voor Bikeshop'
+    )
+
+    foreach ($check in $bikeshopChecks) {
+        if ($bikeshopHtml -notmatch [regex]::Escape($check)) {
+            $problems += ('Missing bikeshop content marker "' + $check + '" in bikeshop/index.html')
+        }
+    }
+}
+
+if ($merkenHtml) {
+    $merkenChecks = @(
+        'brands-placeholder-grid',
+        'dealers-placeholder-grid',
+        'Merken in opbouw',
+        'Verdelers in opbouw'
+    )
+
+    foreach ($check in $merkenChecks) {
+        if ($merkenHtml -notmatch [regex]::Escape($check)) {
+            $problems += ('Missing merken en verdelers marker "' + $check + '" in merken-en-verdelers/index.html')
         }
     }
 }
