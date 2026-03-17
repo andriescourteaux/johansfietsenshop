@@ -5,7 +5,7 @@
     --text: #1f1c18;
     --muted: #686159;
     --border: #d8cfbf;
-    --accent: #30544a;
+    --accent: #999999;
     --container: 72rem;
 }
 
@@ -15,9 +15,10 @@
 
 body {
     margin: 0;
-    font-family: Georgia, "Roboto", serif;
+    font-family: /*Georgia*/, "Roboto", sans-serif;
     color: var(--text);
-    background: linear-gradient(180deg, #f7f2ea 0%, #efe7d8 100%);
+/*    background: linear-gradient(-80deg, #ffffff 0%, #ffffff 100%);*/
+    background: white
 }
 
 a {
@@ -112,7 +113,7 @@ main {
 
 .home-hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     align-items: flex-end;
     overflow: hidden;
