@@ -1,7 +1,9 @@
 baseURL = 'https://example.org/'
 languageCode = 'nl'
+defaultContentLanguage = 'nl'
 title = 'Site2'
 relativeURLs = true
+disableKinds = ['taxonomy', 'term']
 
 [markup]
   [markup.goldmark]
