@@ -1,7 +1,8 @@
 {{ define "main" }}
+{{- $siteMode := partial "site-mode.html" . -}}
 <section class="home-hero">
     <div class="home-hero__media" aria-hidden="true">
-        <img src="{{ "/images/hero-placeholder.svg" | relLangURL }}" alt="">
+        <img class="home-hero__image" src="{{ $siteMode.heroPath }}" data-bike-src="{{ $siteMode.heroBikePath }}" data-drive-src="{{ $siteMode.heroDrivePath }}" alt="">
     </div>
     <div class="home-hero__overlay"></div>
     <div class="container home-hero__content">

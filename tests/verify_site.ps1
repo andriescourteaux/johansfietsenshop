@@ -56,7 +56,9 @@ $driveshopHtml = Read-Html 'driveshop/index.html'
 $bikeshopHtml = Read-Html 'bikeshop/index.html'
 
 Assert-Contains $homeHtml 'home-hero' 'index.html'
+Assert-Contains $homeHtml 'home-hero__image' 'index.html'
 Assert-Contains $homeHtml '/images/header_bike.jpg' 'index.html'
+Assert-Contains $homeHtml '/images/header_drive.jpg' 'index.html'
 Assert-Contains $contactHtml '<form' 'contact/index.html'
 Assert-Contains $contactHtml 'Online verzending is nog niet actief.' 'contact/index.html'
 Assert-Contains $merkenHtml 'Merken in opbouw' 'merken-en-verdelers/index.html'
@@ -88,7 +90,7 @@ if ($CssPath) {
     }
     else {
         $css = Get-Content $CssPath -Raw
-        foreach ($marker in @('.site-brand__logo', '.site-nav__switch', '@media (max-width: 720px)', '@media (max-width: 640px)')) {
+        foreach ($marker in @('.site-brand__logo', '.site-nav__switch', '.home-hero__image', '@media (max-width: 720px)', '@media (max-width: 640px)')) {
             if ($css -notmatch [regex]::Escape($marker)) {
                 Add-Problem ('Missing CSS marker "' + $marker + '" in ' + $CssPath)
             }

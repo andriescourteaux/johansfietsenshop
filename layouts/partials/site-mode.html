@@ -18,6 +18,8 @@
 {{- $driveBrandsHref := "/merken-en-verdelers/" -}}
 {{- $bikeSwitchHref := "/driveshop/" -}}
 {{- $driveSwitchHref := "/bikeshop/" -}}
+{{- $bikeHeroPath := "/images/header_bike.jpg" -}}
+{{- $driveHeroPath := "/images/header_drive.jpg" -}}
 
 {{- $data := dict
   "mode" $mode
@@ -27,6 +29,9 @@
   "logoPath" (cond (eq $mode "drive") "/images/logo-drive.png" "/images/logo.png")
   "logoBikePath" "/images/logo.png"
   "logoDrivePath" "/images/logo-drive.png"
+  "heroPath" (cond (eq $mode "drive") $driveHeroPath $bikeHeroPath)
+  "heroBikePath" $bikeHeroPath
+  "heroDrivePath" $driveHeroPath
   "homeHref" (cond (eq $mode "drive") $driveHomeHref $bikeHomeHref)
   "contactHref" (cond (eq $mode "drive") $driveContactHref $bikeContactHref)
   "brandsHref" (cond (eq $mode "drive") $driveBrandsHref $bikeBrandsHref)
