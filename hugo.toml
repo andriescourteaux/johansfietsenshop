@@ -1,0 +1,9 @@
+baseURL = 'https://example.org/'
+languageCode = 'nl'
+title = 'Site2'
+relativeURLs = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
