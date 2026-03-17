@@ -1,0 +1,33 @@
+{{ define "main" }}
+<section class="home-hero">
+    <div class="home-hero__media" aria-hidden="true">
+        <img src="{{ "/images/hero-placeholder.svg" | relLangURL }}" alt="">
+    </div>
+    <div class="home-hero__overlay"></div>
+    <div class="container home-hero__content">
+        <p class="eyebrow eyebrow--light">Site2</p>
+        <h1>{{ .Title }}</h1>
+        <div class="page-copy page-copy--hero">{{ .Content }}</div>
+    </div>
+</section>
+<section class="home-overview">
+    <div class="container home-overview__grid">
+        <a class="overview-card" href="{{ "/driveshop/" | relLangURL }}">
+            <h2>Driveshop</h2>
+            <p>Ontdek onze focus op aandrijving, onderdelen en technische ondersteuning.</p>
+        </a>
+        <a class="overview-card" href="{{ "/bikeshop/" | relLangURL }}">
+            <h2>Bikeshop</h2>
+            <p>Verken ons aanbod rond fietsen, accessoires en persoonlijk advies.</p>
+        </a>
+        <a class="overview-card" href="{{ "/merken-en-verdelers/" | relLangURL }}">
+            <h2>Merken en verdelers</h2>
+            <p>Bekijk binnenkort een helder overzicht van merken en erkende verdelers.</p>
+        </a>
+        <a class="overview-card" href="{{ "/contact/" | relLangURL }}">
+            <h2>Contact</h2>
+            <p>Neem contact op voor vragen over winkels, producten of beschikbare merken.</p>
+        </a>
+    </div>
+</section>
+{{ end }}

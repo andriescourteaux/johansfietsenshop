@@ -21,6 +21,7 @@ $navLabels = @(
 )
 
 $problems = @()
+$homeHtml = $null
 
 foreach ($page in $expectedPages) {
     $fullPath = Join-Path $PublicDir $page.Path
@@ -31,6 +32,10 @@ foreach ($page in $expectedPages) {
 
     $html = Get-Content $fullPath -Raw
 
+    if ($page.Path -eq 'index.html') {
+        $homeHtml = $html
+    }
+
     foreach ($label in $navLabels) {
         if ($html -notmatch [regex]::Escape($label)) {
             $problems += ('Missing navigation label "' + $label + '" in ' + $page.Path)
@@ -39,6 +44,21 @@ foreach ($page in $expectedPages) {
 
     if ($page.Title -and $html -notmatch [regex]::Escape($page.Title)) {
         $problems += ('Missing page title "' + $page.Title + '" in ' + $page.Path)
+    }
+}
+
+if ($homeHtml) {
+    $homeChecks = @(
+        'home-hero',
+        '/images/hero-placeholder.svg',
+        'site-header--overlay',
+        'Een sobere Nederlandstalige basiswebsite'
+    )
+
+    foreach ($check in $homeChecks) {
+        if ($homeHtml -notmatch [regex]::Escape($check)) {
+            $problems += ('Missing homepage hero marker "' + $check + '" in index.html')
+        }
     }
 }
 
