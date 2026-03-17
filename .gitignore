@@ -1,0 +1,4 @@
+.hugo_build.lock
+.test-public/
+public/
+resources/_gen/

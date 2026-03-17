@@ -134,8 +134,19 @@ if ($CssPath) {
     }
     else {
         $css = Get-Content $CssPath -Raw
-        if ($css -notmatch '@media') {
-            $problems += ('Missing responsive breakpoint in CSS file: ' + $CssPath)
+        $cssChecks = @(
+            '@media (max-width: 720px)',
+            '@media (max-width: 640px)',
+            'contact-panel',
+            'content-highlights__grid',
+            'brands-placeholder-grid',
+            'dealers-placeholder-grid'
+        )
+
+        foreach ($check in $cssChecks) {
+            if ($css -notmatch [regex]::Escape($check)) {
+                $problems += ('Missing CSS marker "' + $check + '" in ' + $CssPath)
+            }
         }
     }
 }
