@@ -4,6 +4,36 @@
         <p class="eyebrow">Pagina</p>
         <h1>{{ .Title }}</h1>
         <div class="page-copy">{{ .Content }}</div>
+        {{ if .Params.showContactForm }}
+        <div class="contact-panel">
+            <div class="contact-panel__details">
+                <p class="contact-panel__label">Contactgegevens</p>
+                <p>Bezoek ons op afspraak of neem rechtstreeks contact op voor vragen over Driveshop, Bikeshop of onze merken.</p>
+                <p>E-mail: info@example.org</p>
+                <p>Telefoon: +32 000 00 00 00</p>
+            </div>
+            <form class="contact-form" action="#" method="post">
+                <label>
+                    <span>Naam</span>
+                    <input type="text" name="name" autocomplete="name">
+                </label>
+                <label>
+                    <span>E-mail</span>
+                    <input type="email" name="email" autocomplete="email">
+                </label>
+                <label>
+                    <span>Onderwerp</span>
+                    <input type="text" name="subject">
+                </label>
+                <label>
+                    <span>Bericht</span>
+                    <textarea name="message" rows="6"></textarea>
+                </label>
+                <p class="contact-form__notice">Online verzending is nog niet actief.</p>
+                <button type="submit" disabled>Verzenden</button>
+            </form>
+        </div>
+        {{ end }}
     </div>
 </section>
 {{ end }}

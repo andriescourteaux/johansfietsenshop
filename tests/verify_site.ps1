@@ -22,6 +22,7 @@ $navLabels = @(
 
 $problems = @()
 $homeHtml = $null
+$contactHtml = $null
 
 foreach ($page in $expectedPages) {
     $fullPath = Join-Path $PublicDir $page.Path
@@ -34,6 +35,10 @@ foreach ($page in $expectedPages) {
 
     if ($page.Path -eq 'index.html') {
         $homeHtml = $html
+    }
+
+    if ($page.Path -eq 'contact/index.html') {
+        $contactHtml = $html
     }
 
     foreach ($label in $navLabels) {
@@ -58,6 +63,23 @@ if ($homeHtml) {
     foreach ($check in $homeChecks) {
         if ($homeHtml -notmatch [regex]::Escape($check)) {
             $problems += ('Missing homepage hero marker "' + $check + '" in index.html')
+        }
+    }
+}
+
+if ($contactHtml) {
+    $contactChecks = @(
+        '<form',
+        'name="name"',
+        'name="email"',
+        'name="subject"',
+        '<textarea',
+        'Online verzending is nog niet actief.'
+    )
+
+    foreach ($check in $contactChecks) {
+        if ($contactHtml -notmatch [regex]::Escape($check)) {
+            $problems += ('Missing contact form marker "' + $check + '" in contact/index.html')
         }
     }
 }
