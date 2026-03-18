@@ -50,10 +50,12 @@
     heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
   }
 
+  document.querySelectorAll('[data-mode-panel]').forEach((panel) => {
+    panel.hidden = panel.dataset.modePanel !== activeMode;
+  });
+
   applyHref('.site-brand');
-  applyHref('.site-nav__home');
   applyHref('.site-nav__contact');
-  applyHref('.overview-card--merken');
 
   const switchLink = document.querySelector('.site-nav__switch');
   if (switchLink) {
@@ -62,5 +64,3 @@
   }
 })();
 </script>
-
-

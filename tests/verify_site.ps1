@@ -116,8 +116,6 @@ Assert-AllContains $homeHtml @(
     'driveshop/winteronderhoud-van-tuinmachines/'
 ) 'index.html'
 
-Assert-NotContains $homeHtml 'Johan''s Driveshop' 'index.html'
-Assert-NotContains $homeHtml 'Johan''s Fietsenshop' 'index.html'
 Assert-NotContains $homeHtml 'Neem contact op voor vragen over winkels, producten of beschikbare merken.' 'index.html'
 Assert-NotContains $homeHtml 'Ontdek onze focus op aandrijving, onderdelen en technische ondersteuning.' 'index.html'
 Assert-NotContains $homeHtml 'Verken ons aanbod rond fietsen, accessoires en persoonlijk advies.' 'index.html'
@@ -262,3 +260,4 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
+

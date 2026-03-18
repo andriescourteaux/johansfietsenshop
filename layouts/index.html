@@ -7,28 +7,42 @@
     <div class="home-hero__overlay"></div>
     <div class="container home-hero__content">
         <p class="eyebrow eyebrow--light">Site2</p>
+        {{ if .Params.opening_hours }}
+        <div class="opening-hours">
+            {{ with .Params.opening_hours_title }}<p class="opening-hours__title">{{ . }}</p>{{ end }}
+            <ul class="opening-hours__list">
+                {{ range .Params.opening_hours }}
+                <li>{{ . }}</li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
         <h1>{{ .Title }}</h1>
         <div class="page-copy page-copy--hero">{{ .Content }}</div>
     </div>
 </section>
 <section class="home-overview">
-    <div class="container home-overview__grid">
-        <a class="overview-card" href="{{ "/driveshop/" | relLangURL }}">
-            <h2>Driveshop</h2>
-            <p>Ontdek onze focus op aandrijving, onderdelen en technische ondersteuning.</p>
-        </a>
-        <a class="overview-card" href="{{ "/bikeshop/" | relLangURL }}">
-            <h2>Bikeshop</h2>
-            <p>Verken ons aanbod rond fietsen, accessoires en persoonlijk advies.</p>
-        </a>
-        <a class="overview-card overview-card--merken" href="{{ $siteMode.brandsHref }}" data-bike-href="{{ $siteMode.brandsBikeHref }}" data-drive-href="{{ $siteMode.brandsDriveHref }}">
-            <h2>Merken en verdelers</h2>
-            <p>Bekijk binnenkort een helder overzicht van merken en erkende verdelers.</p>
-        </a>
-        <a class="overview-card" href="{{ "/contact/" | relLangURL }}">
-            <h2>Contact</h2>
-            <p>Neem contact op voor vragen over winkels, producten of beschikbare merken.</p>
-        </a>
+    <div class="container">
+        <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike">
+            <div class="home-overview__grid">
+                {{ range $siteMode.bikePanels }}
+                <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
+                    <h2>{{ .title }}</h2>
+                    <p>{{ .summary }}</p>
+                </a>
+                {{ end }}
+            </div>
+        </div>
+        <div class="home-overview__panel home-overview__panel--drive" data-mode-panel="drive" hidden>
+            <div class="home-overview__grid">
+                {{ range $siteMode.drivePanels }}
+                <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
+                    <h2>{{ .title }}</h2>
+                    <p>{{ .summary }}</p>
+                </a>
+                {{ end }}
+            </div>
+        </div>
     </div>
 </section>
 {{ end }}

@@ -1,3 +1,34 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("/fonts/Roboto-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/fonts/Roboto-Italic.ttf") format("truetype");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/fonts/Roboto-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/fonts/Roboto-BoldItalic.ttf") format("truetype");
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+}
 :root {
     --background: #f4f1ea;
     --surface: #fffdf9;
@@ -15,14 +46,14 @@
 
 body {
     margin: 0;
-    font-family: /*Georgia*/, "Roboto", sans-serif;
+    font-family: "Roboto", Arial, sans-serif;
     color: var(--text);
 /*    background: linear-gradient(-80deg, #ffffff 0%, #ffffff 100%);*/
     background: white
 }
 
 a {
-    color: inherit;
+    color: white;
     text-decoration: none;
 }
 
@@ -40,7 +71,7 @@ img {
     position: relative;
     z-index: 10;
     border-bottom: 1px solid var(--border);
-    background: rgba(255, 253, 249, 0.94);
+    background: rgba(255, 253, 249, 1);
 }
 
 .site-header--overlay {
@@ -49,7 +80,7 @@ img {
     left: 0;
     width: 100%;
     border-bottom: none;
-    background: linear-gradient(180deg, rgba(14, 22, 20, 0.72), rgba(14, 22, 20, 0));
+    background: linear-gradient(180deg, rgba(255, 255, 255, .75) 25%, rgba(14, 22, 20, 0) 100%);
 }
 
 .site-header__inner,
@@ -85,7 +116,8 @@ img {
 .site-nav a,
 .site-footer__links a {
     position: relative;
-    color: var(--muted);
+    color: black;
+    font-size: 1.5vh;
 }
 
 .site-nav a:hover,
@@ -95,7 +127,12 @@ img {
 
 .site-header--overlay .site-brand,
 .site-header--overlay .site-nav a {
-    color: rgba(255, 249, 239, 0.92);
+    color: black;
+    opacity: .75;
+    font-size: 2vh;
+    font-family: roboto;
+    font-variant: small-caps;
+    font-style: bold;
 }
 
 .site-header--overlay .site-nav a:hover,
@@ -124,6 +161,7 @@ main {
 .home-hero__overlay {
     position: absolute;
     inset: 0;
+    opacity: 100;
 }
 
 .home-hero__media img {
@@ -189,16 +227,51 @@ h1 {
     box-shadow: 0 1.25rem 3rem rgba(49, 39, 26, 0.08);
 }
 
+.opening-hours {
+    margin: 1.5rem 0 1.75rem;
+    padding: 1rem 1.25rem;
+    max-width: 28rem;
+    border: 1px solid rgba(255, 248, 238, 0.22);
+    background: rgba(24, 28, 27, 0.58);
+    color: rgba(255, 248, 238, 0.94);
+    backdrop-filter: blur(10px);
+}
+
+.opening-hours__title {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.opening-hours__list {
+    margin: 0;
+    padding-left: 1rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
 .home-overview {
     margin-top: -2.5rem;
     position: relative;
     z-index: 2;
 }
 
+.home-overview__panel[hidden] {
+    display: none;
+}
+
 .home-overview__grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
+}
+
+.home-overview__panel--bike .home-overview__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.home-overview__panel--drive .home-overview__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .overview-card {
@@ -212,6 +285,10 @@ h1 {
     box-shadow: 0 1rem 2.4rem rgba(16, 16, 16, 0.18);
 }
 
+.overview-card h2 {
+    margin: 0;
+}
+
 .overview-card p {
     margin: 0.75rem 0 0;
     color: rgba(255, 248, 238, 0.72);
@@ -220,7 +297,8 @@ h1 {
 
 .site-footer {
     border-top: 1px solid var(--border);
-    background: var(--surface-strong);
+    /*background: var(--surface-strong);*/
+    background: #FFC100;
 }
 
 .site-footer__inner {
@@ -281,12 +359,13 @@ h1 {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: 2rem;
     align-items: start;
+
 }
 
 .contact-panel__details {
     padding: 1.75rem;
-    border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(239, 230, 214, 0.52), rgba(255, 253, 249, 0.88));
+    border: 0px solid var(--border);
+    /*background: linear-gradient(180deg, rgba(239, 230, 214, 0.52), rgba(255, 253, 249, 0.88));*/
 }
 
 .contact-panel__label {
@@ -438,8 +517,8 @@ h1 {
 }
 
 .site-nav__switch {
-    padding-bottom: 0.12rem;
-    border-bottom: 1px solid currentColor;
+    /*padding-bottom: 0.12rem;*/
+    /*border-bottom: 1px solid currentColor;*/
 }
 
 .home-hero__image {
@@ -447,3 +526,5 @@ h1 {
     height: 100%;
     object-fit: cover;
 }
+
+
