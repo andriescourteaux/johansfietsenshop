@@ -39,6 +39,18 @@
     element.href = activeMode === 'drive' ? element.dataset.driveHref : element.dataset.bikeHref;
   };
 
+  const syncModePanels = () => {
+    document.querySelectorAll('[data-mode-panel]').forEach((panel) => {
+      panel.hidden = panel.dataset.modePanel !== activeMode;
+    });
+  };
+
+  const syncModeMenus = () => {
+    document.querySelectorAll('[data-mode-nav]').forEach((menu) => {
+      menu.hidden = menu.dataset.modeNav !== activeMode;
+    });
+  };
+
   const logo = document.querySelector('.site-brand__logo');
   if (logo) {
     logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
@@ -50,10 +62,6 @@
     heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
   }
 
-  document.querySelectorAll('[data-mode-panel]').forEach((panel) => {
-    panel.hidden = panel.dataset.modePanel !== activeMode;
-  });
-
   applyHref('.site-brand');
   applyHref('.site-nav__contact');
 
@@ -62,5 +70,59 @@
     switchLink.href = activeMode === 'drive' ? switchLink.dataset.driveHref : switchLink.dataset.bikeHref;
     switchLink.textContent = activeMode === 'drive' ? switchLink.dataset.driveLabel : switchLink.dataset.bikeLabel;
   }
+
+  const menu = document.querySelector('.site-nav__menu');
+  const menuToggle = document.querySelector('.site-nav__menu-toggle');
+  const closeMenu = () => {
+    if (!menu || !menuToggle) {
+      return;
+    }
+
+    menu.hidden = true;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    body.classList.remove('site-menu-open');
+  };
+
+  const openMenu = () => {
+    if (!menu || !menuToggle) {
+      return;
+    }
+
+    menu.hidden = false;
+    menuToggle.setAttribute('aria-expanded', 'true');
+    body.classList.add('site-menu-open');
+  };
+
+  if (menu && menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      if (menu.hidden) {
+        openMenu();
+      }
+      else {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (menu.hidden) {
+        return;
+      }
+
+      if (menu.contains(event.target) || menuToggle.contains(event.target)) {
+        return;
+      }
+
+      closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
+    });
+  }
+
+  syncModePanels();
+  syncModeMenus();
 })();
 </script>

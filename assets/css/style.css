@@ -603,3 +603,87 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+
+.site-nav {
+    align-items: center;
+}
+
+.site-nav__menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: black;
+    font: inherit;
+    cursor: pointer;
+}
+
+.site-nav__menu-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.site-nav__menu-icon {
+    display: inline-grid;
+    gap: 0.28rem;
+}
+
+.site-nav__menu-icon span {
+    display: block;
+    width: 1.35rem;
+    height: 1px;
+    background: currentColor;
+}
+
+.site-nav__menu {
+    position: absolute;
+    top: calc(100% - 0.5rem);
+    right: 1.5rem;
+    z-index: 15;
+    width: min(22rem, calc(100vw - 3rem));
+}
+
+.site-nav__menu-panel {
+    padding: 1.25rem;
+    border: 1px solid rgba(31, 28, 24, 0.12);
+    background: rgba(255, 253, 249, 0.98);
+    box-shadow: 0 1rem 2.4rem rgba(16, 16, 16, 0.18);
+}
+
+.site-nav__menu-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.8rem;
+}
+
+.site-nav__menu-link {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.site-nav__menu-link:hover {
+    color: var(--accent);
+}
+
+.site-header--overlay .site-nav__menu-toggle {
+    color: black;
+    opacity: 0.75;
+    font-size: 1.5vh;
+    font-family: roboto;
+    font-variant: small-caps;
+}
+
+.site-header--overlay .site-nav__menu-toggle:hover {
+    color: #ffffff;
+}
+
+@media (max-width: 720px) {
+    .site-nav__menu {
+        right: 0;
+        width: 100%;
+    }
+}
