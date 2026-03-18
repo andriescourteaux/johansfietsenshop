@@ -1,34 +1,29 @@
-[items."swyff.webp"]
-title = "Swyff"
-alt = "Swyff leasingfietsen"
-image = "/images/merken-verdelers/bikeshop/swyff.webp"
-url = "https://www.swyff.com/nl/fietsen-1.htm"
+[items."cyclis.svg"]
+title = "Cyclis"
+alt = "Cyclis leasingfietsen"
+image = "/images/collecties/bikeshop/leasing-fietsen/cyclis.svg"
+url = "https://www.cyclis.be/"
 weight = 10
 
-[items."oxford.webp"]
-title = "Oxford"
-alt = "Oxford leasingfietsen"
-image = "/images/merken-verdelers/bikeshop/oxford.webp"
-url = "https://www.oxfordbikes.be/"
+[items."velobility.webp"]
+title = "Velobility"
+image = "/images/collecties/bikeshop/leasing-fietsen/velobility.webp"
 weight = 20
 
-[items."zannata.webp"]
-title = "Zannata"
-alt = "Zannata leasingfietsen"
-image = "/images/merken-verdelers/bikeshop/zannata.webp"
-url = "https://www.zannata.be/"
+[items."lease-a-bike.svg"]
+title = "Lease A Bike"
+image = "/images/collecties/bikeshop/leasing-fietsen/lease-a-bike.svg"
 weight = 30
+url = "https://www.lease-a-bike.be/"
 
-[items."thompson.webp"]
-title = "Thompson"
-alt = "Thompson leasingfietsen"
-image = "/images/merken-verdelers/bikeshop/thompson.webp"
-url = "https://thompson-bikebuilder.be/en/"
+[items."cyclevalley.gif"]
+title = "Cycle Valley"
+image = "/images/collecties/bikeshop/leasing-fietsen/cyclevalley.gif"
 weight = 40
+url = "https://www.cyclevalley.be/"
 
-[items."gazelle.webp"]
-title = "Gazelle"
-alt = "Gazelle leasingfietsen"
-image = "/images/merken-verdelers/bikeshop/gazelle.webp"
-url = "https://www.gazellebikes.com/nl-be"
+[items."o2o.webp"]
+title = "o2o"
+image = "/images/collecties/bikeshop/leasing-fietsen/o2o.webp"
 weight = 50
+url = "https://www.o2o.be/nl"
