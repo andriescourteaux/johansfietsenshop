@@ -21,6 +21,7 @@
   {{- end -}}
 {{- end -}}
 {{- $items := slice -}}
+{{- $uniqueTags := slice -}}
 {{- range $images -}}
   {{- $name := . -}}
   {{- $defaultTitle := humanize (replaceRE "\\.[^.]+$" "" $name) -}}
@@ -42,6 +43,11 @@
       {{- $weight = . -}}
     {{- end -}}
   {{- end -}}
+  {{- range $tags -}}
+    {{- if not (in $uniqueTags .) -}}
+      {{- $uniqueTags = $uniqueTags | append . -}}
+    {{- end -}}
+  {{- end -}}
   {{- $items = $items | append (dict
     "name" $name
     "src" (printf "/images/merken-verdelers/%s/%s" $galleryMode $name | relURL)
@@ -54,8 +60,15 @@
   ) -}}
 {{- end -}}
 {{- $items = sort $items "sortKey" -}}
+{{- $uniqueTags = sort $uniqueTags -}}
 <section class="merken-gallery" data-merken-gallery>
     {{- if gt (len $items) 0 -}}
+    <div class="merken-gallery__filters">
+        <button class="merken-gallery__filter is-active" type="button" data-merken-filter="all" aria-pressed="true">Alles</button>
+        {{- range $uniqueTags -}}
+        <button class="merken-gallery__filter" type="button" data-merken-filter="{{ . }}" aria-pressed="false">{{ . }}</button>
+        {{- end -}}
+    </div>
     <div class="merken-gallery__grid">
         {{- range $items -}}
         <figure class="merken-gallery__item" data-merken-item data-tags="{{ .tagsAttr }}">

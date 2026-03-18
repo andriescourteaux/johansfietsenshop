@@ -1,0 +1,54 @@
+<script>
+(() => {
+  const gallery = document.querySelector('[data-merken-gallery]');
+  if (!gallery) {
+    return;
+  }
+
+  const buttons = Array.from(gallery.querySelectorAll('[data-merken-filter]'));
+  const items = Array.from(gallery.querySelectorAll('[data-merken-item]'));
+  const activeTags = new Set();
+
+  const getTags = (item) => {
+    const value = item.dataset.tags || '';
+    return value.split('|').map((tag) => tag.trim()).filter(Boolean);
+  };
+
+  const sync = () => {
+    items.forEach((item) => {
+      const itemTags = getTags(item);
+      const isVisible = activeTags.size === 0 || itemTags.some((tag) => activeTags.has(tag));
+      item.hidden = !isVisible;
+    });
+
+    buttons.forEach((button) => {
+      const tag = button.dataset.merkenFilter;
+      const isActive = tag === 'all' ? activeTags.size === 0 : activeTags.has(tag);
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const tag = button.dataset.merkenFilter;
+      if (tag === 'all') {
+        activeTags.clear();
+        sync();
+        return;
+      }
+
+      if (activeTags.has(tag)) {
+        activeTags.delete(tag);
+      }
+      else {
+        activeTags.add(tag);
+      }
+
+      sync();
+    });
+  });
+
+  sync();
+})();
+</script>

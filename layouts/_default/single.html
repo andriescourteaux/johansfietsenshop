@@ -1,7 +1,7 @@
 {{ define "main" }}
 <section class="page-intro">
     <div class="container">
-        <p class="eyebrow">Pagina</p>
+        <!-- <p class="eyebrow">Pagina</p> -->
         <h1>{{ .Title }}</h1>
         <div class="page-copy">{{ .Content }}</div>
 
@@ -19,7 +19,10 @@
         </section>
         {{ end }}
 
-        {{ if .Params.brands }}
+        {{ if .Params.gallery_mode }}
+        {{ partial "merken-gallery.html" . }}
+        {{ partial "merken-gallery-script.html" . }}
+        {{ else if .Params.brands }}
         <section class="placeholder-group">
             <div>
                 <h2>{{ .Params.brands_heading }}</h2>
@@ -50,9 +53,12 @@
         <div class="contact-panel">
             <div class="contact-panel__details">
                 <p class="contact-panel__label">Contactgegevens</p>
-                <p>Bezoek ons op afspraak of neem rechtstreeks contact op voor vragen over Driveshop, Bikeshop of onze merken.</p>
-                <p>E-mail: info@example.org</p>
-                <p>Telefoon: +32 000 00 00 00</p>
+                <p>Johan Alliet</p>
+                <p>Adres: Kalve 62, 9185 Wachtebeke</p>
+                <p>GSM: 0472/93 03 56</p>
+                <p>E-mail: johan.alliet@telenet.be</p>
+                <p>Btw nr. 0898284633</p>
+                <p>Betaalmogelijkheden: cash, bancontact of Payconiq</p>
             </div>
             <form class="contact-form" action="#" method="post">
                 <label>
@@ -87,3 +93,5 @@
     </div>
 </section>
 {{ end }}
+
+

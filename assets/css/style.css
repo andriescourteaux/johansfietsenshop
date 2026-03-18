@@ -528,3 +528,77 @@ h1 {
 }
 
 
+
+.merken-gallery {
+    margin-top: 2.5rem;
+}
+
+.merken-gallery__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.merken-gallery__filter {
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+}
+
+.merken-gallery__filter.is-active {
+    border-color: var(--text);
+    background: var(--text);
+    color: var(--surface);
+}
+
+.merken-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.merken-gallery__item {
+    margin: 0;
+}
+
+.merken-gallery__link {
+    display: block;
+    color: inherit;
+}
+
+.merken-gallery__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    aspect-ratio: 4 / 3;
+}
+
+.merken-gallery__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.merken-gallery__empty {
+    margin: 0;
+    color: var(--muted);
+}
+
+@media (max-width: 960px) {
+    .merken-gallery__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .merken-gallery__grid {
+        grid-template-columns: 1fr;
+    }
+}
