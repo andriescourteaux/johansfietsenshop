@@ -100,6 +100,7 @@ foreach ($pathSpec in @(
 }
 
 Assert-AllContains $homeHtml @(
+    'shared-hero',
     'home-hero',
     'home-hero__image',
     '/images/header_bike.webp',
@@ -132,6 +133,11 @@ Assert-AllContains $homeHtml @(
 ) 'index.html'
 
 Assert-AllContains $contactHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_bike.webp',
+    '/images/header_drive.webp',
     '<form',
     'Online verzending is nog niet actief.',
     'data-shared-page="true"',
@@ -145,8 +151,14 @@ Assert-AllContains $contactHtml @(
 ) 'contact/index.html'
 
 Assert-NotContains $contactHtml 'site-nav__merken' 'contact/index.html'
+Assert-NotContains $contactHtml 'opening-hours' 'contact/index.html'
+Assert-NotContains $contactHtml 'page-copy--hero' 'contact/index.html'
 
 Assert-AllContains $bikeMerkenHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_bike.webp',
     'data-site-mode="bike"',
     'site-nav__menu-toggle',
     'site-nav__menu',
@@ -164,6 +176,10 @@ Assert-AllContains $bikeMerkenHtml @(
 ) 'bikeshop/merken-en-verdelers/index.html'
 
 Assert-AllContains $driveMerkenHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_drive.webp',
     'data-site-mode="drive"',
     'site-nav__menu-toggle',
     'site-nav__menu',
@@ -181,6 +197,10 @@ Assert-AllContains $driveMerkenHtml @(
 ) 'driveshop/merken-en-verdelers/index.html'
 
 Assert-AllContains $bikeLeasingHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_bike.webp',
     'Leasing fietsen',
     'data-site-mode="bike"',
     'site-nav__menu-toggle',
@@ -195,6 +215,10 @@ Assert-AllContains $bikeLeasingHtml @(
 Assert-NotContains $bikeLeasingHtml 'media-collection__filters' 'bikeshop/leasing-fietsen/index.html'
 
 Assert-AllContains $bikeAccessoriesHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_bike.webp',
     'Accessoires',
     'data-site-mode="bike"',
     'site-nav__menu-toggle',
@@ -207,6 +231,10 @@ Assert-AllContains $bikeAccessoriesHtml @(
 ) 'bikeshop/accessoires/index.html'
 
 Assert-AllContains $bikeModelsHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_bike.webp',
     'Enkele modellen in de kijker',
     'data-site-mode="bike"',
     'site-nav__menu-toggle',
@@ -219,6 +247,10 @@ Assert-AllContains $bikeModelsHtml @(
 ) 'bikeshop/modellen-in-de-kijker/index.html'
 
 Assert-AllContains $driveModelsHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_drive.webp',
     'Modellen in de kijker',
     'data-site-mode="drive"',
     'site-nav__menu-toggle',
@@ -231,6 +263,10 @@ Assert-AllContains $driveModelsHtml @(
 ) 'driveshop/modellen-in-de-kijker/index.html'
 
 Assert-AllContains $driveWinterHtml @(
+    'shared-hero',
+    'home-hero',
+    'home-hero__image',
+    '/images/header_drive.webp',
     'Winteronderhoud van tuinmachines',
     'data-site-mode="drive"',
     'site-nav__menu-toggle',
@@ -255,6 +291,7 @@ if ($CssPath) {
             '.site-nav__menu-shell',
             '.site-nav__menu-list[hidden]',
             '.site-nav__item,',
+            '.shared-hero',
             '.home-hero__image',
             '.opening-hours',
             '.home-overview__panel',
@@ -299,5 +336,7 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
+
+
 
 
