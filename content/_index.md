@@ -3,9 +3,13 @@ title = "Welkom bij Johan's Fietsenshop!"
 draft = false
 opening_hours_title = 'Openingsuren'
 opening_hours = [
-  'Zondag en maandag gesloten',
-  'Dinsdag tot zaterdag: 9u tot 17u',
-  'Middagpauze voorzien'
+  'Maandag: gesloten',
+  'Dinsdag: 10:00u - 19:00',
+  'Woensdag: 10:00u - 19:00',
+  'Donderdag: 10:00u - 19:00',
+  'Vrijdag: 10:00u - 19:00',
+  'Zaterdag: 10:00u - 19:00',
+  'Zondag: gesloten'
 ]
 +++
 
