@@ -155,7 +155,8 @@ main {
     padding: 4rem 0 5rem;
 }
 
-.page--home main {
+.page--home main,
+.page--page main {
     padding: 0 0 5rem;
 }
 
@@ -900,3 +901,11 @@ h1 {
     }
 }
 
+
+.shared-hero {
+    position: relative;
+}
+
+.page-intro--after-hero {
+    padding-top: 3rem;
+}

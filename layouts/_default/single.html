@@ -1,5 +1,6 @@
 {{ define "main" }}
-<section class="page-intro">
+{{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
+<section class="page-intro page-intro--after-hero">
     <div class="container">
         <!-- <p class="eyebrow">Pagina</p> -->
         <h1>{{ .Title }}</h1>
@@ -96,4 +97,3 @@
     </div>
 </section>
 {{ end }}
-

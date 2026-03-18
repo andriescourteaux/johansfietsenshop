@@ -1,5 +1,5 @@
 {{- $siteMode := partial "site-mode.html" . -}}
-<header class="site-header{{ if .IsHome }} site-header--overlay{{ end }}" data-site-mode="{{ $siteMode.mode }}">
+<header class="site-header{{ if or .IsHome .IsPage }} site-header--overlay{{ end }}" data-site-mode="{{ $siteMode.mode }}">
     <div class="container site-header__inner">
         <a class="site-brand" href="{{ $siteMode.homeHref }}" data-bike-href="{{ $siteMode.homeBikeHref }}" data-drive-href="{{ $siteMode.homeDriveHref }}">
             <img class="site-brand__logo" src="{{ $siteMode.logoPath }}" data-bike-src="{{ $siteMode.logoBikePath }}" data-drive-src="{{ $siteMode.logoDrivePath }}" alt="{{ if $siteMode.isDrive }}Johan's Driveshop{{ else }}Bikeshop{{ end }} logo">
@@ -34,3 +34,4 @@
         </nav>
     </div>
 </header>
+
