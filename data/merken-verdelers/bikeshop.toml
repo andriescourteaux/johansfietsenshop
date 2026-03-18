@@ -9,60 +9,70 @@ title = "Descheemaeker"
 alt = "Descheemaeker logo"
 tags = ["vouwfietsen", "BMX"]
 weight = 100
+url = "https://www.descheemaeker.be/nl"
 
 [items."flanders.webp"]
 title = "Flanders"
 alt = "Flanders logo"
 tags = ["koersfietsen", "MTB"]
 weight = 120
+url = "https://flandersfietsen.be/wp/"
 
 [items."oxford.webp"]
 title = "Oxford"
 alt = "Oxford logo"
 tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride", "vouwfietsen"]
 weight = 20
+url = "https://www.oxfordbikes.be/"
 
 [items."swyff.webp"]
 title = "Swyff"
 alt = "Swyff logo"
 tags = ["elektrische fietsen"]
 weight = 10
+url = "https://www.swyff.com/nl/fietsen-1.htm"
 
 [items."thompson.webp"]
 title = "Thompson"
 alt = "Thompson logo"
 tags = ["elektrische fietsen", "city", "hybride", "vouwfietsen", "koersfietsen", "MTB"]
 weight = 50
+url = "https://thompson-bikebuilder.be/en/"
 
 [items."venturelli.webp"]
 title = "Venturelli"
 alt = "Venturelli logo"
 tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride"]
 weight = 40
+url = "https://www.venturelli.be/home"
 
 [items."zannata.webp"]
 title = "Zannata"
 alt = "Zannata logo"
 tags = ["koersfietsen"]
 weight = 30
+url = "https://www.zannata.be/"
 
 [items."kuota.webp"]
 title = "Kuota"
 alt = "Kuota logo"
 tags = ["koersfietsen", "MTB"]
 weight = 80
+url = "https://www.kuota-cycle.com/"
 
 [items."lavenir.webp"]
 title = "L'Avenir"
 alt = "L'Avenir logo"
 tags = ["city"]
 weight = 70
+url = "https://www.lavenir.be/"
 
 [items."scatto.webp"]
 title = "Scatto"
 alt = "Scatto logo"
 tags = ["koersfietsen"]
 weight = 60
+url = "http://www.scatto-bikes.com/home"
 
 [items."gazelle.webp"]
 title = "Gazelle"
