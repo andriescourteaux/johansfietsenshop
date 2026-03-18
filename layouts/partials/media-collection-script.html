@@ -1,0 +1,61 @@
+<script>
+(() => {
+  const collections = Array.from(document.querySelectorAll('[data-media-collection]'));
+  if (collections.length === 0) {
+    return;
+  }
+
+  const getTags = (item) => {
+    const value = item.dataset.tags || '';
+    return value.split('|').map((tag) => tag.trim()).filter(Boolean);
+  };
+
+  collections.forEach((collection) => {
+    const buttons = Array.from(collection.querySelectorAll('[data-media-filter]'));
+    const items = Array.from(collection.querySelectorAll('[data-media-item]'));
+
+    if (buttons.length === 0 || items.length === 0) {
+      return;
+    }
+
+    const activeTags = new Set();
+
+    const sync = () => {
+      items.forEach((item) => {
+        const itemTags = getTags(item);
+        const isVisible = activeTags.size === 0 || itemTags.some((tag) => activeTags.has(tag));
+        item.hidden = !isVisible;
+      });
+
+      buttons.forEach((button) => {
+        const tag = button.dataset.mediaFilter;
+        const isActive = tag === 'all' ? activeTags.size === 0 : activeTags.has(tag);
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const tag = button.dataset.mediaFilter;
+        if (tag === 'all') {
+          activeTags.clear();
+          sync();
+          return;
+        }
+
+        if (activeTags.has(tag)) {
+          activeTags.delete(tag);
+        }
+        else {
+          activeTags.add(tag);
+        }
+
+        sync();
+      });
+    });
+
+    sync();
+  });
+})();
+</script>

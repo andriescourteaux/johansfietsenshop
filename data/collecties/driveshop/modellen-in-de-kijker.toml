@@ -1,2 +1,17 @@
-[items]
+[items."zitmaaier.webp"]
+title = "Zitmaaier"
+alt = "Zitmaaier"
+image = "/images/header_drive.webp"
+weight = 10
 
+[items."compacttractor.webp"]
+title = "Compacttractor"
+alt = "Compacttractor"
+image = "/images/header_drive.jpg"
+weight = 20
+
+[items."tuinmachine.webp"]
+title = "Tuinmachine"
+alt = "Tuinmachine"
+image = "/images/header_drive.webp"
+weight = 30

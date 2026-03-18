@@ -1,0 +1,145 @@
+{{- $collectionMode := .Params.collection_mode -}}
+{{- $collectionKey := .Params.collection_key -}}
+{{- $collectionVariant := or .Params.collection_variant "hover-cards" -}}
+{{- $collectionFilters := .Params.collection_filters -}}
+{{- $collectionDir := printf "static/images/collecties/%s/%s" $collectionMode $collectionKey -}}
+{{- $collectionBasePath := printf "/images/collecties/%s/%s" $collectionMode $collectionKey -}}
+{{- $metadata := dict -}}
+{{- with index site.Data.collecties $collectionMode -}}
+  {{- with index . $collectionKey -}}
+    {{- with .items -}}
+      {{- $metadata = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $items := slice -}}
+{{- $knownKeys := slice -}}
+{{- $uniqueTags := slice -}}
+
+{{- if fileExists $collectionDir -}}
+  {{- range readDir $collectionDir -}}
+    {{- if not .IsDir -}}
+      {{- $name := .Name -}}
+      {{- $lower := lower $name -}}
+      {{- if or (hasSuffix $lower ".jpg") (hasSuffix $lower ".jpeg") (hasSuffix $lower ".png") (hasSuffix $lower ".webp") (hasSuffix $lower ".gif") (hasSuffix $lower ".svg") (hasSuffix $lower ".avif") -}}
+        {{- $knownKeys = $knownKeys | append $name -}}
+        {{- $title := humanize (replaceRE "\\.[^.]+$" "" $name) -}}
+        {{- $alt := $title -}}
+        {{- $tags := slice -}}
+        {{- $url := "" -}}
+        {{- $weight := 9999 -}}
+        {{- with index $metadata $name -}}
+          {{- $title = or .title $title -}}
+          {{- $alt = or .alt .title $alt -}}
+          {{- with .tags -}}
+            {{- $tags = . -}}
+          {{- end -}}
+          {{- with .url -}}
+            {{- $url = . -}}
+          {{- end -}}
+          {{- with .weight -}}
+            {{- $weight = . -}}
+          {{- end -}}
+        {{- end -}}
+        {{- range $tags -}}
+          {{- if not (in $uniqueTags .) -}}
+            {{- $uniqueTags = $uniqueTags | append . -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $items = $items | append (dict
+          "name" $name
+          "src" (printf "%s/%s" $collectionBasePath $name | relURL)
+          "title" $title
+          "alt" $alt
+          "tags" $tags
+          "tagsAttr" (delimit $tags "|")
+          "url" $url
+          "sortKey" (printf "%06d-%s" $weight $name)
+        ) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $name, $entry := $metadata -}}
+  {{- if not (in $knownKeys $name) -}}
+    {{- $src := "" -}}
+    {{- with $entry.image -}}
+      {{- if or (hasPrefix . "http://") (hasPrefix . "https://") -}}
+        {{- $src = . -}}
+      {{- else -}}
+        {{- $src = . | relURL -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if and (eq $src "") (or (hasSuffix (lower $name) ".jpg") (hasSuffix (lower $name) ".jpeg") (hasSuffix (lower $name) ".png") (hasSuffix (lower $name) ".webp") (hasSuffix (lower $name) ".gif") (hasSuffix (lower $name) ".svg") (hasSuffix (lower $name) ".avif")) -}}
+      {{- $src = printf "%s/%s" $collectionBasePath $name | relURL -}}
+    {{- end -}}
+    {{- if ne $src "" -}}
+      {{- $title := or $entry.title (humanize (replaceRE "\\.[^.]+$" "" $name)) -}}
+      {{- $alt := or $entry.alt $entry.title $title -}}
+      {{- $tags := slice -}}
+      {{- with $entry.tags -}}
+        {{- $tags = . -}}
+      {{- end -}}
+      {{- $url := or $entry.url "" -}}
+      {{- $weight := or $entry.weight 9999 -}}
+      {{- range $tags -}}
+        {{- if not (in $uniqueTags .) -}}
+          {{- $uniqueTags = $uniqueTags | append . -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $items = $items | append (dict
+        "name" $name
+        "src" $src
+        "title" $title
+        "alt" $alt
+        "tags" $tags
+        "tagsAttr" (delimit $tags "|")
+        "url" $url
+        "sortKey" (printf "%06d-%s" $weight $name)
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $items = sort $items "sortKey" -}}
+{{- $uniqueTags = sort $uniqueTags -}}
+<section class="media-collection media-collection--{{ $collectionVariant }}" data-media-collection data-collection-variant="{{ $collectionVariant }}">
+    {{- if and $collectionFilters (gt (len $items) 0) -}}
+    <div class="media-collection__filters">
+        <button class="media-collection__filter is-active" type="button" data-media-filter="all" aria-pressed="true">Alles</button>
+        {{- range $uniqueTags -}}
+        <button class="media-collection__filter" type="button" data-media-filter="{{ . }}" aria-pressed="false">{{ . }}</button>
+        {{- end -}}
+    </div>
+    {{- end -}}
+
+    {{- if gt (len $items) 0 -}}
+    <div class="media-collection__grid media-collection__grid--{{ $collectionVariant }}">
+        {{- range $items -}}
+        <article class="media-collection__item" data-media-item data-tags="{{ .tagsAttr }}">
+            {{- if .url -}}
+            <a class="media-collection__card" href="{{ .url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .title }}">
+            {{- else -}}
+            <div class="media-collection__card media-collection__card--static" aria-label="{{ .title }}">
+            {{- end -}}
+                <div class="media-collection__media media-collection__media--{{ $collectionVariant }}">
+                    <img class="media-collection__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+                    {{- if eq $collectionVariant "hover-cards" -}}
+                    <span class="media-collection__overlay">
+                        <span class="media-collection__title">{{ .title }}</span>
+                    </span>
+                    {{- end -}}
+                </div>
+            {{- if .url -}}
+            </a>
+            {{- else -}}
+            </div>
+            {{- end -}}
+        </article>
+        {{- end -}}
+    </div>
+    {{- else -}}
+    <p class="media-collection__empty">Afbeeldingen volgen binnenkort.</p>
+    {{- end -}}
+</section>

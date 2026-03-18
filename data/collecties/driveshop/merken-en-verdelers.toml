@@ -1,2 +1,21 @@
-[items]
+[items."castelgarden.webp"]
+title = "Castelgarden"
+alt = "Castelgarden logo"
+image = "/images/merken-verdelers/driveshop/castelgarden.webp"
+tags = ["tuinmachine"]
+weight = 10
 
+[items."iseki.webp"]
+title = "Iseki"
+alt = "Iseki logo"
+image = "/images/merken-verdelers/driveshop/iseki.webp"
+tags = ["tuinmachine"]
+weight = 20
+
+[items."stiga.webp"]
+title = "Stiga"
+alt = "Stiga logo"
+image = "/images/merken-verdelers/driveshop/stiga.webp"
+tags = ["tuinmachine", "winteronderhoud"]
+url = "https://www.stiga.com/int/"
+weight = 30

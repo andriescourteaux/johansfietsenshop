@@ -27,8 +27,14 @@
             <div class="home-overview__grid">
                 {{ range $siteMode.bikePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
-                    <h2>{{ .title }}</h2>
-                    <p>{{ .summary }}</p>
+                    <span class="overview-card__media" aria-hidden="true">
+                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="">
+                        <span class="overview-card__overlay"></span>
+                    </span>
+                    <span class="overview-card__body">
+                        <span class="overview-card__title">{{ .title }}</span>
+                        <span class="overview-card__summary">{{ .summary }}</span>
+                    </span>
                 </a>
                 {{ end }}
             </div>
@@ -37,8 +43,14 @@
             <div class="home-overview__grid">
                 {{ range $siteMode.drivePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
-                    <h2>{{ .title }}</h2>
-                    <p>{{ .summary }}</p>
+                    <span class="overview-card__media" aria-hidden="true">
+                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="">
+                        <span class="overview-card__overlay"></span>
+                    </span>
+                    <span class="overview-card__body">
+                        <span class="overview-card__title">{{ .title }}</span>
+                        <span class="overview-card__summary">{{ .summary }}</span>
+                    </span>
                 </a>
                 {{ end }}
             </div>

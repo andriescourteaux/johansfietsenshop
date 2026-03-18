@@ -1,2 +1,34 @@
-[items]
+[items."swyff.webp"]
+title = "Swyff"
+alt = "Swyff leasingfietsen"
+image = "/images/merken-verdelers/bikeshop/swyff.webp"
+url = "https://www.swyff.com/nl/fietsen-1.htm"
+weight = 10
 
+[items."oxford.webp"]
+title = "Oxford"
+alt = "Oxford leasingfietsen"
+image = "/images/merken-verdelers/bikeshop/oxford.webp"
+url = "https://www.oxfordbikes.be/"
+weight = 20
+
+[items."zannata.webp"]
+title = "Zannata"
+alt = "Zannata leasingfietsen"
+image = "/images/merken-verdelers/bikeshop/zannata.webp"
+url = "https://www.zannata.be/"
+weight = 30
+
+[items."thompson.webp"]
+title = "Thompson"
+alt = "Thompson leasingfietsen"
+image = "/images/merken-verdelers/bikeshop/thompson.webp"
+url = "https://thompson-bikebuilder.be/en/"
+weight = 40
+
+[items."gazelle.webp"]
+title = "Gazelle"
+alt = "Gazelle leasingfietsen"
+image = "/images/merken-verdelers/bikeshop/gazelle.webp"
+url = "https://www.gazellebikes.com/nl-be"
+weight = 50

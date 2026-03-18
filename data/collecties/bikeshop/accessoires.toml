@@ -1,2 +1,17 @@
-[items]
+[items."fietshelm.webp"]
+title = "Fietshelmen"
+alt = "Fietshelmen"
+image = "/images/header_bike.webp"
+weight = 10
 
+[items."fietstas.webp"]
+title = "Fietstassen"
+alt = "Fietstassen"
+image = "/images/header_bike.webp"
+weight = 20
+
+[items."onderhoud.webp"]
+title = "Onderhoud en toebehoren"
+alt = "Onderhoud en toebehoren"
+image = "/images/header_bike.webp"
+weight = 30

@@ -1,2 +1,17 @@
-[items]
+[items."elektrische-fiets.webp"]
+title = "Elektrische fiets"
+alt = "Elektrische fiets"
+image = "/images/header_bike.webp"
+weight = 10
 
+[items."stadsfiets.webp"]
+title = "Stadsfiets"
+alt = "Stadsfiets"
+image = "/images/header_bike.jpg"
+weight = 20
+
+[items."sportfiets.webp"]
+title = "Sportieve fiets"
+alt = "Sportieve fiets"
+image = "/images/header_bike.webp"
+weight = 30
