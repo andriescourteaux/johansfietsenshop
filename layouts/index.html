@@ -1,26 +1,6 @@
 {{ define "main" }}
+{{ partial "shared-hero.html" (dict "Page" . "ShowContent" true "ShowOpeningHours" true "ShowTitle" true "ShowIntro" true) }}
 {{- $siteMode := partial "site-mode.html" . -}}
-<section class="home-hero">
-    <div class="home-hero__media" aria-hidden="true">
-        <img class="home-hero__image" src="{{ $siteMode.heroPath }}" data-bike-src="{{ $siteMode.heroBikePath }}" data-drive-src="{{ $siteMode.heroDrivePath }}" alt="">
-    </div>
-    <div class="home-hero__overlay"></div>
-    <div class="container home-hero__content">
-        <p class="eyebrow eyebrow--light">Site2</p>
-        {{ if .Params.opening_hours }}
-        <div class="opening-hours">
-            {{ with .Params.opening_hours_title }}<p class="opening-hours__title">{{ . }}</p>{{ end }}
-            <ul class="opening-hours__list">
-                {{ range .Params.opening_hours }}
-                <li>{{ . }}</li>
-                {{ end }}
-            </ul>
-        </div>
-        {{ end }}
-        <h1>{{ .Title }}</h1>
-        <div class="page-copy page-copy--hero">{{ .Content }}</div>
-    </div>
-</section>
 <section class="home-overview">
     <div class="container">
         <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike">
