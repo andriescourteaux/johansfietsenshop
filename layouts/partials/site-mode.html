@@ -27,15 +27,27 @@
 {{- $driveHeroPath := "/images/header_drive.webp" -}}
 
 {{- $bikePanels := slice
-  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref)
-  (dict "key" "accessoires" "title" "Accessoires" "summary" "Ontdek fietsaccessoires, onderdelen en praktische extra's." "href" $bikeAccessoriesHref)
-  (dict "key" "models" "title" "Enkele modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $bikeModelsHref)
-  (dict "key" "leasing" "title" "Leasing fietsen" "summary" "Lees meer over leasingmogelijkheden voor fietsen." "href" $bikeLeasingHref)
+  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref "image" $bikeHeroPath)
+  (dict "key" "accessoires" "title" "Accessoires" "summary" "Ontdek fietsaccessoires, onderdelen en praktische extra's." "href" $bikeAccessoriesHref "image" $bikeHeroPath)
+  (dict "key" "models" "title" "Enkele modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $bikeModelsHref "image" $bikeHeroPath)
+  (dict "key" "leasing" "title" "Leasing fietsen" "summary" "Lees meer over leasingmogelijkheden voor fietsen." "href" $bikeLeasingHref "image" $bikeHeroPath)
 -}}
 {{- $drivePanels := slice
-  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $driveBrandsHref)
-  (dict "key" "models" "title" "Modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $driveModelsHref)
-  (dict "key" "winter" "title" "Winteronderhoud van tuinmachines" "summary" "Lees meer over winteronderhoud voor tuinmachines." "href" $driveWinterHref)
+  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $driveBrandsHref "image" $driveHeroPath)
+  (dict "key" "models" "title" "Modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $driveModelsHref "image" $driveHeroPath)
+  (dict "key" "winter" "title" "Winteronderhoud van tuinmachines" "summary" "Lees meer over winteronderhoud voor tuinmachines." "href" $driveWinterHref "image" $driveHeroPath)
+-}}
+
+{{- $bikeMenuItems := slice
+  (dict "key" "brands" "title" "Merken en verdelers" "href" $bikeBrandsHref)
+  (dict "key" "accessoires" "title" "Accessoires" "href" $bikeAccessoriesHref)
+  (dict "key" "models" "title" "Enkele modellen in de kijker" "href" $bikeModelsHref)
+  (dict "key" "leasing" "title" "Leasing fietsen" "href" $bikeLeasingHref)
+-}}
+{{- $driveMenuItems := slice
+  (dict "key" "brands" "title" "Merken en verdelers" "href" $driveBrandsHref)
+  (dict "key" "models" "title" "Modellen in de kijker" "href" $driveModelsHref)
+  (dict "key" "winter" "title" "Winteronderhoud van tuinmachines" "href" $driveWinterHref)
 -}}
 
 {{- $data := dict
@@ -71,6 +83,8 @@
   "switchDriveLabel" "Bikeshop"
   "bikePanels" $bikePanels
   "drivePanels" $drivePanels
+  "bikeMenuItems" $bikeMenuItems
+  "driveMenuItems" $driveMenuItems
 -}}
 
 {{- return $data -}}
