@@ -16,19 +16,36 @@
 {{- $driveContactHref := "/contact/?mode=drive" -}}
 {{- $bikeBrandsHref := "/bikeshop/merken-en-verdelers/" -}}
 {{- $driveBrandsHref := "/driveshop/merken-en-verdelers/" -}}
-{{- $bikeSwitchHref := "/driveshop/" -}}
-{{- $driveSwitchHref := "/bikeshop/" -}}
-{{- $bikeHeroPath := "/images/header_bike.jpg" -}}
-{{- $driveHeroPath := "/images/header_drive.jpg" -}}
+{{- $bikeAccessoriesHref := "/bikeshop/accessoires/" -}}
+{{- $bikeModelsHref := "/bikeshop/modellen-in-de-kijker/" -}}
+{{- $bikeLeasingHref := "/bikeshop/leasing-fietsen/" -}}
+{{- $driveModelsHref := "/driveshop/modellen-in-de-kijker/" -}}
+{{- $driveWinterHref := "/driveshop/winteronderhoud-van-tuinmachines/" -}}
+{{- $bikeSwitchHref := "/?mode=drive" -}}
+{{- $driveSwitchHref := "/?mode=bike" -}}
+{{- $bikeHeroPath := "/images/header_bike.webp" -}}
+{{- $driveHeroPath := "/images/header_drive.webp" -}}
+
+{{- $bikePanels := slice
+  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref)
+  (dict "key" "accessoires" "title" "Accessoires" "summary" "Ontdek fietsaccessoires, onderdelen en praktische extra's." "href" $bikeAccessoriesHref)
+  (dict "key" "models" "title" "Enkele modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $bikeModelsHref)
+  (dict "key" "leasing" "title" "Leasing fietsen" "summary" "Lees meer over leasingmogelijkheden voor fietsen." "href" $bikeLeasingHref)
+-}}
+{{- $drivePanels := slice
+  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $driveBrandsHref)
+  (dict "key" "models" "title" "Modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $driveModelsHref)
+  (dict "key" "winter" "title" "Winteronderhoud van tuinmachines" "summary" "Lees meer over winteronderhoud voor tuinmachines." "href" $driveWinterHref)
+-}}
 
 {{- $data := dict
   "mode" $mode
   "isBike" (eq $mode "bike")
   "isDrive" (eq $mode "drive")
   "isShared" $isShared
-  "logoPath" (cond (eq $mode "drive") "/images/logo-drive.png" "/images/logo.png")
-  "logoBikePath" "/images/logo.png"
-  "logoDrivePath" "/images/logo-drive.png"
+  "logoPath" (cond (eq $mode "drive") "/images/logo_drive.webp" "/images/logo.png")
+  "logoBikePath" "/images/logo_bike.webp"
+  "logoDrivePath" "/images/logo_drive.webp"
   "heroPath" (cond (eq $mode "drive") $driveHeroPath $bikeHeroPath)
   "heroBikePath" $bikeHeroPath
   "heroDrivePath" $driveHeroPath
@@ -43,11 +60,17 @@
   "contactDriveHref" $driveContactHref
   "brandsBikeHref" $bikeBrandsHref
   "brandsDriveHref" $driveBrandsHref
+  "bikeAccessoriesHref" $bikeAccessoriesHref
+  "bikeModelsHref" $bikeModelsHref
+  "bikeLeasingHref" $bikeLeasingHref
+  "driveModelsHref" $driveModelsHref
+  "driveWinterHref" $driveWinterHref
   "switchBikeHref" $bikeSwitchHref
   "switchDriveHref" $driveSwitchHref
   "switchBikeLabel" "Driveshop"
   "switchDriveLabel" "Bikeshop"
+  "bikePanels" $bikePanels
+  "drivePanels" $drivePanels
 -}}
 
 {{- return $data -}}
-
