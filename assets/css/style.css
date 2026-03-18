@@ -31,7 +31,7 @@
 }
 :root {
     --background: #f4f1ea;
-    --surface: #fffdf9;
+    --surface: #ffffff;
     --surface-strong: #efe6d6;
     --text: #1f1c18;
     --muted: #686159;
@@ -129,7 +129,7 @@ img {
 .site-header--overlay .site-nav a {
     color: black;
     opacity: .75;
-    font-size: 2vh;
+    font-size: 1.5vh;
     font-family: roboto;
     font-variant: small-caps;
     font-style: bold;
@@ -222,8 +222,8 @@ h1 {
 
 .page-intro .container {
     padding: 3rem;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    border: 0px solid var(--border);
+    background: white;
     box-shadow: 0 1.25rem 3rem rgba(49, 39, 26, 0.08);
 }
 
@@ -547,6 +547,7 @@ h1 {
     color: var(--text);
     font: inherit;
     cursor: pointer;
+    font-variant: small-caps;
 }
 
 .merken-gallery__filter.is-active {
