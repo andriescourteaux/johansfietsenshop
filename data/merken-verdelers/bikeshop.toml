@@ -1,72 +1,72 @@
 [items."BNB.webp"]
 title = "BNB"
 alt = "BNB logo"
-tags = ["stadsfiets"]
-weight = 10
+tags = ["city", "kinderfietsen"]
+weight = 110
 
 [items."descheemaeker.svg"]
 title = "Descheemaeker"
 alt = "Descheemaeker logo"
-tags = ["verdeler"]
-weight = 20
+tags = ["vouwfietsen", "BMX"]
+weight = 100
 
 [items."flanders.webp"]
 title = "Flanders"
 alt = "Flanders logo"
-tags = ["sportfiets"]
-weight = 30
+tags = ["koersfietsen", "MTB"]
+weight = 120
 
 [items."oxford.webp"]
 title = "Oxford"
 alt = "Oxford logo"
-tags = ["stadsfiets"]
-weight = 40
+tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride", "vouwfietsen"]
+weight = 20
 
 [items."swyff.webp"]
 title = "Swyff"
 alt = "Swyff logo"
-tags = ["elektrische fiets"]
-weight = 50
+tags = ["elektrische fietsen"]
+weight = 10
 
 [items."thompson.webp"]
 title = "Thompson"
 alt = "Thompson logo"
-tags = ["sportfiets"]
-weight = 60
+tags = ["elektrische fietsen", "city", "hybride", "vouwfietsen", "koersfietsen", "MTB"]
+weight = 50
 
 [items."venturelli.webp"]
 title = "Venturelli"
 alt = "Venturelli logo"
-tags = ["stadsfiets"]
-weight = 70
+tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride"]
+weight = 40
 
 [items."zannata.webp"]
 title = "Zannata"
 alt = "Zannata logo"
-tags = ["racefiets"]
-weight = 80
+tags = ["koersfietsen"]
+weight = 30
 
 [items."kuota.webp"]
 title = "Kuota"
 alt = "Kuota logo"
-tags = ["racefiets"]
-weight = 90
+tags = ["koersfietsen", "MTB"]
+weight = 80
 
 [items."lavenir.webp"]
 title = "L'Avenir"
 alt = "L'Avenir logo"
-tags = ["kinderfiets"]
-weight = 100
+tags = ["city"]
+weight = 70
 
 [items."scatto.webp"]
 title = "Scatto"
 alt = "Scatto logo"
-tags = ["sportfiets"]
-weight = 110
+tags = ["koersfietsen"]
+weight = 60
 
 [items."gazelle.webp"]
 title = "Gazelle"
 alt = "Gazelle logo"
-tags = ["stadsfiets", "elektrische fiets"]
+tags = ["city", "elektrische fietsen", "hybride"]
 url = "https://www.gazellebikes.com/nl-be"
-weight = 120
+weight = 90

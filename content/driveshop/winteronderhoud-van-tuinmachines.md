@@ -4,4 +4,6 @@ draft = false
 url = '/driveshop/winteronderhoud-van-tuinmachines/'
 +++
 
-Binnenkort vindt u hier een korte uitleg over winteronderhoud van tuinmachines.
+In de winter is ophaling en terugbrengen van de tuinmachines mogelijk. 
+
+Meer informatie in de winkel.
