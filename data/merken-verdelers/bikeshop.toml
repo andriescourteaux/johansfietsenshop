@@ -53,7 +53,7 @@ tags = ["koersfietsen"]
 weight = 30
 url = "https://www.zannata.be/"
 
-[items."kuota.avif"]
+[items."kuota.webp"]
 title = "Kuota"
 alt = "Kuota logo"
 tags = ["koersfietsen", "MTB"]
