@@ -59,13 +59,24 @@ $bikeshopHtml = Read-Html 'bikeshop/index.html'
 
 Assert-Contains $homeHtml 'home-hero' 'index.html'
 Assert-Contains $homeHtml 'home-hero__image' 'index.html'
-Assert-Contains $homeHtml '/images/header_bike.jpg' 'index.html'
-Assert-Contains $homeHtml '/images/header_drive.jpg' 'index.html'
+Assert-Contains $homeHtml '/images/header_bike.webp' 'index.html'
+Assert-Contains $homeHtml '/images/header_drive.webp' 'index.html'
 Assert-Contains $homeHtml 'data-shared-page="true"' 'index.html'
 Assert-Contains $homeHtml 'data-site-mode="bike"' 'index.html'
 Assert-Contains $homeHtml 'site-mode-script' 'index.html'
-Assert-Contains $homeHtml '?mode=bike' 'index.html'
-Assert-Contains $homeHtml '?mode=drive' 'index.html'
+Assert-Contains $homeHtml 'site-nav__switch" href="./?mode=drive' 'index.html'
+Assert-Contains $homeHtml 'opening-hours' 'index.html'
+Assert-Contains $homeHtml 'Zondag en maandag gesloten' 'index.html'
+Assert-Contains $homeHtml 'Dinsdag tot zaterdag: 9u tot 17u' 'index.html'
+Assert-Contains $homeHtml 'Middagpauze voorzien' 'index.html'
+Assert-Contains $homeHtml 'overview-card overview-card--bike" href="./?mode=bike' 'index.html'
+Assert-Contains $homeHtml 'overview-card overview-card--drive" href="./?mode=drive' 'index.html'
+Assert-NotContains $homeHtml 'overview-card--bike" href="./bikeshop/' 'index.html'
+Assert-NotContains $homeHtml 'overview-card--drive" href="./driveshop/' 'index.html'
+Assert-Contains $homeHtml 'site-footer__link--bike" href="./?mode=bike' 'index.html'
+Assert-Contains $homeHtml 'site-footer__link--drive" href="./?mode=drive' 'index.html'
+Assert-NotContains $homeHtml 'site-footer__link--bike" href="./bikeshop/' 'index.html'
+Assert-NotContains $homeHtml 'site-footer__link--drive" href="./driveshop/' 'index.html'
 Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
 Assert-Contains $homeHtml 'site-footer__link--merken' 'index.html'
 Assert-Contains $contactHtml '<form' 'contact/index.html'
@@ -73,6 +84,9 @@ Assert-Contains $contactHtml 'Online verzending is nog niet actief.' 'contact/in
 Assert-Contains $contactHtml 'data-shared-page="true"' 'contact/index.html'
 Assert-Contains $contactHtml 'data-site-mode="bike"' 'contact/index.html'
 Assert-Contains $contactHtml 'site-mode-script' 'contact/index.html'
+Assert-Contains $contactHtml 'site-nav__contact' 'contact/index.html'
+Assert-Contains $contactHtml 'site-nav__merken' 'contact/index.html'
+Assert-Contains $contactHtml 'site-nav__switch' 'contact/index.html'
 Assert-Contains $contactHtml 'site-footer__link--contact' 'contact/index.html'
 Assert-Contains $contactHtml 'site-footer__link--merken' 'contact/index.html'
 Assert-Contains $merkenHtml 'Merken in opbouw' 'merken-en-verdelers/index.html'
@@ -86,23 +100,31 @@ Assert-Contains $bikeshopHtml 'Neem contact op voor Bikeshop' 'bikeshop/index.ht
 
 Assert-Contains $bikeshopHtml 'site-brand__logo' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml '/images/logo.png' 'bikeshop/index.html'
-Assert-Contains $bikeshopHtml 'site-nav__home' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml 'site-nav__contact' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml 'site-nav__merken' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml '/bikeshop/merken-en-verdelers/' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml 'site-nav__switch' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-nav__switch" href="../?mode=drive' 'bikeshop/index.html'
 Assert-Contains $bikeshopHtml '>Driveshop<' 'bikeshop/index.html'
-Assert-NotContains $bikeshopHtml 'site-nav__switch">Bikeshop<' 'bikeshop/index.html'
+Assert-NotContains $bikeshopHtml 'site-nav__switch" href="../driveshop/' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-footer__link--bike" href="../?mode=bike' 'bikeshop/index.html'
+Assert-Contains $bikeshopHtml 'site-footer__link--drive" href="../?mode=drive' 'bikeshop/index.html'
+Assert-NotContains $bikeshopHtml 'site-footer__link--bike" href="../bikeshop/' 'bikeshop/index.html'
+Assert-NotContains $bikeshopHtml 'site-footer__link--drive" href="../driveshop/' 'bikeshop/index.html'
 
 Assert-Contains $driveshopHtml 'site-brand__logo' 'driveshop/index.html'
-Assert-Contains $driveshopHtml '/images/logo-drive.png' 'driveshop/index.html'
-Assert-Contains $driveshopHtml 'site-nav__home' 'driveshop/index.html'
+Assert-Contains $driveshopHtml '/images/logo_drive.webp' 'driveshop/index.html'
 Assert-Contains $driveshopHtml 'site-nav__contact' 'driveshop/index.html'
 Assert-Contains $driveshopHtml 'site-nav__merken' 'driveshop/index.html'
 Assert-Contains $driveshopHtml '/driveshop/merken-en-verdelers/' 'driveshop/index.html'
 Assert-Contains $driveshopHtml 'site-nav__switch' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-nav__switch" href="../?mode=bike' 'driveshop/index.html'
 Assert-Contains $driveshopHtml '>Bikeshop<' 'driveshop/index.html'
-Assert-NotContains $driveshopHtml 'site-nav__switch">Driveshop<' 'driveshop/index.html'
+Assert-NotContains $driveshopHtml 'site-nav__switch" href="../bikeshop/' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-footer__link--bike" href="../?mode=bike' 'driveshop/index.html'
+Assert-Contains $driveshopHtml 'site-footer__link--drive" href="../?mode=drive' 'driveshop/index.html'
+Assert-NotContains $driveshopHtml 'site-footer__link--bike" href="../bikeshop/' 'driveshop/index.html'
+Assert-NotContains $driveshopHtml 'site-footer__link--drive" href="../driveshop/' 'driveshop/index.html'
 
 if ($CssPath) {
     if (-not (Test-Path $CssPath)) {
@@ -110,7 +132,7 @@ if ($CssPath) {
     }
     else {
         $css = Get-Content $CssPath -Raw
-        foreach ($marker in @('.site-brand__logo', '.site-nav__switch', '.home-hero__image', '@media (max-width: 720px)', '@media (max-width: 640px)')) {
+        foreach ($marker in @('.site-brand__logo', '.site-nav__switch', '.home-hero__image', '@font-face', '/fonts/Roboto-Regular.ttf', '/fonts/Roboto-Bold.ttf', 'font-family: "Roboto", Arial, sans-serif;', '.opening-hours', '.opening-hours__list', '.site-header .site-nav__item', '.site-header .site-brand', 'letter-spacing: 0.08em;', '@media (max-width: 720px)', '@media (max-width: 640px)')) {
             if ($css -notmatch [regex]::Escape($marker)) {
                 Add-Problem ('Missing CSS marker "' + $marker + '" in ' + $CssPath)
             }
