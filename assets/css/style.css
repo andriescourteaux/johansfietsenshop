@@ -237,6 +237,7 @@ h1 {
     border: 0px solid var(--border);
     background: white;
     box-shadow: 0 1.25rem 3rem rgba(49, 39, 26, 0.08);
+    margin-top: -50vh;
 }
 
 .opening-hours {
@@ -904,6 +905,8 @@ h1 {
 
 .shared-hero {
     position: relative;
+    z-index: -5;
+
 }
 
 .page-intro--after-hero {
