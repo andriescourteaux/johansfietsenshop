@@ -76,18 +76,28 @@ $homeHtml = Read-Html 'index.html'
 $contactHtml = Read-Html 'contact/index.html'
 $bikeMerkenHtml = Read-Html 'bikeshop/merken-en-verdelers/index.html'
 $driveMerkenHtml = Read-Html 'driveshop/merken-en-verdelers/index.html'
-$bikeshopHtml = Read-Html 'bikeshop/index.html'
-$driveshopHtml = Read-Html 'driveshop/index.html'
 $bikeAccessoriesHtml = Read-Html 'bikeshop/accessoires/index.html'
 $bikeModelsHtml = Read-Html 'bikeshop/modellen-in-de-kijker/index.html'
 $bikeLeasingHtml = Read-Html 'bikeshop/leasing-fietsen/index.html'
 $driveModelsHtml = Read-Html 'driveshop/modellen-in-de-kijker/index.html'
 $driveWinterHtml = Read-Html 'driveshop/winteronderhoud-van-tuinmachines/index.html'
 
-Assert-PathExists 'static/images/merken-verdelers/bikeshop' 'bike gallery source directory'
-Assert-PathExists 'static/images/merken-verdelers/driveshop' 'drive gallery source directory'
-Assert-PathExists 'data/merken-verdelers/bikeshop.toml' 'bike gallery metadata file'
-Assert-PathExists 'data/merken-verdelers/driveshop.toml' 'drive gallery metadata file'
+foreach ($pathSpec in @(
+    @{ Path = 'static/images/collecties/bikeshop/merken-en-verdelers'; Description = 'bike brands collection directory' },
+    @{ Path = 'static/images/collecties/bikeshop/leasing-fietsen'; Description = 'bike leasing collection directory' },
+    @{ Path = 'static/images/collecties/bikeshop/accessoires'; Description = 'bike accessories collection directory' },
+    @{ Path = 'static/images/collecties/bikeshop/modellen-in-de-kijker'; Description = 'bike models collection directory' },
+    @{ Path = 'static/images/collecties/driveshop/merken-en-verdelers'; Description = 'drive brands collection directory' },
+    @{ Path = 'static/images/collecties/driveshop/modellen-in-de-kijker'; Description = 'drive models collection directory' },
+    @{ Path = 'data/collecties/bikeshop/merken-en-verdelers.toml'; Description = 'bike brands collection data file' },
+    @{ Path = 'data/collecties/bikeshop/leasing-fietsen.toml'; Description = 'bike leasing collection data file' },
+    @{ Path = 'data/collecties/bikeshop/accessoires.toml'; Description = 'bike accessories collection data file' },
+    @{ Path = 'data/collecties/bikeshop/modellen-in-de-kijker.toml'; Description = 'bike models collection data file' },
+    @{ Path = 'data/collecties/driveshop/merken-en-verdelers.toml'; Description = 'drive brands collection data file' },
+    @{ Path = 'data/collecties/driveshop/modellen-in-de-kijker.toml'; Description = 'drive models collection data file' }
+)) {
+    Assert-PathExists $pathSpec.Path $pathSpec.Description
+}
 
 Assert-AllContains $homeHtml @(
     'home-hero',
@@ -98,11 +108,15 @@ Assert-AllContains $homeHtml @(
     'data-site-mode="bike"',
     'site-mode-script',
     'opening-hours',
-    'Zondag en maandag gesloten',
-    'Dinsdag tot zaterdag: 9u tot 17u',
-    'Middagpauze voorzien',
     'data-mode-panel="bike"',
     'data-mode-panel="drive"',
+    'site-nav__menu-toggle',
+    'site-nav__menu',
+    'data-mode-nav="bike"',
+    'data-mode-nav="drive"',
+    'overview-card__media',
+    'overview-card__image',
+    'overview-card__overlay',
     'Merken en verdelers',
     'Accessoires',
     'Enkele modellen in de kijker',
@@ -116,11 +130,6 @@ Assert-AllContains $homeHtml @(
     'driveshop/winteronderhoud-van-tuinmachines/'
 ) 'index.html'
 
-Assert-NotContains $homeHtml 'Neem contact op voor vragen over winkels, producten of beschikbare merken.' 'index.html'
-Assert-NotContains $homeHtml 'Ontdek onze focus op aandrijving, onderdelen en technische ondersteuning.' 'index.html'
-Assert-NotContains $homeHtml 'Verken ons aanbod rond fietsen, accessoires en persoonlijk advies.' 'index.html'
-Assert-NotContains $homeHtml 'site-nav__merken' 'index.html'
-
 Assert-AllContains $contactHtml @(
     '<form',
     'Online verzending is nog niet actief.',
@@ -128,87 +137,104 @@ Assert-AllContains $contactHtml @(
     'data-site-mode="bike"',
     'site-mode-script',
     'site-nav__contact',
-    'site-nav__switch'
+    'site-nav__switch',
+    'site-nav__menu-toggle',
+    'site-nav__menu'
 ) 'contact/index.html'
 
 Assert-NotContains $contactHtml 'site-nav__merken' 'contact/index.html'
 
-Assert-AllContains $bikeshopHtml @(
+Assert-AllContains $bikeMerkenHtml @(
     'data-site-mode="bike"',
-    'site-brand__logo',
-    'site-nav__contact',
-    'site-nav__switch'
-) 'bikeshop/index.html'
+    'site-nav__menu-toggle',
+    'site-nav__menu',
+    'data-mode-nav="bike"',
+    'media-collection',
+    'media-collection--brand-links',
+    'data-media-collection',
+    'media-collection__filters',
+    'media-collection__filter',
+    'data-media-item',
+    'data-tags=',
+    'target="_blank"',
+    'rel="noopener noreferrer"'
+) 'bikeshop/merken-en-verdelers/index.html'
 
-Assert-NotContains $bikeshopHtml 'site-nav__merken' 'bikeshop/index.html'
-
-Assert-AllContains $driveshopHtml @(
+Assert-AllContains $driveMerkenHtml @(
     'data-site-mode="drive"',
-    'site-brand__logo',
-    'site-nav__contact',
-    'site-nav__switch'
-) 'driveshop/index.html'
+    'site-nav__menu-toggle',
+    'site-nav__menu',
+    'data-mode-nav="drive"',
+    'media-collection',
+    'media-collection--brand-links',
+    'data-media-collection',
+    'media-collection__filters',
+    'media-collection__filter',
+    'data-media-item',
+    'data-tags=',
+    'target="_blank"',
+    'rel="noopener noreferrer"'
+) 'driveshop/merken-en-verdelers/index.html'
 
-Assert-NotContains $driveshopHtml 'site-nav__merken' 'driveshop/index.html'
+Assert-AllContains $bikeLeasingHtml @(
+    'Leasing fietsen',
+    'data-site-mode="bike"',
+    'site-nav__menu-toggle',
+    'media-collection',
+    'media-collection--brand-links',
+    'data-media-collection',
+    'data-media-item',
+    'target="_blank"',
+    'rel="noopener noreferrer"'
+) 'bikeshop/leasing-fietsen/index.html'
+
+Assert-NotContains $bikeLeasingHtml 'media-collection__filters' 'bikeshop/leasing-fietsen/index.html'
 
 Assert-AllContains $bikeAccessoriesHtml @(
     'Accessoires',
-    'data-site-mode="bike"'
+    'data-site-mode="bike"',
+    'site-nav__menu-toggle',
+    'media-collection',
+    'media-collection--hover-cards',
+    'data-media-collection',
+    'data-media-item',
+    'media-collection__overlay',
+    'media-collection__title'
 ) 'bikeshop/accessoires/index.html'
 
 Assert-AllContains $bikeModelsHtml @(
     'Enkele modellen in de kijker',
-    'data-site-mode="bike"'
+    'data-site-mode="bike"',
+    'site-nav__menu-toggle',
+    'media-collection',
+    'media-collection--hover-cards',
+    'data-media-collection',
+    'data-media-item',
+    'media-collection__overlay',
+    'media-collection__title'
 ) 'bikeshop/modellen-in-de-kijker/index.html'
-
-Assert-AllContains $bikeLeasingHtml @(
-    'Leasing fietsen',
-    'data-site-mode="bike"'
-) 'bikeshop/leasing-fietsen/index.html'
 
 Assert-AllContains $driveModelsHtml @(
     'Modellen in de kijker',
-    'data-site-mode="drive"'
+    'data-site-mode="drive"',
+    'site-nav__menu-toggle',
+    'media-collection',
+    'media-collection--hover-cards',
+    'data-media-collection',
+    'data-media-item',
+    'media-collection__overlay',
+    'media-collection__title'
 ) 'driveshop/modellen-in-de-kijker/index.html'
 
 Assert-AllContains $driveWinterHtml @(
     'Winteronderhoud van tuinmachines',
-    'data-site-mode="drive"'
+    'data-site-mode="drive"',
+    'site-nav__menu-toggle',
+    'site-nav__menu'
 ) 'driveshop/winteronderhoud-van-tuinmachines/index.html'
 
-Assert-AllContains $bikeMerkenHtml @(
-    'merken-gallery',
-    'data-merken-gallery',
-    'merken-gallery__filters',
-    'merken-gallery__filter',
-    'data-merken-item',
-    'data-tags=',
-    'target="_blank"',
-    'rel="noopener noreferrer"',
-    'merken-verdelers/bikeshop/'
-) 'bikeshop/merken-en-verdelers/index.html'
-
-Assert-NotContains $bikeMerkenHtml 'merken-gallery__empty' 'bikeshop/merken-en-verdelers/index.html'
-Assert-NotContains $bikeMerkenHtml 'brands-placeholder-grid' 'bikeshop/merken-en-verdelers/index.html'
-Assert-NotContains $bikeMerkenHtml 'dealers-placeholder-grid' 'bikeshop/merken-en-verdelers/index.html'
-Assert-NotContains $bikeMerkenHtml 'site-nav__merken' 'bikeshop/merken-en-verdelers/index.html'
-
-Assert-AllContains $driveMerkenHtml @(
-    'merken-gallery',
-    'data-merken-gallery',
-    'merken-gallery__filters',
-    'merken-gallery__filter',
-    'data-merken-item',
-    'data-tags=',
-    'target="_blank"',
-    'rel="noopener noreferrer"',
-    'merken-verdelers/driveshop/'
-) 'driveshop/merken-en-verdelers/index.html'
-
-Assert-NotContains $driveMerkenHtml 'merken-gallery__empty' 'driveshop/merken-en-verdelers/index.html'
-Assert-NotContains $driveMerkenHtml 'brands-placeholder-grid' 'driveshop/merken-en-verdelers/index.html'
-Assert-NotContains $driveMerkenHtml 'dealers-placeholder-grid' 'driveshop/merken-en-verdelers/index.html'
-Assert-NotContains $driveMerkenHtml 'site-nav__merken' 'driveshop/merken-en-verdelers/index.html'
+Assert-NotContains $driveWinterHtml 'data-media-collection' 'driveshop/winteronderhoud-van-tuinmachines/index.html'
+Assert-NotContains $driveWinterHtml 'media-collection' 'driveshop/winteronderhoud-van-tuinmachines/index.html'
 
 if ($CssPath) {
     if (-not (Test-Path $CssPath)) {
@@ -219,21 +245,26 @@ if ($CssPath) {
         foreach ($marker in @(
             '.site-brand__logo',
             '.site-nav__switch',
+            '.site-nav__menu-toggle',
+            '.site-nav__menu',
             '.home-hero__image',
+            '.opening-hours',
+            '.home-overview__panel',
+            '.overview-card__media',
+            '.overview-card__image',
+            '.overview-card__overlay',
             '@font-face',
             '/fonts/Roboto-Regular.ttf',
             '/fonts/Roboto-Bold.ttf',
             'font-family: "Roboto", Arial, sans-serif;',
-            '.opening-hours',
-            '.opening-hours__list',
-            '.home-overview__panel',
-            '.merken-gallery',
-            '.merken-gallery__filters',
-            '.merken-gallery__filter',
-            '.merken-gallery__grid',
+            '.media-collection',
+            '.media-collection__filters',
+            '.media-collection__filter',
+            '.media-collection__grid--brand-links',
+            '.media-collection__grid--hover-cards',
+            '.media-collection__overlay',
+            '.media-collection__title',
             'grid-template-columns: repeat(3, minmax(0, 1fr));',
-            '.merken-gallery__media',
-            '.merken-gallery__link',
             'aspect-ratio:',
             'object-fit: contain;'
         )) {
@@ -260,6 +291,4 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
-
-
 
