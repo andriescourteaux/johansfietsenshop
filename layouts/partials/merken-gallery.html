@@ -1,0 +1,81 @@
+{{- $galleryMode := .Params.gallery_mode -}}
+{{- $galleryDir := printf "static/images/merken-verdelers/%s" $galleryMode -}}
+{{- $images := slice -}}
+{{- range readDir $galleryDir -}}
+  {{- if not .IsDir -}}
+    {{- $name := .Name -}}
+    {{- $lower := lower $name -}}
+    {{- if or (hasSuffix $lower ".jpg") (hasSuffix $lower ".jpeg") (hasSuffix $lower ".png") (hasSuffix $lower ".webp") (hasSuffix $lower ".gif") (hasSuffix $lower ".svg") -}}
+      {{- $images = $images | append $name -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $metadata := dict -}}
+{{- $dataRoot := index site.Data "merken-verdelers" -}}
+{{- $dataKey := or .Params.gallery_data_key $galleryMode -}}
+{{- with $dataRoot -}}
+  {{- with index . $dataKey -}}
+    {{- with .items -}}
+      {{- $metadata = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $items := slice -}}
+{{- range $images -}}
+  {{- $name := . -}}
+  {{- $defaultTitle := humanize (replaceRE "\\.[^.]+$" "" $name) -}}
+  {{- $title := $defaultTitle -}}
+  {{- $alt := $.Title -}}
+  {{- $tags := slice -}}
+  {{- $url := "" -}}
+  {{- $weight := 9999 -}}
+  {{- with index $metadata $name -}}
+    {{- $title = or .title $title -}}
+    {{- $alt = or .alt .title $alt -}}
+    {{- with .tags -}}
+      {{- $tags = . -}}
+    {{- end -}}
+    {{- with .url -}}
+      {{- $url = . -}}
+    {{- end -}}
+    {{- with .weight -}}
+      {{- $weight = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $items = $items | append (dict
+    "name" $name
+    "src" (printf "/images/merken-verdelers/%s/%s" $galleryMode $name | relURL)
+    "title" $title
+    "alt" $alt
+    "tags" $tags
+    "tagsAttr" (delimit $tags "|")
+    "url" $url
+    "sortKey" (printf "%06d-%s" $weight $name)
+  ) -}}
+{{- end -}}
+{{- $items = sort $items "sortKey" -}}
+<section class="merken-gallery" data-merken-gallery>
+    {{- if gt (len $items) 0 -}}
+    <div class="merken-gallery__grid">
+        {{- range $items -}}
+        <figure class="merken-gallery__item" data-merken-item data-tags="{{ .tagsAttr }}">
+            {{- if .url -}}
+            <a class="merken-gallery__link" href="{{ .url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .title }}">
+            {{- else -}}
+            <div class="merken-gallery__link merken-gallery__link--static">
+            {{- end -}}
+                <div class="merken-gallery__media">
+                    <img class="merken-gallery__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+                </div>
+            {{- if .url -}}
+            </a>
+            {{- else -}}
+            </div>
+            {{- end -}}
+        </figure>
+        {{- end -}}
+    </div>
+    {{- else -}}
+    <p class="merken-gallery__empty">Afbeeldingen volgen binnenkort.</p>
+    {{- end -}}
+</section>

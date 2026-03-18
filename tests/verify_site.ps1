@@ -185,7 +185,7 @@ Assert-AllContains $bikeMerkenHtml @(
     'data-tags=',
     'target="_blank"',
     'rel="noopener noreferrer"',
-    'gazelle.png'
+    'merken-verdelers/bikeshop/'
 ) 'bikeshop/merken-en-verdelers/index.html'
 
 Assert-NotContains $bikeMerkenHtml 'merken-gallery__empty' 'bikeshop/merken-en-verdelers/index.html'
@@ -202,7 +202,7 @@ Assert-AllContains $driveMerkenHtml @(
     'data-tags=',
     'target="_blank"',
     'rel="noopener noreferrer"',
-    'gazelle.png'
+    'merken-verdelers/driveshop/'
 ) 'driveshop/merken-en-verdelers/index.html'
 
 Assert-NotContains $driveMerkenHtml 'merken-gallery__empty' 'driveshop/merken-en-verdelers/index.html'
@@ -260,4 +260,6 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
+
+
 
