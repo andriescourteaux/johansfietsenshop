@@ -23,8 +23,10 @@
 {{- $driveWinterHref := "/driveshop/winteronderhoud-van-tuinmachines/" -}}
 {{- $bikeSwitchHref := "/?mode=drive" -}}
 {{- $driveSwitchHref := "/?mode=bike" -}}
-{{- $bikeHeroPath := "/images/header_bike.webp" -}}
-{{- $driveHeroPath := "/images/header_drive.webp" -}}
+{{- $defaultBikeHeroPath := "/images/header_bike.webp" -}}
+{{- $defaultDriveHeroPath := "/images/header_drive.webp" -}}
+{{- $bikeHeroPath := or .Params.hero_image_bike $defaultBikeHeroPath -}}
+{{- $driveHeroPath := or .Params.hero_image_drive $defaultDriveHeroPath -}}
 
 {{- $bikePanels := slice
   (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref "image" $bikeHeroPath)
@@ -88,3 +90,4 @@
 -}}
 
 {{- return $data -}}
+
