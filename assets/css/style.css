@@ -92,11 +92,11 @@ img {
 }
 
 .site-header__inner {
-    padding: 1.25rem 0;
+    padding: 1.35rem 0;
 }
 
 .site-header--overlay .site-header__inner {
-    padding: 1.75rem 0;
+    padding: 1.35rem 0;
 }
 
 .site-brand,
@@ -113,31 +113,42 @@ img {
     gap: 1.5rem;
 }
 
-.site-nav a,
+.site-brand,
+.site-nav__item,
+.site-nav__menu-toggle,
+.site-nav__menu-link {
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+
+.site-nav__item,
 .site-footer__links a {
     position: relative;
     color: black;
-    font-size: 1.5vh;
 }
 
-.site-nav a:hover,
-.site-footer__links a:hover {
+.site-nav__item:hover,
+.site-footer__links a:hover,
+.site-nav__menu-toggle:hover {
     color: var(--accent);
 }
 
 .site-header--overlay .site-brand,
-.site-header--overlay .site-nav a {
+.site-header--overlay .site-nav__item,
+.site-header--overlay .site-nav__menu-toggle {
     color: black;
-    opacity: .75;
-    font-size: 1.5vh;
-    font-family: roboto;
-    font-variant: small-caps;
-    font-style: bold;
+    opacity: 0.75;
 }
 
-.site-header--overlay .site-nav a:hover,
-.site-header--overlay .site-brand:hover {
+.site-header--overlay .site-nav__item:hover,
+.site-header--overlay .site-brand:hover,
+.site-header--overlay .site-nav__menu-toggle:hover {
     color: #ffffff;
+    opacity: 1;
 }
 
 main {
@@ -887,3 +898,4 @@ h1 {
         width: min(20rem, calc(100vw - 2rem));
     }
 }
+
