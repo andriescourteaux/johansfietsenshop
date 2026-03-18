@@ -865,3 +865,25 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+
+.site-nav__menu-shell {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.site-nav__menu {
+    top: calc(100% + 0.75rem);
+    right: 0;
+    width: min(22rem, calc(100vw - 3rem));
+}
+
+.site-nav__menu-list[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 720px) {
+    .site-nav__menu {
+        width: min(20rem, calc(100vw - 2rem));
+    }
+}

@@ -47,7 +47,9 @@
 
   const syncModeMenus = () => {
     document.querySelectorAll('[data-mode-nav]').forEach((menu) => {
-      menu.hidden = menu.dataset.modeNav !== activeMode;
+      const isActive = menu.dataset.modeNav === activeMode;
+      menu.hidden = !isActive;
+      menu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
     });
   };
 
@@ -126,3 +128,4 @@
   syncModeMenus();
 })();
 </script>
+
