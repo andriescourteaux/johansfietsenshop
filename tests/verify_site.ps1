@@ -112,6 +112,7 @@ Assert-AllContains $homeHtml @(
     'data-mode-panel="drive"',
     'site-nav__menu-toggle',
     'site-nav__menu',
+    'site-nav__menu-shell',
     'data-mode-nav="bike"',
     'data-mode-nav="drive"',
     'overview-card__media',
@@ -139,7 +140,8 @@ Assert-AllContains $contactHtml @(
     'site-nav__contact',
     'site-nav__switch',
     'site-nav__menu-toggle',
-    'site-nav__menu'
+    'site-nav__menu',
+    'site-nav__menu-shell'
 ) 'contact/index.html'
 
 Assert-NotContains $contactHtml 'site-nav__merken' 'contact/index.html'
@@ -148,6 +150,7 @@ Assert-AllContains $bikeMerkenHtml @(
     'data-site-mode="bike"',
     'site-nav__menu-toggle',
     'site-nav__menu',
+    'site-nav__menu-shell',
     'data-mode-nav="bike"',
     'media-collection',
     'media-collection--brand-links',
@@ -164,6 +167,7 @@ Assert-AllContains $driveMerkenHtml @(
     'data-site-mode="drive"',
     'site-nav__menu-toggle',
     'site-nav__menu',
+    'site-nav__menu-shell',
     'data-mode-nav="drive"',
     'media-collection',
     'media-collection--brand-links',
@@ -230,7 +234,8 @@ Assert-AllContains $driveWinterHtml @(
     'Winteronderhoud van tuinmachines',
     'data-site-mode="drive"',
     'site-nav__menu-toggle',
-    'site-nav__menu'
+    'site-nav__menu',
+    'site-nav__menu-shell'
 ) 'driveshop/winteronderhoud-van-tuinmachines/index.html'
 
 Assert-NotContains $driveWinterHtml 'data-media-collection' 'driveshop/winteronderhoud-van-tuinmachines/index.html'
@@ -247,6 +252,9 @@ if ($CssPath) {
             '.site-nav__switch',
             '.site-nav__menu-toggle',
             '.site-nav__menu',
+            '.site-nav__menu-shell',
+            '.site-nav__menu-list[hidden]',
+            '.site-nav__item,',
             '.home-hero__image',
             '.opening-hours',
             '.home-overview__panel',
@@ -291,4 +299,5 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
+
 
