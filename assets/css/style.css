@@ -767,6 +767,7 @@ h1 {
     color: var(--text);
     font: inherit;
     cursor: pointer;
+    font-variant: small-caps;
 }
 
 .media-collection__filter.is-active {
