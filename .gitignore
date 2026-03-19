@@ -2,3 +2,4 @@
 .test-public/
 public/
 resources/_gen/
+.worktrees/
