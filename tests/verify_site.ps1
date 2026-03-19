@@ -98,6 +98,216 @@ function Assert-True {
     }
 }
 
+function Get-CssRules {
+    param([string]$CssContent)
+
+    if ([string]::IsNullOrWhiteSpace($CssContent)) {
+        return @()
+    }
+
+    $rules = @()
+    $pattern = '(?is)(?<selector>[^{}]+?)\s*\{(?<body>[^{}]*)\}'
+    foreach ($match in [regex]::Matches($CssContent, $pattern)) {
+        $selector = $match.Groups['selector'].Value.Trim()
+        if ([string]::IsNullOrWhiteSpace($selector) -or $selector.TrimStart().StartsWith('@')) {
+            continue
+        }
+
+        $rules += [pscustomobject]@{
+            Selector = $selector
+            Body = $match.Groups['body'].Value
+        }
+    }
+
+    return $rules
+}
+
+function Get-CssVariableReferences {
+    param([string]$CssBody)
+
+    if ([string]::IsNullOrWhiteSpace($CssBody)) {
+        return @()
+    }
+
+    $variableNames = @()
+    foreach ($match in [regex]::Matches($CssBody, '(?is)var\(\s*(--[a-z0-9-]+)')) {
+        $variableNames += $match.Groups[1].Value
+    }
+
+    return @($variableNames | Sort-Object -Unique)
+}
+
+function Get-CssVariableAssignments {
+    param([string]$CssBody)
+
+    if ([string]::IsNullOrWhiteSpace($CssBody)) {
+        return @()
+    }
+
+    $variableNames = @()
+    foreach ($match in [regex]::Matches($CssBody, '(?is)(--[a-z0-9-]+)\s*:')) {
+        $variableNames += $match.Groups[1].Value
+    }
+
+    return @($variableNames | Sort-Object -Unique)
+}
+
+function Test-IsModeScopedSelector {
+    param(
+        [string]$Selector,
+        [string]$Mode
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Selector) -or [string]::IsNullOrWhiteSpace($Mode)) {
+        return $false
+    }
+
+    $escapedMode = [regex]::Escape($Mode)
+    $modeSelectorPattern = '(?is)(?:' +
+        '[#.][a-z0-9_-]*' + $escapedMode + '[a-z0-9_-]*|' +
+        '\[(?:data-[^]=]+|class|id)[^]]*=\s*(?:["''][^"'']*' + $escapedMode + '[^"'']*["'']|[a-z0-9_-]*' + $escapedMode + '[a-z0-9_-]*)[^]]*\]' +
+        ')'
+    return [regex]::IsMatch($Selector, $modeSelectorPattern)
+}
+
+function Test-IsFooterSelector {
+    param([string]$Selector)
+
+    if ([string]::IsNullOrWhiteSpace($Selector)) {
+        return $false
+    }
+
+    return [regex]::IsMatch($Selector, '(?i)\.site-footer(?:\b|__)')
+}
+
+function Test-RuleHasThemeDeclarations {
+    param([string]$CssBody)
+
+    if ([string]::IsNullOrWhiteSpace($CssBody)) {
+        return $false
+    }
+
+    return [regex]::IsMatch($CssBody, '(?is)\b(?:background|background-color|color|border|border-color)\s*:') -or
+        [regex]::IsMatch($CssBody, '(?is)--[a-z0-9-]+\s*:')
+}
+
+function Test-ModeAwareFooterTheme {
+    param(
+        [string]$CssContent,
+        [string]$Mode
+    )
+
+    if ([string]::IsNullOrWhiteSpace($CssContent) -or [string]::IsNullOrWhiteSpace($Mode)) {
+        return $false
+    }
+
+    $cssRules = Get-CssRules $CssContent
+    if ($cssRules.Count -eq 0) {
+        return $false
+    }
+
+    $footerRules = @($cssRules | Where-Object { Test-IsFooterSelector $_.Selector })
+    if ($footerRules.Count -eq 0) {
+        return $false
+    }
+
+    $footerThemeVariables = @(
+        $footerRules |
+            ForEach-Object { Get-CssVariableReferences $_.Body } |
+            Sort-Object -Unique
+    )
+
+    foreach ($rule in $cssRules) {
+        if (-not (Test-IsModeScopedSelector $rule.Selector $Mode)) {
+            continue
+        }
+
+        if ((Test-IsFooterSelector $rule.Selector) -and (Test-RuleHasThemeDeclarations $rule.Body)) {
+            return $true
+        }
+
+        if ($footerThemeVariables.Count -eq 0) {
+            continue
+        }
+
+        $assignedVariables = Get-CssVariableAssignments $rule.Body
+        if (@($assignedVariables | Where-Object { $footerThemeVariables -contains $_ }).Count -gt 0) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Test-IsMenuSelector {
+    param([string]$Selector)
+
+    if ([string]::IsNullOrWhiteSpace($Selector)) {
+        return $false
+    }
+
+    return [regex]::IsMatch($Selector, '(?i)\.site-nav__menu(?:-panel)?\b')
+}
+
+function Test-IsStatefulMenuSelector {
+    param([string]$Selector)
+
+    if (-not (Test-IsMenuSelector $Selector)) {
+        return $false
+    }
+
+    $statePattern = '(?is)(?:' +
+        '\[(?:aria-expanded|aria-hidden|hidden)\b|' +
+        '\[data-[^]]*(?:menu|nav|state|motion|open|expanded)[^]]*=' +
+        '|[#.][a-z0-9_-]*(?:is-|has-)?(?:open|opened|opening|close|closed|closing|active|expanded|visible|hidden|enter|exit)[a-z0-9_-]*' +
+        '|:(?:not\(\[hidden\]\)|is\(:not\(\[hidden\]\)\))' +
+        ')'
+    return [regex]::IsMatch($Selector, $statePattern)
+}
+
+function Test-RuleHasMenuMotionProperties {
+    param([string]$CssBody)
+
+    if ([string]::IsNullOrWhiteSpace($CssBody)) {
+        return $false
+    }
+
+    return [regex]::IsMatch($CssBody, '(?is)\b(?:opacity|transform|translate|scale|rotate)\s*:') -or
+        [regex]::IsMatch($CssBody, '(?is)\btransition(?:-property)?\s*:\s*[^;{}]*(?:opacity|transform|translate|scale|rotate)')
+}
+
+function Test-HasStatefulMenuMotion {
+    param([string]$CssContent)
+
+    if ([string]::IsNullOrWhiteSpace($CssContent)) {
+        return $false
+    }
+
+    foreach ($rule in (Get-CssRules $CssContent)) {
+        if ((Test-IsStatefulMenuSelector $rule.Selector) -and (Test-RuleHasMenuMotionProperties $rule.Body)) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Assert-StatefulMenuMotion {
+    param(
+        [string]$CssContent,
+        [string]$Context
+    )
+
+    if ([string]::IsNullOrWhiteSpace($CssContent)) {
+        Add-Problem ('Missing content for ' + $Context)
+        return
+    }
+
+    if (-not (Test-HasStatefulMenuMotion $CssContent)) {
+        Add-Problem ('Missing stateful menu open/close motion hook in ' + $Context)
+    }
+}
+
 function Normalize-Text {
     param([string]$Content)
 
@@ -247,6 +457,50 @@ function Get-OpeningHoursPairs {
     return $pairs
 }
 
+$footerThemeVariableFixture = @'
+.site-footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+}
+
+body[data-theme="bike"] .page-shell {
+    --footer-bg: #103423;
+    --footer-text: #f5f2e8;
+}
+'@
+Assert-True `
+    (Test-ModeAwareFooterTheme $footerThemeVariableFixture 'bike') `
+    'Verifier must accept footer theme hooks delivered through mode-scoped CSS variables'
+
+$statefulMenuMotionFixture = @'
+.site-nav__menu-panel {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.site-nav__menu-shell.is-open .site-nav__menu-panel {
+    opacity: 1;
+    transform: translateY(0);
+}
+'@
+Assert-True `
+    (Test-HasStatefulMenuMotion $statefulMenuMotionFixture) `
+    'Verifier must accept stateful menu motion selectors that drive opacity or transform'
+
+$weakMenuMotionFixture = @'
+.site-nav__menu-panel {
+    transition: opacity 180ms ease;
+}
+
+.site-nav__menu-shell[data-menu-state="open"] .site-nav__menu-panel {
+    display: block;
+}
+'@
+Assert-True `
+    (-not (Test-HasStatefulMenuMotion $weakMenuMotionFixture)) `
+    'Verifier must reject generic menu transitions without stateful motion properties'
+
 $homeHtml = Read-GeneratedText 'index.html'
 $contactHtml = Read-GeneratedText 'contact/index.html'
 $bikeLandingHtml = Read-GeneratedText 'bikeshop/index.html'
@@ -263,7 +517,6 @@ $bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
 $driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
 $homeFrontMatter = Get-FrontMatter 'content/_index.md'
 $cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-RepoText $CssPath }
-$motionHookContent = @($modeScriptTemplate, $cssContent) -join "`n"
 
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
@@ -379,19 +632,15 @@ Assert-Contains $homeHeaderSection 'site-nav__mode-toggle' 'index.html header'
 Assert-Contains $homeHeaderSection 'site-nav__mode-track' 'index.html header'
 Assert-Contains $homeHeaderSection 'site-nav__mode-thumb' 'index.html header'
 Assert-Contains $homeHeaderSection 'site-nav__mode-text' 'index.html header'
-Assert-Matches `
+Assert-True `
+    (Test-ModeAwareFooterTheme $cssContent 'bike') `
+    'Missing mode-aware bike footer theme hook in assets/css/style.css'
+Assert-True `
+    (Test-ModeAwareFooterTheme $cssContent 'drive') `
+    'Missing mode-aware drive footer theme hook in assets/css/style.css'
+Assert-StatefulMenuMotion `
     $cssContent `
-    '(?is)(?:\.site-footer--bike|\[data-site-mode=["'']bike["'']\][^{]*\.site-footer|\.site-footer[^{]*data-[^=]+=["'']bike["''])' `
-    'assets/css/style.css bike footer theme hook'
-Assert-Matches `
-    $cssContent `
-    '(?is)(?:\.site-footer--drive|\[data-site-mode=["'']drive["'']\][^{]*\.site-footer|\.site-footer[^{]*data-[^=]+=["'']drive["''])' `
-    'assets/css/style.css drive footer theme hook'
-# Accept either dedicated menu motion classes/data hooks or transition rules on the menu container.
-Assert-Matches `
-    $motionHookContent `
-    '(?is)(?:site-nav__menu--[a-z0-9-]*(?:open|clos|enter|exit|motion|animat|transition)[a-z0-9-]*|data-(?:menu|nav)-(?:state|motion|transition)\s*=|\.site-nav__menu(?:-panel)?[^{]*\{[^}]*\b(?:transition|animation)\s*:)' `
-    'menu animation hooks'
+    'assets/css/style.css menu motion hooks'
 Assert-Matches `
     $sharedHeroTemplate `
     '(?is)(?:data-parallax-[^=]+=|data-hero-parallax=|home-hero__image--parallax)' `
