@@ -53,12 +53,6 @@ tags = ["koersfietsen"]
 weight = 30
 url = "https://www.zannata.be/"
 
-[items."kuota.webp"]
-title = "Kuota"
-alt = "Kuota logo"
-tags = ["koersfietsen", "MTB"]
-weight = 80
-url = "https://www.kuota-cycle.com/"
 
 [items."lavenir.svg"]
 title = "L'Avenir"
@@ -67,12 +61,6 @@ tags = ["city"]
 weight = 70
 url = "https://www.lavenir.be/"
 
-[items."scatto.webp"]
-title = "Scatto"
-alt = "Scatto logo"
-tags = ["koersfietsen"]
-weight = 60
-url = "http://www.scatto-bikes.com/home"
 
 [items."gazelle.webp"]
 title = "Gazelle"
@@ -80,3 +68,10 @@ alt = "Gazelle logo"
 tags = ["city", "elektrische fietsen", "hybride"]
 url = "https://www.gazellebikes.com/nl-be"
 weight = 90
+
+[items."bfk.webp"]
+title = "BFK"
+alt = "BFK logo"
+tags = ["kinderfietsene"]
+
+weight = 50
