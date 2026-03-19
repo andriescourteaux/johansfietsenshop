@@ -28,6 +28,7 @@
   }
 
   body.dataset.siteMode = activeMode;
+  body.dataset.theme = activeMode;
   window.localStorage.setItem('site-mode', activeMode);
 
   const applyHref = (selector) => {
@@ -92,14 +93,44 @@
 
   const menu = document.querySelector('.site-nav__menu');
   const menuToggle = document.querySelector('.site-nav__menu-toggle');
-  const closeMenu = () => {
+  let closeMenuTimer = null;
+  const clearCloseMenuTimer = () => {
+    if (closeMenuTimer !== null) {
+      window.clearTimeout(closeMenuTimer);
+      closeMenuTimer = null;
+    }
+  };
+
+  const applyMenuState = (state) => {
     if (!menu || !menuToggle) {
       return;
     }
 
+    menu.dataset.menuState = state;
+    menu.setAttribute('aria-hidden', state === 'open' || state === 'opening' ? 'false' : 'true');
+  };
+
+  const finishCloseMenu = () => {
+    if (!menu || !menuToggle) {
+      return;
+    }
+
+    clearCloseMenuTimer();
     menu.hidden = true;
+    applyMenuState('closed');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  const closeMenu = () => {
+    if (!menu || !menuToggle || menu.hidden) {
+      return;
+    }
+
+    clearCloseMenuTimer();
+    applyMenuState('closing');
     menuToggle.setAttribute('aria-expanded', 'false');
     body.classList.remove('site-menu-open');
+    closeMenuTimer = window.setTimeout(finishCloseMenu, 220);
   };
 
   const openMenu = () => {
@@ -107,12 +138,32 @@
       return;
     }
 
+    clearCloseMenuTimer();
     menu.hidden = false;
+    applyMenuState('opening');
     menuToggle.setAttribute('aria-expanded', 'true');
     body.classList.add('site-menu-open');
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        applyMenuState('open');
+      });
+    });
   };
 
   if (menu && menuToggle) {
+    applyMenuState(menu.hidden ? 'closed' : 'open');
+
+    menu.addEventListener('transitionend', (event) => {
+      const menuPanel = menu.querySelector('.site-nav__menu-panel');
+      if (event.target !== menu && event.target !== menuPanel) {
+        return;
+      }
+
+      if (menu.dataset.menuState === 'closing') {
+        finishCloseMenu();
+      }
+    });
+
     menuToggle.addEventListener('click', () => {
       if (menu.hidden) {
         openMenu();
@@ -134,15 +185,21 @@
       closeMenu();
     });
 
+    menu.addEventListener('click', (event) => {
+      if (event.target.closest('.site-nav__menu-link')) {
+        closeMenu();
+      }
+    });
+
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
         closeMenu();
       }
     });
   }
-
   syncModePanels();
   syncModeMenus();
 })();
 </script>
+
 
