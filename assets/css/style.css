@@ -151,6 +151,13 @@ img {
     opacity: 1;
 }
 
+.site-header--overlay .site-nav__mode-toggle,
+.site-header--overlay .site-nav__mode-toggle:hover,
+.site-header--overlay .site-nav__mode-toggle:focus-visible {
+    color: var(--text);
+    opacity: 1;
+}
+
 main {
     padding: 4rem 0 5rem;
 }
