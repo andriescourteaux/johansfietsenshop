@@ -29,10 +29,10 @@
 {{- $driveHeroPath := or .Params.hero_image_drive $defaultDriveHeroPath -}}
 
 {{- $bikePanels := slice
-  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref "image" $bikeHeroPath)
-  (dict "key" "accessoires" "title" "Accessoires" "summary" "Ontdek fietsaccessoires, onderdelen en praktische extra's." "href" $bikeAccessoriesHref "image" $bikeHeroPath)
-  (dict "key" "models" "title" "Enkele modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $bikeModelsHref "image" $bikeHeroPath)
-  (dict "key" "leasing" "title" "Leasing fietsen" "summary" "Lees meer over leasingmogelijkheden voor fietsen." "href" $bikeLeasingHref "image" $bikeHeroPath)
+  (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $bikeBrandsHref "image" "/images/home-cards/bike-merken.jpg")
+  (dict "key" "accessoires" "title" "Accessoires" "summary" "Ontdek fietsaccessoires, onderdelen en praktische extra's." "href" $bikeAccessoriesHref "image" "/images/home-cards/bike-accessoires.webp")
+  (dict "key" "models" "title" "Enkele modellen in de kijker" "summary" "Bekijk enkele modellen die we extra in de kijker zetten." "href" $bikeModelsHref "image" "/images/home-cards/bike-modellen.jpg")
+  (dict "key" "leasing" "title" "Leasing fietsen" "summary" "Lees meer over leasingmogelijkheden voor fietsen." "href" $bikeLeasingHref "image" "/images/home-cards/bike-lease.jpg")
 -}}
 {{- $drivePanels := slice
   (dict "key" "brands" "title" "Merken en verdelers" "summary" "Bekijk ons overzicht van merken en erkende verdelers." "href" $driveBrandsHref "image" $driveHeroPath)
@@ -90,4 +90,5 @@
 -}}
 
 {{- return $data -}}
+
 
