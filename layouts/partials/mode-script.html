@@ -77,10 +77,17 @@
     heroCopy.replaceChildren(paragraph);
   }
 
-  const switchLink = document.querySelector('.site-nav__switch');
-  if (switchLink) {
-    switchLink.href = activeMode === 'drive' ? switchLink.dataset.driveHref : switchLink.dataset.bikeHref;
-    switchLink.textContent = activeMode === 'drive' ? switchLink.dataset.driveLabel : switchLink.dataset.bikeLabel;
+  const modeToggle = document.querySelector('.site-nav__mode-toggle');
+  if (modeToggle) {
+    const nextLabel = activeMode === 'drive' ? modeToggle.dataset.driveLabel : modeToggle.dataset.bikeLabel;
+    const modeText = modeToggle.querySelector('.site-nav__mode-text');
+
+    modeToggle.href = activeMode === 'drive' ? modeToggle.dataset.driveHref : modeToggle.dataset.bikeHref;
+    modeToggle.dataset.modeState = activeMode;
+
+    if (modeText) {
+      modeText.textContent = nextLabel;
+    }
   }
 
   const menu = document.querySelector('.site-nav__menu');
