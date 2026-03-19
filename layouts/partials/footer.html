@@ -1,12 +1,16 @@
 {{- $siteMode := partial "site-mode.html" . -}}
+{{- $home := site.Home -}}
 <footer class="site-footer">
     <div class="container site-footer__inner">
-        <div>
-<!--             <p class="site-footer__title">Site2</p>
-            <p>Rustige basiswebsite in opbouw.</p> -->
+        <div class="site-footer__hours">
+            {{ with $home.Params.opening_hours_title }}<p class="site-footer__title">{{ . }}</p>{{ end }}
+            {{ with $home.Params.opening_hours }}
+                {{ range . }}
+                <p class="site-footer__hours-line">{{ . }}</p>
+                {{ end }}
+            {{ end }}
         </div>
         <div>
-            <!-- <p class="site-footer__title">Snelle links</p> -->
             <ul class="site-footer__links">
                 <li><a class="site-footer__link site-footer__link--contact" href="{{ $siteMode.contactHref }}" data-bike-href="{{ $siteMode.contactBikeHref }}" data-drive-href="{{ $siteMode.contactDriveHref }}">Contact</a></li>
                 <li><a class="site-footer__link site-footer__link--bike" href="{{ $siteMode.homeBikeHref }}">Johan's Fietsenshop</a></li>

@@ -87,6 +87,17 @@ function Assert-NotMatches {
     }
 }
 
+function Assert-True {
+    param(
+        [bool]$Condition,
+        [string]$Message
+    )
+
+    if (-not $Condition) {
+        Add-Problem $Message
+    }
+}
+
 function Normalize-Text {
     param([string]$Content)
 
@@ -166,6 +177,76 @@ function Get-SectionFragment {
     return $match.Value
 }
 
+function Get-FrontMatter {
+    param([string]$RelativePath)
+
+    $content = Read-RepoText $RelativePath
+    if ([string]::IsNullOrWhiteSpace($content)) {
+        return $null
+    }
+
+    $match = [regex]::Match($content, '(?s)\A\+\+\+\s*(?<frontMatter>.*?)\s*\+\+\+')
+    if (-not $match.Success) {
+        Add-Problem ('Missing TOML front matter in ' + $RelativePath)
+        return $null
+    }
+
+    return $match.Groups['frontMatter'].Value
+}
+
+function Get-TomlStringArray {
+    param(
+        [string]$Content,
+        [string]$Key,
+        [string]$Context
+    )
+
+    if ($null -eq $Content) {
+        return @()
+    }
+
+    $pattern = '(?s)^\s*' + [regex]::Escape($Key) + '\s*=\s*\[(?<body>.*?)\]'
+    $match = [regex]::Match($Content, $pattern, [System.Text.RegularExpressions.RegexOptions]::Multiline)
+    if (-not $match.Success) {
+        Add-Problem ('Missing TOML array key "' + $Key + '" in ' + $Context)
+        return @()
+    }
+
+    $values = @()
+    foreach ($entryMatch in [regex]::Matches($match.Groups['body'].Value, '["''](?<value>[^"'']+)["'']')) {
+        $values += $entryMatch.Groups['value'].Value.Trim()
+    }
+
+    if ($values.Count -eq 0) {
+        Add-Problem ('Missing TOML array values for "' + $Key + '" in ' + $Context)
+    }
+
+    return $values
+}
+
+function Get-OpeningHoursPairs {
+    param(
+        [string[]]$Lines,
+        [string]$Context
+    )
+
+    $pairs = @()
+    foreach ($line in $Lines) {
+        $parts = $line -split ':\s*', 2
+        if ($parts.Count -ne 2) {
+            Add-Problem ('Unable to parse opening hours line "' + $line + '" in ' + $Context)
+            continue
+        }
+
+        $pairs += @{
+            Day = $parts[0].Trim()
+            Value = $parts[1].Trim()
+        }
+    }
+
+    return $pairs
+}
+
 $homeHtml = Read-GeneratedText 'index.html'
 $contactHtml = Read-GeneratedText 'contact/index.html'
 $bikeLandingHtml = Read-GeneratedText 'bikeshop/index.html'
@@ -179,11 +260,17 @@ $bikeBrandsData = Read-RepoText 'data/collecties/bikeshop/merken-en-verdelers.to
 $driveBrandsData = Read-RepoText 'data/collecties/driveshop/merken-en-verdelers.toml'
 $bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
 $driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
+$homeFrontMatter = Get-FrontMatter 'content/_index.md'
+$cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-RepoText $CssPath }
 
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
+$homeOpeningHours = Get-TomlStringArray $homeFrontMatter 'opening_hours' 'content/_index.md front matter'
+$homeOpeningHoursPairs = Get-OpeningHoursPairs $homeOpeningHours 'content/_index.md'
 
-$homeHeroSection = Get-SectionFragment $homeHtml '<section class="shared-hero.*?</section>' 'index.html'
+$homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'index.html'
+$homeOverviewSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bhome-overview\b[^"]*"[^>]*>.*?</section>' 'index.html home overview'
+$homeFooterSection = Get-SectionFragment $homeHtml '<footer\b[^>]*class="[^"]*\bsite-footer\b[^"]*"[^>]*>.*?</footer>' 'index.html footer'
 
 # Issue 1: shared-page footer links must be drive-mode aware in the mode script.
 Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
@@ -226,6 +313,63 @@ foreach ($contentCheck in @(
     Assert-NotMatches $contentCheck.Content '(?m)^brands\s*=' $contentCheck.Context
     Assert-NotMatches $contentCheck.Content '(?m)^dealers\s*=' $contentCheck.Context
 }
+
+# Issue 6: homepage hours move below the cards, footer repeats them as plain text, cards use webp, and header toggle typography is centralized.
+Assert-NotMatches $homeHeroSection '(?is)<(?:div|section)[^>]*class="[^"]*\bopening-hours\b[^"]*"' 'index.html shared hero'
+
+$afterHomeOverview = $null
+if ($null -ne $homeHtml -and $null -ne $homeOverviewSection) {
+    $homeOverviewIndex = $homeHtml.IndexOf($homeOverviewSection)
+    if ($homeOverviewIndex -ge 0) {
+        $afterHomeOverview = $homeHtml.Substring($homeOverviewIndex + $homeOverviewSection.Length)
+    }
+}
+
+Assert-True ($null -ne $afterHomeOverview) 'Unable to locate content after the home cards in index.html'
+
+$openingHoursTableSection = Get-SectionFragment `
+    $afterHomeOverview `
+    '(?is)<section\b[^>]*>.*?<table\b[^>]*>.*?</table>.*?</section>' `
+    'index.html after home cards'
+
+if ($null -ne $openingHoursTableSection) {
+    foreach ($hoursPair in $homeOpeningHoursPairs) {
+        Assert-Matches `
+            $openingHoursTableSection `
+            ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($hoursPair.Day) + '.*?' + [regex]::Escape($hoursPair.Value) + '.*?</tr>') `
+            'index.html opening-hours table rows'
+    }
+}
+
+foreach ($hoursLine in $homeOpeningHours) {
+    Assert-NormalizedContains $homeFooterSection $hoursLine 'index.html footer'
+}
+
+$overviewCardImageTags = @([regex]::Matches($homeHtml, '<img\b[^>]*\bclass="[^"]*\boverview-card__image\b[^"]*"[^>]*>'))
+if ($overviewCardImageTags.Count -eq 0) {
+    Add-Problem 'Missing homepage overview card images in index.html'
+}
+else {
+    foreach ($imageTag in $overviewCardImageTags) {
+        $srcMatch = [regex]::Match($imageTag.Value, '\bsrc="(?<src>[^"]+)"')
+        if (-not $srcMatch.Success) {
+            Add-Problem ('Missing homepage overview card image src in index.html tag: ' + $imageTag.Value)
+            continue
+        }
+
+        $imageSrc = $srcMatch.Groups['src'].Value
+        if ($imageSrc -notmatch '\.webp(?:[?#].*)?$') {
+            Add-Problem ('Homepage card image must use webp: ' + $imageSrc)
+        }
+    }
+}
+
+Assert-True (-not [string]::IsNullOrWhiteSpace($CssPath)) 'Missing -CssPath for homepage issue 6 CSS checks'
+Assert-True ($null -ne $cssContent) ('Unable to read CSS content from ' + $CssPath)
+Assert-NotMatches `
+    $cssContent `
+    '(?is)\.site-header--overlay\b[^{}]*\.site-nav__(?:menu-toggle|menu-label)\b[^{}]*\{[^}]*\b(?:font|font-size|font-family|font-variant|text-transform)\s*:' `
+    'assets/css/style.css overlay menu typography override'
 
 if ($problems.Count -gt 0) {
     Write-Error ($problems -join "`n")

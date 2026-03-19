@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Driveshops | Johan&#39;s Fietsenshop</title>
+
+<link rel="stylesheet" href="../css/style.min.72a6d36eb770287d55ad981d467b99da415b1c3cf0115cfb5513a08711236810.css" integrity="sha256-cqbTbrdwKH1VrZgdRnuZ2kFbHDzwEVz7VROghxEjaBA=">
+
+</head>
+<body class="page page--section" data-site-mode="drive" data-shared-page="false">
+    <header class="site-header" data-site-mode="drive">
+    <div class="container site-header__inner">
+        <a class="site-brand" href="../?mode=drive" data-bike-href="../?mode=bike" data-drive-href="../?mode=drive">
+            <img class="site-brand__logo" src="../images/logo_drive.webp" data-bike-src="../images/logo_bike.webp" data-drive-src="../images/logo_drive.webp" alt="Johan's Driveshop logo">
+        </a>
+        <nav class="site-nav" aria-label="Hoofdnavigatie">
+            <a class="site-nav__item site-nav__contact" href="../contact/?mode=drive" data-bike-href="../contact/?mode=bike" data-drive-href="../contact/?mode=drive">Contact</a>
+            <a class="site-nav__item site-nav__switch" href="../?mode=bike" data-bike-href="../?mode=drive" data-drive-href="../?mode=bike" data-bike-label="Driveshop" data-drive-label="Bikeshop">Bikeshop</a>
+            <div class="site-nav__menu-shell">
+                <button class="site-nav__menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu">
+                    <span class="site-nav__menu-label">Menu</span>
+                    <span class="site-nav__menu-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+                <div id="site-nav-menu" class="site-nav__menu" hidden>
+                    <div class="site-nav__menu-panel">
+                        <ul class="site-nav__menu-list" data-mode-nav="bike" hidden>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--brands" href="../bikeshop/merken-en-verdelers/">Merken en verdelers</a></li>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--accessoires" href="../bikeshop/accessoires/">Accessoires</a></li>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--models" href="../bikeshop/modellen-in-de-kijker/">Enkele modellen in de kijker</a></li>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--leasing" href="../bikeshop/leasing-fietsen/">Leasing fietsen</a></li>
+                            
+                        </ul>
+                        <ul class="site-nav__menu-list" data-mode-nav="drive">
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--brands" href="../driveshop/merken-en-verdelers/">Merken en verdelers</a></li>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--models" href="../driveshop/modellen-in-de-kijker/">Modellen in de kijker</a></li>
+                            
+                            <li><a class="site-nav__menu-link site-nav__menu-link--winter" href="../driveshop/winteronderhoud-van-tuinmachines/">Winteronderhoud van tuinmachines</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+    <main>
+        
+<section class="page-intro page-intro--home">
+    <div class="container">
+        <p class="eyebrow">Welkom bij Johan's Fietsenshop</p>
+        <h1>Driveshops</h1>
+        <div class="page-copy"></div>
+    </div>
+</section>
+
+    </main>
+    <footer class="site-footer">
+    <div class="container site-footer__inner">
+        <div>
+
+        </div>
+        <div>
+            
+            <ul class="site-footer__links">
+                <li><a class="site-footer__link site-footer__link--contact" href="../contact/?mode=drive" data-bike-href="../contact/?mode=bike" data-drive-href="../contact/?mode=drive">Contact</a></li>
+                <li><a class="site-footer__link site-footer__link--bike" href="../?mode=bike">Johan's Fietsenshop</a></li>
+                <li><a class="site-footer__link site-footer__link--drive" href="../?mode=drive">Johan's Driveshop</a></li>
+                <li><a class="site-footer__link site-footer__link--merken" href="../driveshop/merken-en-verdelers/" data-bike-href="../bikeshop/merken-en-verdelers/" data-drive-href="../driveshop/merken-en-verdelers/">Merken en verdelers</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+
+    <script id="site-mode-script">
+(() => {
+  const body = document.body;
+  if (!body) {
+    return;
+  }
+
+  const validModes = ['bike', 'drive'];
+  const storedMode = window.localStorage.getItem('site-mode');
+  const url = new URL(window.location.href);
+  const queryMode = url.searchParams.get('mode');
+  const bodyMode = body.dataset.siteMode;
+  const isShared = body.dataset.sharedPage === 'true';
+
+  let activeMode = validModes.includes(bodyMode) ? bodyMode : 'bike';
+
+  if (isShared) {
+    if (validModes.includes(queryMode)) {
+      activeMode = queryMode;
+    }
+    else if (validModes.includes(storedMode)) {
+      activeMode = storedMode;
+    }
+  }
+
+  if (!validModes.includes(activeMode)) {
+    activeMode = 'bike';
+  }
+
+  body.dataset.siteMode = activeMode;
+  window.localStorage.setItem('site-mode', activeMode);
+
+  const applyHref = (selector) => {
+    const element = document.querySelector(selector);
+    if (!element) {
+      return;
+    }
+
+    element.href = activeMode === 'drive' ? element.dataset.driveHref : element.dataset.bikeHref;
+  };
+
+  const syncModePanels = () => {
+    document.querySelectorAll('[data-mode-panel]').forEach((panel) => {
+      panel.hidden = panel.dataset.modePanel !== activeMode;
+    });
+  };
+
+  const syncModeMenus = () => {
+    document.querySelectorAll('[data-mode-nav]').forEach((menu) => {
+      const isActive = menu.dataset.modeNav === activeMode;
+      menu.hidden = !isActive;
+      menu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+  };
+
+  const logo = document.querySelector('.site-brand__logo');
+  if (logo) {
+    logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
+    logo.alt = activeMode === 'drive' ? 'Driveshop logo' : 'Bikeshop logo';
+  }
+
+  const heroImage = document.querySelector('.home-hero__image');
+  if (heroImage) {
+    heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
+  }
+
+  applyHref('.site-brand');
+  applyHref('.site-nav__contact');
+
+  const switchLink = document.querySelector('.site-nav__switch');
+  if (switchLink) {
+    switchLink.href = activeMode === 'drive' ? switchLink.dataset.driveHref : switchLink.dataset.bikeHref;
+    switchLink.textContent = activeMode === 'drive' ? switchLink.dataset.driveLabel : switchLink.dataset.bikeLabel;
+  }
+
+  const menu = document.querySelector('.site-nav__menu');
+  const menuToggle = document.querySelector('.site-nav__menu-toggle');
+  const closeMenu = () => {
+    if (!menu || !menuToggle) {
+      return;
+    }
+
+    menu.hidden = true;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    body.classList.remove('site-menu-open');
+  };
+
+  const openMenu = () => {
+    if (!menu || !menuToggle) {
+      return;
+    }
+
+    menu.hidden = false;
+    menuToggle.setAttribute('aria-expanded', 'true');
+    body.classList.add('site-menu-open');
+  };
+
+  if (menu && menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      if (menu.hidden) {
+        openMenu();
+      }
+      else {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (menu.hidden) {
+        return;
+      }
+
+      if (menu.contains(event.target) || menuToggle.contains(event.target)) {
+        return;
+      }
+
+      closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
+    });
+  }
+
+  syncModePanels();
+  syncModeMenus();
+})();
+</script>
+
+
+</body>
+</html>

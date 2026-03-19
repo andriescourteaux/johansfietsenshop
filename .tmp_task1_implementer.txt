@@ -1,0 +1,7 @@
+[tests/verify_site.ps1](K:/Coding/Site2/tests/verify_site.ps1#L322) now contains the new red coverage. `hugo --destination .test-public` passed; `powershell -ExecutionPolicy Bypass -File tests/verify_site.ps1 -PublicDir .test-public -CssPath assets/css/style.css -HeadTemplatePath layouts/partials/head.html` fails on these exact new checks:
+
+- homepage hero still contains the old `.opening-hours` block
+- no `Openingsuren` table section exists after the homepage cards section
+- footer is missing plain-text hours content: `Openingsuren`, `Maandag: gesloten`, `Dinsdag: 10:00u - 19:00`, `Woensdag: 10:00u - 19:00`, `Donderdag: 10:00u - 19:00`, `Vrijdag: 10:00u - 19:00`, `Zaterdag: 10:00u - 19:00`, `Zondag: gesloten`
+- homepage card images still use non-`webp` paths: `./images/home-cards/bike-merken.jpg`, `./images/home-cards/bike-modellen.jpg`, `./images/home-cards/bike-lease.jpg`
+- `assets/css/style.css` still contains an overlay-only `.site-header--overlay .site-nav__menu-toggle` typography override

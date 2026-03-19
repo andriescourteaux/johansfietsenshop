@@ -8,7 +8,7 @@
                 {{ range $siteMode.bikePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
                     <span class="overview-card__media" aria-hidden="true">
-                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="">
+                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="" decoding="async" fetchpriority="low">
                         <span class="overview-card__overlay"></span>
                     </span>
                     <span class="overview-card__body">
@@ -24,7 +24,7 @@
                 {{ range $siteMode.drivePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
                     <span class="overview-card__media" aria-hidden="true">
-                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="">
+                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="" loading="lazy" decoding="async" fetchpriority="low">
                         <span class="overview-card__overlay"></span>
                     </span>
                     <span class="overview-card__body">
@@ -37,4 +37,27 @@
         </div>
     </div>
 </section>
+{{ with .Params.opening_hours }}
+<section class="opening-hours-section">
+    <div class="container">
+        <div class="opening-hours-card">
+            {{ with $.Params.opening_hours_title }}<h2 class="opening-hours-card__title">{{ . }}</h2>{{ end }}
+            <table class="opening-hours-table">
+                <tbody>
+                    {{ range . }}
+                    {{- $serialized := replaceRE "^([^:]+):\\s*(.*)$" "$1||$2" . -}}
+                    {{- $parts := split $serialized "||" -}}
+                    {{- $day := index $parts 0 -}}
+                    {{- $hours := cond (gt (len $parts) 1) (index $parts 1) "" -}}
+                    <tr>
+                        <th scope="row">{{ $day }}</th>
+                        <td>{{ $hours }}</td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{{ end }}
 {{ end }}
