@@ -162,12 +162,40 @@ function Test-IsModeScopedSelector {
         return $false
     }
 
-    $escapedMode = [regex]::Escape($Mode)
-    $modeSelectorPattern = '(?is)(?:' +
-        '[#.][a-z0-9_-]*' + $escapedMode + '[a-z0-9_-]*|' +
-        '\[(?:data-[^]=]+|class|id)[^]]*=\s*(?:["''][^"'']*' + $escapedMode + '[^"'']*["'']|[a-z0-9_-]*' + $escapedMode + '[a-z0-9_-]*)[^]]*\]' +
-        ')'
-    return [regex]::IsMatch($Selector, $modeSelectorPattern)
+    $explicitModeTokenPattern = '(?i)(?:^|[^a-z0-9])' + [regex]::Escape($Mode) + '(?:[^a-z0-9]|$)'
+
+    foreach ($tokenMatch in [regex]::Matches($Selector, '(?i)[#.](?<token>[a-z0-9_-]+)')) {
+        $token = $tokenMatch.Groups['token'].Value
+        if ([regex]::IsMatch($token, '(?i)(?:theme|mode)') -and
+            [regex]::IsMatch($token, $explicitModeTokenPattern)) {
+            return $true
+        }
+    }
+
+    foreach ($attributeMatch in [regex]::Matches($Selector, '(?is)\[(?<name>[a-z0-9_-]+)\s*(?:[~|^$*]?=)\s*(?<value>"[^"]*"|''[^'']*''|[^\]\s]+)[^\]]*\]')) {
+        $attributeName = $attributeMatch.Groups['name'].Value
+        $attributeValue = $attributeMatch.Groups['value'].Value.Trim('"', "'").Trim()
+
+        if ([string]::IsNullOrWhiteSpace($attributeValue)) {
+            continue
+        }
+
+        if ([regex]::IsMatch($attributeName, '(?i)(?:theme|mode)') -and
+            [regex]::IsMatch($attributeValue, $explicitModeTokenPattern)) {
+            return $true
+        }
+
+        if ($attributeName -imatch '^(?:class|id)$') {
+            foreach ($attributeToken in ($attributeValue -split '\s+')) {
+                if ([regex]::IsMatch($attributeToken, '(?i)(?:theme|mode)') -and
+                    [regex]::IsMatch($attributeToken, $explicitModeTokenPattern)) {
+                    return $true
+                }
+            }
+        }
+    }
+
+    return $false
 }
 
 function Test-IsFooterSelector {
@@ -197,18 +225,21 @@ function Test-IsDedicatedFooterVariable {
         return $false
     }
 
-    return [regex]::IsMatch($VariableName, '(?i)^--[a-z0-9-]*footer[a-z0-9-]*$')
+    return [regex]::IsMatch($VariableName, '(?i)^--(?:site-)?footer-[a-z0-9-]+$')
 }
 
-function Test-RuleHasThemeDeclarations {
+function Test-RuleHasFooterThemeDeclarations {
     param([string]$CssBody)
 
     if ([string]::IsNullOrWhiteSpace($CssBody)) {
         return $false
     }
 
-    return [regex]::IsMatch($CssBody, '(?is)\b(?:background|background-color|color|border|border-color)\s*:') -or
-        [regex]::IsMatch($CssBody, '(?is)--[a-z0-9-]+\s*:')
+    return [regex]::IsMatch($CssBody, '(?im)(?:^|[;\r\n]\s*)(?:background|background-color|color|border|border-color)\s*:') -or
+        @(
+            Get-CssVariableAssignments $CssBody |
+                Where-Object { Test-IsDedicatedFooterVariable $_ }
+        ).Count -gt 0
 }
 
 function Test-ModeAwareFooterTheme {
@@ -244,7 +275,7 @@ function Test-ModeAwareFooterTheme {
             continue
         }
 
-        if ((Test-IsFooterContainerSelector $rule.Selector) -and (Test-RuleHasThemeDeclarations $rule.Body)) {
+        if ((Test-IsFooterContainerSelector $rule.Selector) -and (Test-RuleHasFooterThemeDeclarations $rule.Body)) {
             return $true
         }
 
@@ -274,7 +305,7 @@ function Test-IsMenuSelector {
         return $false
     }
 
-    return [regex]::IsMatch($Selector, '(?i)\.site-nav__menu(?:-panel)?\b')
+    return [regex]::IsMatch($Selector, '(?i)\.(?:site-nav__menu|site-nav__menu-panel)(?![-a-z0-9_])')
 }
 
 function Test-IsStatefulMenuSelector {
@@ -313,6 +344,73 @@ function Test-RuleHasMenuMotionTransition {
     return [regex]::IsMatch($CssBody, '(?is)\btransition\s*:\s*[^;{}]*(?:all|opacity|transform|translate|scale|rotate)') -or
         [regex]::IsMatch($CssBody, '(?is)\btransition-property\s*:\s*[^;{}]*(?:all|opacity|transform|translate|scale|rotate)') -or
         [regex]::IsMatch($CssBody, '(?is)\banimation(?:-name)?\s*:')
+}
+
+function Get-MenuTargetKinds {
+    param([string]$Selector)
+
+    if ([string]::IsNullOrWhiteSpace($Selector)) {
+        return @()
+    }
+
+    $targetKinds = @()
+
+    if ([regex]::IsMatch($Selector, '(?i)\.site-nav__menu(?![-a-z0-9_])')) {
+        $targetKinds += 'menu'
+    }
+
+    if ([regex]::IsMatch($Selector, '(?i)\.site-nav__menu-panel(?![-a-z0-9_])')) {
+        $targetKinds += 'panel'
+    }
+
+    return @($targetKinds | Sort-Object -Unique)
+}
+
+function Get-MenuMotionPropertyNames {
+    param([string]$CssBody)
+
+    if ([string]::IsNullOrWhiteSpace($CssBody)) {
+        return @()
+    }
+
+    $propertyNames = @()
+    foreach ($match in [regex]::Matches($CssBody, '(?im)^\s*(opacity|transform|translate|scale|rotate)\s*:')) {
+        $propertyNames += $match.Groups[1].Value.ToLowerInvariant()
+    }
+
+    return @($propertyNames | Sort-Object -Unique)
+}
+
+function Test-MenuRulesShareTargets {
+    param(
+        [pscustomobject]$PrimaryRule,
+        [pscustomobject]$SecondaryRule
+    )
+
+    if ($null -eq $PrimaryRule -or $null -eq $SecondaryRule) {
+        return $false
+    }
+
+    return @(
+        @($PrimaryRule.TargetKinds) |
+            Where-Object { @($SecondaryRule.TargetKinds) -contains $_ }
+    ).Count -gt 0
+}
+
+function Test-MenuRulesShareMotionProperties {
+    param(
+        [pscustomobject]$PrimaryRule,
+        [pscustomobject]$SecondaryRule
+    )
+
+    if ($null -eq $PrimaryRule -or $null -eq $SecondaryRule) {
+        return $false
+    }
+
+    return @(
+        @($PrimaryRule.MotionProperties) |
+            Where-Object { @($SecondaryRule.MotionProperties) -contains $_ }
+    ).Count -gt 0
 }
 
 function Get-MenuStateKinds {
@@ -357,22 +455,35 @@ function Test-MenuRulesAreComplementary {
         return $false
     }
 
-    if (-not $SecondaryRule.IsStateful) {
-        return $true
-    }
-
-    $primaryStates = @($PrimaryRule.StateKinds)
-    $secondaryStates = @($SecondaryRule.StateKinds)
-    if ($primaryStates.Count -eq 0 -or $secondaryStates.Count -eq 0) {
+    if (-not (Test-MenuRulesShareTargets $PrimaryRule $SecondaryRule)) {
         return $false
     }
 
-    return (
-        (@($primaryStates | Where-Object { $_ -eq 'open' }).Count -gt 0 -and
-            @($secondaryStates | Where-Object { $_ -eq 'closed' }).Count -gt 0) -or
-        (@($primaryStates | Where-Object { $_ -eq 'closed' }).Count -gt 0 -and
-            @($secondaryStates | Where-Object { $_ -eq 'open' }).Count -gt 0)
-    )
+    if (-not (Test-MenuRulesShareMotionProperties $PrimaryRule $SecondaryRule)) {
+        return $false
+    }
+
+    if ($PrimaryRule.IsStateful -and $SecondaryRule.IsStateful) {
+        $primaryStates = @($PrimaryRule.StateKinds)
+        $secondaryStates = @($SecondaryRule.StateKinds)
+        if ($primaryStates.Count -eq 0 -or $secondaryStates.Count -eq 0) {
+            return $false
+        }
+
+        return (
+            (@($primaryStates | Where-Object { $_ -eq 'open' }).Count -gt 0 -and
+                @($secondaryStates | Where-Object { $_ -eq 'closed' }).Count -gt 0) -or
+            (@($primaryStates | Where-Object { $_ -eq 'closed' }).Count -gt 0 -and
+                @($secondaryStates | Where-Object { $_ -eq 'open' }).Count -gt 0)
+        )
+    }
+
+    if ($PrimaryRule.IsStateful -xor $SecondaryRule.IsStateful) {
+        $statefulRule = if ($PrimaryRule.IsStateful) { $PrimaryRule } else { $SecondaryRule }
+        return @($statefulRule.StateKinds).Count -gt 0
+    }
+
+    return $false
 }
 
 function Test-HasStatefulMenuMotion {
@@ -394,6 +505,8 @@ function Test-HasStatefulMenuMotion {
                 HasMotionProperties = Test-RuleHasMenuMotionProperties $rule.Body
                 HasMotionTransition = Test-RuleHasMenuMotionTransition $rule.Body
                 StateKinds = @(Get-MenuStateKinds $rule.Selector)
+                TargetKinds = @(Get-MenuTargetKinds $rule.Selector)
+                MotionProperties = @(Get-MenuMotionPropertyNames $rule.Body)
             }
         }
     )
@@ -605,6 +718,19 @@ Assert-True `
     (Test-ModeAwareFooterTheme $footerThemeVariableFixture 'bike') `
     'Verifier must accept footer theme hooks delivered through mode-scoped footer container variables'
 
+$incidentalDriveSubstringFixture = @'
+.site-footer {
+    background: var(--footer-bg);
+}
+
+.driveway .site-footer {
+    --footer-bg: red;
+}
+'@
+Assert-True `
+    (-not (Test-ModeAwareFooterTheme $incidentalDriveSubstringFixture 'drive')) `
+    'Verifier must reject incidental mode substrings like .driveway when checking footer theme scope'
+
 $genericFooterThemeLeakFixture = @'
 .site-footer__link {
     color: var(--link-color);
@@ -617,6 +743,19 @@ body[data-theme="bike"] {
 Assert-True `
     (-not (Test-ModeAwareFooterTheme $genericFooterThemeLeakFixture 'bike')) `
     'Verifier must reject generic descendant variables that are not dedicated footer theme hooks'
+
+$footerContainerGenericVariableFixture = @'
+.site-footer {
+    color: var(--link-color);
+}
+
+body[data-theme="bike"] .site-footer {
+    --link-color: blue;
+}
+'@
+Assert-True `
+    (-not (Test-ModeAwareFooterTheme $footerContainerGenericVariableFixture 'bike')) `
+    'Verifier must reject generic variables on the footer container when they are not footer-dedicated theme hooks'
 
 $dedicatedFooterThemeVariableFixture = @'
 .site-footer {
@@ -649,6 +788,20 @@ Assert-True `
     (Test-HasStatefulMenuMotion $statefulMenuMotionFixture) `
     'Verifier must accept stateful menu motion selectors that drive opacity or transform'
 
+$menuIconMotionFixture = @'
+.site-nav__menu-icon {
+    transform: rotate(0deg);
+    transition: transform 180ms ease;
+}
+
+.site-nav__menu-icon.is-open {
+    transform: rotate(90deg);
+}
+'@
+Assert-True `
+    (-not (Test-HasStatefulMenuMotion $menuIconMotionFixture)) `
+    'Verifier must ignore menu icon motion selectors when checking for menu panel motion hooks'
+
 $weakMenuMotionFixture = @'
 .site-nav__menu-panel {
     transition: opacity 180ms ease;
@@ -661,6 +814,20 @@ $weakMenuMotionFixture = @'
 Assert-True `
     (-not (Test-HasStatefulMenuMotion $weakMenuMotionFixture)) `
     'Verifier must reject generic menu transitions without stateful motion properties'
+
+$weakBaseStateMenuMotionFixture = @'
+.site-nav__menu-panel {
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+
+.site-nav__menu-shell[data-menu-state="open"] .site-nav__menu-panel {
+    transform: translateY(0);
+}
+'@
+Assert-True `
+    (-not (Test-HasStatefulMenuMotion $weakBaseStateMenuMotionFixture)) `
+    'Verifier must reject weak base-plus-state menu motion pairs that do not animate the same property'
 
 $singleStateMenuMotionFixture = @'
 .site-nav__menu[hidden] {
