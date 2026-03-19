@@ -255,6 +255,7 @@ $bikeBrandsHtml = Read-GeneratedText 'bikeshop/merken-en-verdelers/index.html'
 $driveBrandsHtml = Read-GeneratedText 'driveshop/merken-en-verdelers/index.html'
 
 $modeScriptTemplate = Read-RepoText 'layouts/partials/mode-script.html'
+$sharedHeroTemplate = Read-RepoText 'layouts/partials/shared-hero.html'
 $singleTemplate = Read-RepoText 'layouts/_default/single.html'
 $bikeBrandsData = Read-RepoText 'data/collecties/bikeshop/merken-en-verdelers.toml'
 $driveBrandsData = Read-RepoText 'data/collecties/driveshop/merken-en-verdelers.toml'
@@ -262,12 +263,14 @@ $bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
 $driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
 $homeFrontMatter = Get-FrontMatter 'content/_index.md'
 $cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-RepoText $CssPath }
+$motionHookContent = @($modeScriptTemplate, $cssContent) -join "`n"
 
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
 $homeOpeningHours = Get-TomlStringArray $homeFrontMatter 'opening_hours' 'content/_index.md front matter'
 $homeOpeningHoursPairs = Get-OpeningHoursPairs $homeOpeningHours 'content/_index.md'
 
+$homeHeaderSection = Get-SectionFragment $homeHtml '<header\b[^>]*class="[^"]*\bsite-header\b[^"]*"[^>]*>.*?</header>' 'index.html header'
 $homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'index.html'
 $homeOverviewSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bhome-overview\b[^"]*"[^>]*>.*?</section>' 'index.html home overview'
 $homeFooterSection = Get-SectionFragment $homeHtml '<footer\b[^>]*class="[^"]*\bsite-footer\b[^"]*"[^>]*>.*?</footer>' 'index.html footer'
@@ -370,6 +373,33 @@ Assert-NotMatches `
     $cssContent `
     '(?is)\.site-header--overlay\b[^{}]*\.site-nav__(?:menu-toggle|menu-label)\b[^{}]*\{[^}]*\b(?:font|font-size|font-family|font-variant|text-transform)\s*:' `
     'assets/css/style.css overlay menu typography override'
+
+# Issue 7: motion/theme polish hooks must exist for the mode pill, footer themes, menu motion, parallax, and reduced-motion handling.
+Assert-Contains $homeHeaderSection 'site-nav__mode-toggle' 'index.html header'
+Assert-Contains $homeHeaderSection 'site-nav__mode-track' 'index.html header'
+Assert-Contains $homeHeaderSection 'site-nav__mode-thumb' 'index.html header'
+Assert-Contains $homeHeaderSection 'site-nav__mode-text' 'index.html header'
+Assert-Matches `
+    $cssContent `
+    '(?is)(?:\.site-footer--bike|\[data-site-mode=["'']bike["'']\][^{]*\.site-footer|\.site-footer[^{]*data-[^=]+=["'']bike["''])' `
+    'assets/css/style.css bike footer theme hook'
+Assert-Matches `
+    $cssContent `
+    '(?is)(?:\.site-footer--drive|\[data-site-mode=["'']drive["'']\][^{]*\.site-footer|\.site-footer[^{]*data-[^=]+=["'']drive["''])' `
+    'assets/css/style.css drive footer theme hook'
+# Accept either dedicated menu motion classes/data hooks or transition rules on the menu container.
+Assert-Matches `
+    $motionHookContent `
+    '(?is)(?:site-nav__menu--[a-z0-9-]*(?:open|clos|enter|exit|motion|animat|transition)[a-z0-9-]*|data-(?:menu|nav)-(?:state|motion|transition)\s*=|\.site-nav__menu(?:-panel)?[^{]*\{[^}]*\b(?:transition|animation)\s*:)' `
+    'menu animation hooks'
+Assert-Matches `
+    $sharedHeroTemplate `
+    '(?is)(?:data-parallax-[^=]+=|data-hero-parallax=|home-hero__image--parallax)' `
+    'layouts/partials/shared-hero.html'
+Assert-Matches `
+    $cssContent `
+    '@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)' `
+    'assets/css/style.css reduced motion branch'
 
 if ($problems.Count -gt 0) {
     Write-Error ($problems -join "`n")
