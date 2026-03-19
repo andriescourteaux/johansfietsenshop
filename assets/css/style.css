@@ -346,6 +346,7 @@ h1 {
     background: rgba(24, 28, 27, 0.88);
     color: rgba(255, 248, 238, 0.9);
     box-shadow: 0 0.5rem 1.4rem rgba(16, 16, 16, 0.16);
+    border-radius: 30px;
 }
 
 .overview-card h2 {
@@ -885,6 +886,7 @@ h1 {
 .overview-card__media {
     position: absolute;
     inset: 0;
+    border: 0px;
 }
 
 .overview-card__image {

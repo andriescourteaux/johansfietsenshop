@@ -171,7 +171,7 @@
     const heroRect = hero.getBoundingClientRect();
     const viewportCenter = window.innerHeight * 0.5;
     const heroCenter = heroRect.top + (heroRect.height * 0.5);
-    const offset = Math.max(-18, Math.min(18, (viewportCenter - heroCenter) * 0.05));
+    const offset = Math.max(-100, Math.min(100, (viewportCenter - heroCenter) * 0.14));
 
     parallaxImage.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0) scale(1.05)`;
   };
