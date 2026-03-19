@@ -1,9 +1,9 @@
 {{ define "main" }}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" true "ShowOpeningHours" true "ShowTitle" true "ShowIntro" true) }}
 {{- $siteMode := partial "site-mode.html" . -}}
-<section class="home-overview">
+<section class="home-overview home-overview--mode-aware" data-mode-transition-root="home-overview">
     <div class="container">
-        <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike">
+        <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike" data-mode-transition-panel="bike">
             <div class="home-overview__grid">
                 {{ range $siteMode.bikePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
@@ -19,7 +19,7 @@
                 {{ end }}
             </div>
         </div>
-        <div class="home-overview__panel home-overview__panel--drive" data-mode-panel="drive" hidden>
+        <div class="home-overview__panel home-overview__panel--drive" data-mode-panel="drive" data-mode-transition-panel="drive" hidden>
             <div class="home-overview__grid">
                 {{ range $siteMode.drivePanels }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">

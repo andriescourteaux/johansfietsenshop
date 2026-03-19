@@ -11,8 +11,13 @@
   const queryMode = url.searchParams.get('mode');
   const bodyMode = body.dataset.siteMode;
   const isShared = body.dataset.sharedPage === 'true';
+  const isHomePage = body.classList.contains('page--home');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   let activeMode = validModes.includes(bodyMode) ? bodyMode : 'bike';
+  let modeSwitchTimer = null;
+  let parallaxFrame = null;
+  let closeMenuTimer = null;
 
   if (isShared) {
     if (validModes.includes(queryMode)) {
@@ -27,9 +32,13 @@
     activeMode = 'bike';
   }
 
-  body.dataset.siteMode = activeMode;
-  body.dataset.theme = activeMode;
-  window.localStorage.setItem('site-mode', activeMode);
+  const logo = document.querySelector('.site-brand__logo');
+  const heroImage = document.querySelector('.home-hero__image');
+  const heroCopy = document.querySelector('.page-copy--hero');
+  const modeToggle = document.querySelector('.site-nav__mode-toggle');
+  const menu = document.querySelector('.site-nav__menu');
+  const menuToggle = document.querySelector('.site-nav__menu-toggle');
+  const parallaxImage = document.querySelector('[data-hero-parallax]');
 
   const applyHref = (selector) => {
     const element = document.querySelector(selector);
@@ -47,53 +56,46 @@
   };
 
   const syncModeMenus = () => {
-    document.querySelectorAll('[data-mode-nav]').forEach((menu) => {
-      const isActive = menu.dataset.modeNav === activeMode;
-      menu.hidden = !isActive;
-      menu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    document.querySelectorAll('[data-mode-nav]').forEach((menuList) => {
+      const isActive = menuList.dataset.modeNav === activeMode;
+      menuList.hidden = !isActive;
+      menuList.setAttribute('aria-hidden', isActive ? 'false' : 'true');
     });
   };
 
-  const logo = document.querySelector('.site-brand__logo');
-  if (logo) {
-    logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
-    logo.alt = activeMode === 'drive' ? 'Driveshop logo' : 'Bikeshop logo';
-  }
-
-  const heroImage = document.querySelector('.home-hero__image');
-  if (heroImage) {
-    heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
-  }
-
-  applyHref('.site-brand');
-  applyHref('.site-nav__contact');
-  applyHref('.site-footer__link--contact');
-  applyHref('.site-footer__link--merken');
-
-  const heroCopy = document.querySelector('.page-copy--hero');
-  if (heroCopy) {
-    const nextCopy = activeMode === 'drive' ? heroCopy.dataset.driveCopy : heroCopy.dataset.bikeCopy;
-    const paragraph = document.createElement('p');
-    paragraph.textContent = nextCopy || '';
-    heroCopy.replaceChildren(paragraph);
-  }
-
-  const modeToggle = document.querySelector('.site-nav__mode-toggle');
-  if (modeToggle) {
-    const nextLabel = activeMode === 'drive' ? modeToggle.dataset.driveLabel : modeToggle.dataset.bikeLabel;
-    const modeText = modeToggle.querySelector('.site-nav__mode-text');
-
-    modeToggle.href = activeMode === 'drive' ? modeToggle.dataset.driveHref : modeToggle.dataset.bikeHref;
-    modeToggle.dataset.modeState = activeMode;
-
-    if (modeText) {
-      modeText.textContent = nextLabel;
+  const persistModeUrl = () => {
+    if (!isShared || !isHomePage) {
+      return;
     }
-  }
 
-  const menu = document.querySelector('.site-nav__menu');
-  const menuToggle = document.querySelector('.site-nav__menu-toggle');
-  let closeMenuTimer = null;
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('mode', activeMode);
+    window.history.replaceState({}, '', nextUrl);
+  };
+
+  const clearModeSwitchTimer = () => {
+    if (modeSwitchTimer !== null) {
+      window.clearTimeout(modeSwitchTimer);
+      modeSwitchTimer = null;
+    }
+  };
+
+  const startModeSwitchAnimation = () => {
+    if (!isHomePage || reducedMotionQuery.matches) {
+      return;
+    }
+
+    clearModeSwitchTimer();
+    body.classList.remove('site-mode-switching');
+    window.requestAnimationFrame(() => {
+      body.classList.add('site-mode-switching');
+      modeSwitchTimer = window.setTimeout(() => {
+        body.classList.remove('site-mode-switching');
+        modeSwitchTimer = null;
+      }, 240);
+    });
+  };
+
   const clearCloseMenuTimer = () => {
     if (closeMenuTimer !== null) {
       window.clearTimeout(closeMenuTimer);
@@ -119,6 +121,7 @@
     menu.hidden = true;
     applyMenuState('closed');
     menuToggle.setAttribute('aria-expanded', 'false');
+    body.classList.remove('site-menu-open');
   };
 
   const closeMenu = () => {
@@ -148,6 +151,102 @@
         applyMenuState('open');
       });
     });
+  };
+
+  const updateHeroParallax = () => {
+    if (!parallaxImage) {
+      return;
+    }
+
+    if (reducedMotionQuery.matches) {
+      parallaxImage.style.removeProperty('transform');
+      return;
+    }
+
+    const hero = parallaxImage.closest('.shared-hero');
+    if (!hero) {
+      return;
+    }
+
+    const heroRect = hero.getBoundingClientRect();
+    const viewportCenter = window.innerHeight * 0.5;
+    const heroCenter = heroRect.top + (heroRect.height * 0.5);
+    const offset = Math.max(-18, Math.min(18, (viewportCenter - heroCenter) * 0.05));
+
+    parallaxImage.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0) scale(1.05)`;
+  };
+
+  const requestHeroParallax = () => {
+    if (!parallaxImage || reducedMotionQuery.matches) {
+      if (parallaxImage) {
+        parallaxImage.style.removeProperty('transform');
+      }
+      return;
+    }
+
+    if (parallaxFrame !== null) {
+      return;
+    }
+
+    parallaxFrame = window.requestAnimationFrame(() => {
+      parallaxFrame = null;
+      updateHeroParallax();
+    });
+  };
+
+  const syncModeContent = () => {
+    body.dataset.siteMode = activeMode;
+    body.dataset.theme = activeMode;
+    window.localStorage.setItem('site-mode', activeMode);
+    persistModeUrl();
+
+    if (logo) {
+      logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
+      logo.alt = activeMode === 'drive' ? 'Driveshop logo' : 'Bikeshop logo';
+    }
+
+    if (heroImage) {
+      heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
+      requestHeroParallax();
+    }
+
+    applyHref('.site-brand');
+    applyHref('.site-nav__contact');
+    applyHref('.site-footer__link--contact');
+    applyHref('.site-footer__link--merken');
+
+    if (heroCopy) {
+      const nextCopy = activeMode === 'drive' ? heroCopy.dataset.driveCopy : heroCopy.dataset.bikeCopy;
+      const paragraph = document.createElement('p');
+      paragraph.textContent = nextCopy || '';
+      heroCopy.replaceChildren(paragraph);
+    }
+
+    if (modeToggle) {
+      const nextLabel = activeMode === 'drive' ? modeToggle.dataset.driveLabel : modeToggle.dataset.bikeLabel;
+      const modeText = modeToggle.querySelector('.site-nav__mode-text');
+
+      modeToggle.href = activeMode === 'drive' ? modeToggle.dataset.driveHref : modeToggle.dataset.bikeHref;
+      modeToggle.dataset.modeState = activeMode;
+
+      if (modeText) {
+        modeText.textContent = nextLabel;
+      }
+    }
+
+    syncModePanels();
+    syncModeMenus();
+  };
+
+  const switchMode = (nextMode) => {
+    if (!validModes.includes(nextMode) || nextMode === activeMode) {
+      return;
+    }
+
+    activeMode = nextMode;
+    closeMenu();
+    syncModeContent();
+    startModeSwitchAnimation();
   };
 
   if (menu && menuToggle) {
@@ -197,9 +296,27 @@
       }
     });
   }
-  syncModePanels();
-  syncModeMenus();
+
+  if (modeToggle && isShared && isHomePage) {
+    modeToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      switchMode(activeMode === 'drive' ? 'bike' : 'drive');
+    });
+  }
+
+  if (parallaxImage) {
+    window.addEventListener('scroll', requestHeroParallax, { passive: true });
+    window.addEventListener('resize', requestHeroParallax);
+
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+      reducedMotionQuery.addEventListener('change', requestHeroParallax);
+    }
+    else if (typeof reducedMotionQuery.addListener === 'function') {
+      reducedMotionQuery.addListener(requestHeroParallax);
+    }
+  }
+
+  syncModeContent();
+  requestHeroParallax();
 })();
 </script>
-
-

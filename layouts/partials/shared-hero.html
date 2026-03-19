@@ -6,7 +6,7 @@
 {{- $heroCopy := cond $siteMode.isDrive $driveHeroCopy $bikeHeroCopy -}}
 <section class="shared-hero {{ if $showContent }}shared-hero--content{{ else }}shared-hero--banner-only{{ end }} home-hero">
     <div class="home-hero__media" aria-hidden="true">
-        <img class="home-hero__image" src="{{ $siteMode.heroPath }}" data-bike-src="{{ $siteMode.heroBikePath }}" data-drive-src="{{ $siteMode.heroDrivePath }}" alt="" loading="eager" fetchpriority="high" decoding="async">
+        <img class="home-hero__image home-hero__image--parallax" src="{{ $siteMode.heroPath }}" data-bike-src="{{ $siteMode.heroBikePath }}" data-drive-src="{{ $siteMode.heroDrivePath }}" data-hero-parallax="image" alt="" loading="eager" fetchpriority="high" decoding="async">
     </div>
     <div class="home-hero__overlay"></div>
     {{ if $showContent }}
