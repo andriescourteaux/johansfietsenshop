@@ -1,17 +1,5 @@
-[items."fietshelm.webp"]
-title = "Fietshelmen"
+[items."fietsdrager_thule1.jpg"]
+title = "Fietsdrager Thule"
 alt = "Fietshelmen"
-image = "/images/header_bike.webp"
+image = "/images/collecties/bikeshop/accessoires/fietsdrager_thule1.jpg"
 weight = 10
-
-[items."fietstas.webp"]
-title = "Fietstassen"
-alt = "Fietstassen"
-image = "/images/header_bike.webp"
-weight = 20
-
-[items."onderhoud.webp"]
-title = "Onderhoud en toebehoren"
-alt = "Onderhoud en toebehoren"
-image = "/images/header_bike.webp"
-weight = 30
