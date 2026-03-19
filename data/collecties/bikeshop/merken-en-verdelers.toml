@@ -1,7 +1,7 @@
 [items."swyff.webp"]
 title = "Swyff"
 alt = "Swyff logo"
-image = "/images/merken-verdelers/bikeshop/swyff.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/swyff.webp"
 tags = ["elektrische fietsen"]
 url = "https://www.swyff.com/nl/fietsen-1.htm"
 weight = 10
@@ -9,7 +9,7 @@ weight = 10
 [items."oxford.webp"]
 title = "Oxford"
 alt = "Oxford logo"
-image = "/images/merken-verdelers/bikeshop/oxford.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/oxford.webp"
 tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride", "vouwfietsen"]
 url = "https://www.oxfordbikes.be/"
 weight = 20
@@ -17,7 +17,7 @@ weight = 20
 [items."zannata.webp"]
 title = "Zannata"
 alt = "Zannata logo"
-image = "/images/merken-verdelers/bikeshop/zannata.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/zannata.webp"
 tags = ["koersfietsen"]
 url = "https://www.zannata.be/"
 weight = 30
@@ -25,39 +25,23 @@ weight = 30
 [items."thompson.webp"]
 title = "Thompson"
 alt = "Thompson logo"
-image = "/images/merken-verdelers/bikeshop/thompson.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/thompson.webp"
 tags = ["elektrische fietsen", "city", "hybride", "vouwfietsen", "koersfietsen", "MTB"]
 url = "https://thompson-bikebuilder.be/en/"
 weight = 50
 
-[items."scatto.webp"]
-title = "Scatto"
-alt = "Scatto logo"
-image = "/images/merken-verdelers/bikeshop/scatto.webp"
-tags = ["koersfietsen"]
-url = "http://www.scatto-bikes.com/home"
-weight = 60
-
 [items."lavenir.svg"]
 title = "L'Avenir"
 alt = "L'Avenir logo"
-image = "/images/merken-verdelers/bikeshop/lavenir.svg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/lavenir.svg"
 tags = ["city"]
 url = "https://www.lavenir.be/"
 weight = 70
 
-[items."kuota.avif"]
-title = "Kuota"
-alt = "Kuota logo"
-image = "/images/merken-verdelers/bikeshop/kuota.avif"
-tags = ["koersfietsen", "MTB"]
-url = "https://www.kuota-cycle.com/"
-weight = 80
-
 [items."gazelle.webp"]
 title = "Gazelle"
 alt = "Gazelle logo"
-image = "/images/merken-verdelers/bikeshop/gazelle.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/gazelle.webp"
 tags = ["city", "elektrische fietsen", "hybride"]
 url = "https://www.gazellebikes.com/nl-be"
 weight = 90
@@ -65,7 +49,7 @@ weight = 90
 [items."descheemaeker.svg"]
 title = "Descheemaeker"
 alt = "Descheemaeker logo"
-image = "/images/merken-verdelers/bikeshop/descheemaeker.svg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/descheemaeker.svg"
 tags = ["vouwfietsen", "BMX"]
 url = "https://www.descheemaeker.be/nl"
 weight = 100
@@ -73,7 +57,14 @@ weight = 100
 [items."flanders.webp"]
 title = "Flanders"
 alt = "Flanders logo"
-image = "/images/merken-verdelers/bikeshop/flanders.webp"
+image = "/images/collecties/bikeshop/merken-en-verdelers/flanders.webp"
 tags = ["koersfietsen", "MTB"]
 url = "https://flandersfietsen.be/wp/"
 weight = 120
+
+[items."bfk.webp"]
+title = "BFK"
+alt = "BFK logo"
+image = "/images/collecties/bikeshop/merken-en-verdelers/bfk.webp"
+tags = ["kinderfietsen"]
+weight = 130

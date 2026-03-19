@@ -1,4 +1,25 @@
 {{ define "main" }}
+{{- $sectionKey := .Section -}}
+{{- $isDirectAccessSection := or (eq $sectionKey "bikeshop") (eq $sectionKey "driveshop") -}}
+{{- $sectionTitle := .Title -}}
+{{- $sectionContent := .Content -}}
+
+{{- if $isDirectAccessSection -}}
+    {{- $sectionTitle = humanize $sectionKey -}}
+    {{- $sectionSource := readFile (printf "content/%s.md" $sectionKey) -}}
+    {{- $sectionContent = trim (replaceRE `(?s)^\+\+\+.*?\+\+\+\s*` "" $sectionSource) "\r\n\t " -}}
+{{- end -}}
+
+{{ if $isDirectAccessSection }}
+{{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
+<section class="page-intro page-intro--after-hero">
+    <div class="container">
+        <p class="eyebrow">{{ $sectionTitle }}</p>
+        <h1>{{ $sectionTitle }}</h1>
+        <div class="page-copy">{{ $sectionContent | markdownify }}</div>
+    </div>
+</section>
+{{ else }}
 <section class="page-intro page-intro--home">
     <div class="container">
         <p class="eyebrow">Welkom bij Johan's Fietsenshop</p>
@@ -6,4 +27,5 @@
         <div class="page-copy">{{ .Content }}</div>
     </div>
 </section>
+{{ end }}
 {{ end }}

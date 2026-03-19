@@ -66,6 +66,16 @@
 
   applyHref('.site-brand');
   applyHref('.site-nav__contact');
+  applyHref('.site-footer__link--contact');
+  applyHref('.site-footer__link--merken');
+
+  const heroCopy = document.querySelector('.page-copy--hero');
+  if (heroCopy) {
+    const nextCopy = activeMode === 'drive' ? heroCopy.dataset.driveCopy : heroCopy.dataset.bikeCopy;
+    const paragraph = document.createElement('p');
+    paragraph.textContent = nextCopy || '';
+    heroCopy.replaceChildren(paragraph);
+  }
 
   const switchLink = document.querySelector('.site-nav__switch');
   if (switchLink) {

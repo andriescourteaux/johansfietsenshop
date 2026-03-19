@@ -1,6 +1,9 @@
 {{- $page := .Page -}}
 {{- $siteMode := partial "site-mode.html" $page -}}
 {{- $showContent := .ShowContent -}}
+{{- $bikeHeroCopy := or $page.Params.hero_intro_bike ($page.Content | plainify) -}}
+{{- $driveHeroCopy := or $page.Params.hero_intro_drive $bikeHeroCopy -}}
+{{- $heroCopy := cond $siteMode.isDrive $driveHeroCopy $bikeHeroCopy -}}
 <section class="shared-hero {{ if $showContent }}shared-hero--content{{ else }}shared-hero--banner-only{{ end }} home-hero">
     <div class="home-hero__media" aria-hidden="true">
         <img class="home-hero__image" src="{{ $siteMode.heroPath }}" data-bike-src="{{ $siteMode.heroBikePath }}" data-drive-src="{{ $siteMode.heroDrivePath }}" alt="">
@@ -20,7 +23,7 @@
         </div>
         {{ end }}
         {{ if .ShowTitle }}<h1>{{ $page.Title }}</h1>{{ end }}
-        {{ if .ShowIntro }}<div class="page-copy page-copy--hero">{{ $page.Content }}</div>{{ end }}
+        {{ if .ShowIntro }}<div class="page-copy page-copy--hero" data-bike-copy="{{ $bikeHeroCopy }}" data-drive-copy="{{ $driveHeroCopy }}"><p>{{ $heroCopy }}</p></div>{{ end }}
     </div>
     {{ end }}
 </section>

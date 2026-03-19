@@ -23,9 +23,6 @@
         {{ if .Params.collection_key }}
         {{ partial "media-collection.html" . }}
         {{ partial "media-collection-script.html" . }}
-        {{ else if .Params.gallery_mode }}
-        {{ partial "merken-gallery.html" . }}
-        {{ partial "merken-gallery-script.html" . }}
         {{ else if .Params.brands }}
         <section class="placeholder-group">
             <div>

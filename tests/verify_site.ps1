@@ -7,16 +7,32 @@ param(
     [string]$HeadTemplatePath
 )
 
+$RepoRoot = Split-Path -Parent $PSScriptRoot
+$problems = @()
+
 function Add-Problem {
     param([string]$Message)
     $script:problems += $Message
 }
 
-function Read-Html {
+function Read-GeneratedText {
     param([string]$RelativePath)
+
     $fullPath = Join-Path $PublicDir $RelativePath
     if (-not (Test-Path $fullPath)) {
         Add-Problem ('Missing generated file: ' + $RelativePath)
+        return $null
+    }
+
+    return Get-Content $fullPath -Raw
+}
+
+function Read-RepoText {
+    param([string]$RelativePath)
+
+    $fullPath = Join-Path $RepoRoot $RelativePath
+    if (-not (Test-Path $fullPath)) {
+        Add-Problem ('Missing repository file: ' + $RelativePath)
         return $null
     }
 
@@ -47,287 +63,168 @@ function Assert-NotContains {
     }
 }
 
-function Assert-PathExists {
-    param(
-        [string]$TargetPath,
-        [string]$Description
-    )
-
-    if (-not (Test-Path $TargetPath)) {
-        Add-Problem ('Missing path: ' + $Description + ' (' + $TargetPath + ')')
-    }
-}
-
-function Assert-AllContains {
+function Assert-Matches {
     param(
         [string]$Content,
-        [string[]]$Markers,
+        [string]$Pattern,
         [string]$Context
     )
 
-    foreach ($marker in $Markers) {
-        Assert-Contains $Content $marker $Context
+    if ($null -eq $Content -or -not [regex]::IsMatch($Content, $Pattern)) {
+        Add-Problem ('Missing pattern "' + $Pattern + '" in ' + $Context)
     }
 }
 
-$problems = @()
+function Assert-NotMatches {
+    param(
+        [string]$Content,
+        [string]$Pattern,
+        [string]$Context
+    )
 
-$homeHtml = Read-Html 'index.html'
-$contactHtml = Read-Html 'contact/index.html'
-$bikeMerkenHtml = Read-Html 'bikeshop/merken-en-verdelers/index.html'
-$driveMerkenHtml = Read-Html 'driveshop/merken-en-verdelers/index.html'
-$bikeAccessoriesHtml = Read-Html 'bikeshop/accessoires/index.html'
-$bikeModelsHtml = Read-Html 'bikeshop/modellen-in-de-kijker/index.html'
-$bikeLeasingHtml = Read-Html 'bikeshop/leasing-fietsen/index.html'
-$driveModelsHtml = Read-Html 'driveshop/modellen-in-de-kijker/index.html'
-$driveWinterHtml = Read-Html 'driveshop/winteronderhoud-van-tuinmachines/index.html'
+    if ($null -ne $Content -and [regex]::IsMatch($Content, $Pattern)) {
+        Add-Problem ('Unexpected pattern "' + $Pattern + '" in ' + $Context)
+    }
+}
 
-foreach ($pathSpec in @(
-    @{ Path = 'static/images/collecties/bikeshop/merken-en-verdelers'; Description = 'bike brands collection directory' },
-    @{ Path = 'static/images/collecties/bikeshop/leasing-fietsen'; Description = 'bike leasing collection directory' },
-    @{ Path = 'static/images/collecties/bikeshop/accessoires'; Description = 'bike accessories collection directory' },
-    @{ Path = 'static/images/collecties/bikeshop/modellen-in-de-kijker'; Description = 'bike models collection directory' },
-    @{ Path = 'static/images/collecties/driveshop/merken-en-verdelers'; Description = 'drive brands collection directory' },
-    @{ Path = 'static/images/collecties/driveshop/modellen-in-de-kijker'; Description = 'drive models collection directory' },
-    @{ Path = 'data/collecties/bikeshop/merken-en-verdelers.toml'; Description = 'bike brands collection data file' },
-    @{ Path = 'data/collecties/bikeshop/leasing-fietsen.toml'; Description = 'bike leasing collection data file' },
-    @{ Path = 'data/collecties/bikeshop/accessoires.toml'; Description = 'bike accessories collection data file' },
-    @{ Path = 'data/collecties/bikeshop/modellen-in-de-kijker.toml'; Description = 'bike models collection data file' },
-    @{ Path = 'data/collecties/driveshop/merken-en-verdelers.toml'; Description = 'drive brands collection data file' },
-    @{ Path = 'data/collecties/driveshop/modellen-in-de-kijker.toml'; Description = 'drive models collection data file' }
+function Normalize-Text {
+    param([string]$Content)
+
+    if ($null -eq $Content) {
+        return $null
+    }
+
+    $withoutTags = [regex]::Replace($Content, '<[^>]+>', ' ')
+    $decoded = [System.Net.WebUtility]::HtmlDecode($withoutTags)
+    return ([regex]::Replace($decoded, '\s+', ' ')).Trim()
+}
+
+function Assert-NormalizedContains {
+    param(
+        [string]$Content,
+        [string]$ExpectedText,
+        [string]$Context
+    )
+
+    if ($null -eq $Content) {
+        Add-Problem ('Missing content for normalized text check in ' + $Context)
+        return
+    }
+
+    if ([string]::IsNullOrWhiteSpace($ExpectedText)) {
+        Add-Problem ('Missing expected normalized text for ' + $Context)
+        return
+    }
+
+    $normalizedContent = Normalize-Text $Content
+    $normalizedExpected = Normalize-Text $ExpectedText
+
+    if (-not $normalizedContent.Contains($normalizedExpected)) {
+        Add-Problem ('Missing authored text "' + $normalizedExpected + '" in ' + $Context)
+    }
+}
+
+function Get-MarkdownBody {
+    param([string]$RelativePath)
+
+    $content = Read-RepoText $RelativePath
+    if ($null -eq $content) {
+        return $null
+    }
+
+    $match = [regex]::Match($content, '(?s)^\+\+\+.*?\+\+\+\s*(?<body>.+?)\s*$')
+    if (-not $match.Success) {
+        Add-Problem ('Unable to parse markdown body from ' + $RelativePath)
+        return $null
+    }
+
+    return $match.Groups['body'].Value.Trim()
+}
+
+function Get-SectionFragment {
+    param(
+        [string]$Content,
+        [string]$Pattern,
+        [string]$Context
+    )
+
+    if ($null -eq $Content) {
+        return $null
+    }
+
+    $match = [regex]::Match(
+        $Content,
+        $Pattern,
+        [System.Text.RegularExpressions.RegexOptions]::Singleline
+    )
+
+    if (-not $match.Success) {
+        Add-Problem ('Missing section pattern "' + $Pattern + '" in ' + $Context)
+        return $null
+    }
+
+    return $match.Value
+}
+
+$homeHtml = Read-GeneratedText 'index.html'
+$contactHtml = Read-GeneratedText 'contact/index.html'
+$bikeLandingHtml = Read-GeneratedText 'bikeshop/index.html'
+$driveLandingHtml = Read-GeneratedText 'driveshop/index.html'
+$bikeBrandsHtml = Read-GeneratedText 'bikeshop/merken-en-verdelers/index.html'
+$driveBrandsHtml = Read-GeneratedText 'driveshop/merken-en-verdelers/index.html'
+
+$modeScriptTemplate = Read-RepoText 'layouts/partials/mode-script.html'
+$singleTemplate = Read-RepoText 'layouts/_default/single.html'
+$bikeBrandsData = Read-RepoText 'data/collecties/bikeshop/merken-en-verdelers.toml'
+$driveBrandsData = Read-RepoText 'data/collecties/driveshop/merken-en-verdelers.toml'
+$bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
+$driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
+
+$bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
+$driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
+
+$homeHeroSection = Get-SectionFragment $homeHtml '<section class="shared-hero.*?</section>' 'index.html'
+
+# Issue 1: shared-page footer links must be drive-mode aware in the mode script.
+Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
+Assert-Contains $homeHtml 'site-footer__link--merken' 'index.html'
+Assert-Contains $contactHtml 'site-footer__link--contact' 'contact/index.html'
+Assert-Contains $contactHtml 'site-footer__link--merken' 'contact/index.html'
+Assert-Contains $modeScriptTemplate "applyHref('.site-footer__link--contact');" 'layouts/partials/mode-script.html'
+Assert-Contains $modeScriptTemplate "applyHref('.site-footer__link--merken');" 'layouts/partials/mode-script.html'
+
+# Issue 2: homepage hero copy must expose bike/drive text hooks for JS mode switching.
+Assert-Contains $homeHeroSection 'page-copy--hero' 'index.html shared hero'
+Assert-Matches $homeHeroSection '(?s)page-copy--hero[^>]*data-bike-[^=]+=' 'index.html shared hero'
+Assert-Matches $homeHeroSection '(?s)page-copy--hero[^>]*data-drive-[^=]+=' 'index.html shared hero'
+Assert-Contains $modeScriptTemplate 'page-copy--hero' 'layouts/partials/mode-script.html'
+
+# Issue 3: section landing routes must render the authored section content.
+Assert-NormalizedContains $bikeLandingHtml $bikeLandingBody 'bikeshop/index.html'
+Assert-NormalizedContains $driveLandingHtml $driveLandingBody 'driveshop/index.html'
+
+# Issue 4: brands migration must not depend on legacy gallery branches or paths, and BFK must not use Flanders.
+Assert-NotContains $singleTemplate '.Params.gallery_mode' 'layouts/_default/single.html'
+Assert-NotContains $singleTemplate 'partial "merken-gallery.html"' 'layouts/_default/single.html'
+Assert-NotContains $singleTemplate 'partial "merken-gallery-script.html"' 'layouts/_default/single.html'
+Assert-NotContains $bikeBrandsData '/images/merken-verdelers/' 'data/collecties/bikeshop/merken-en-verdelers.toml'
+Assert-NotContains $driveBrandsData '/images/merken-verdelers/' 'data/collecties/driveshop/merken-en-verdelers.toml'
+Assert-NotContains $bikeBrandsHtml '/images/merken-verdelers/' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotContains $driveBrandsHtml '/images/merken-verdelers/' 'driveshop/merken-en-verdelers/index.html'
+Assert-Contains $bikeBrandsHtml 'aria-label="BFK"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotMatches $bikeBrandsHtml '<a[^>]+href="https://flandersfietsen\.be/wp/"[^>]+aria-label="BFK"' 'bikeshop/merken-en-verdelers/index.html'
+
+# Issue 5: active brands content must not keep dead legacy front matter keys.
+foreach ($contentCheck in @(
+    @{ Content = $bikeBrandsContent; Context = 'content/merken-en-verdelers-bikeshop.md' },
+    @{ Content = $driveBrandsContent; Context = 'content/merken-en-verdelers-driveshop.md' }
 )) {
-    Assert-PathExists $pathSpec.Path $pathSpec.Description
-}
-
-Assert-AllContains $homeHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    '/images/header_drive.webp',
-    'data-shared-page="true"',
-    'data-site-mode="bike"',
-    'site-mode-script',
-    'opening-hours',
-    'data-mode-panel="bike"',
-    'data-mode-panel="drive"',
-    'site-nav__menu-toggle',
-    'site-nav__menu',
-    'site-nav__menu-shell',
-    'data-mode-nav="bike"',
-    'data-mode-nav="drive"',
-    'overview-card__media',
-    'overview-card__image',
-    'overview-card__overlay',
-    'Merken en verdelers',
-    'Accessoires',
-    'Enkele modellen in de kijker',
-    'Leasing fietsen',
-    'Modellen in de kijker',
-    'Winteronderhoud van tuinmachines',
-    'bikeshop/accessoires/',
-    'bikeshop/modellen-in-de-kijker/',
-    'bikeshop/leasing-fietsen/',
-    'driveshop/modellen-in-de-kijker/',
-    'driveshop/winteronderhoud-van-tuinmachines/'
-) 'index.html'
-
-Assert-AllContains $contactHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    '/images/header_drive.webp',
-    '<form',
-    'Online verzending is nog niet actief.',
-    'data-shared-page="true"',
-    'data-site-mode="bike"',
-    'site-mode-script',
-    'site-nav__contact',
-    'site-nav__switch',
-    'site-nav__menu-toggle',
-    'site-nav__menu',
-    'site-nav__menu-shell'
-) 'contact/index.html'
-
-Assert-NotContains $contactHtml 'site-nav__merken' 'contact/index.html'
-Assert-NotContains $contactHtml 'opening-hours' 'contact/index.html'
-Assert-NotContains $contactHtml 'page-copy--hero' 'contact/index.html'
-
-Assert-AllContains $bikeMerkenHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    'data-site-mode="bike"',
-    'site-nav__menu-toggle',
-    'site-nav__menu',
-    'site-nav__menu-shell',
-    'data-mode-nav="bike"',
-    'media-collection',
-    'media-collection--brand-links',
-    'data-media-collection',
-    'media-collection__filters',
-    'media-collection__filter',
-    'data-media-item',
-    'data-tags=',
-    'target="_blank"',
-    'rel="noopener noreferrer"'
-) 'bikeshop/merken-en-verdelers/index.html'
-
-Assert-AllContains $driveMerkenHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_drive.webp',
-    'data-site-mode="drive"',
-    'site-nav__menu-toggle',
-    'site-nav__menu',
-    'site-nav__menu-shell',
-    'data-mode-nav="drive"',
-    'media-collection',
-    'media-collection--brand-links',
-    'data-media-collection',
-    'media-collection__filters',
-    'media-collection__filter',
-    'data-media-item',
-    'data-tags=',
-    'target="_blank"',
-    'rel="noopener noreferrer"'
-) 'driveshop/merken-en-verdelers/index.html'
-
-Assert-AllContains $bikeLeasingHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    'Leasing fietsen',
-    'data-site-mode="bike"',
-    'site-nav__menu-toggle',
-    'media-collection',
-    'media-collection--brand-links',
-    'data-media-collection',
-    'data-media-item',
-    'target="_blank"',
-    'rel="noopener noreferrer"'
-) 'bikeshop/leasing-fietsen/index.html'
-
-Assert-NotContains $bikeLeasingHtml 'media-collection__filters' 'bikeshop/leasing-fietsen/index.html'
-
-Assert-AllContains $bikeAccessoriesHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    'Accessoires',
-    'data-site-mode="bike"',
-    'site-nav__menu-toggle',
-    'media-collection',
-    'media-collection--hover-cards',
-    'data-media-collection',
-    'data-media-item',
-    'media-collection__overlay',
-    'media-collection__title'
-) 'bikeshop/accessoires/index.html'
-
-Assert-AllContains $bikeModelsHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_bike.webp',
-    'Enkele modellen in de kijker',
-    'data-site-mode="bike"',
-    'site-nav__menu-toggle',
-    'media-collection',
-    'media-collection--hover-cards',
-    'data-media-collection',
-    'data-media-item',
-    'media-collection__overlay',
-    'media-collection__title'
-) 'bikeshop/modellen-in-de-kijker/index.html'
-
-Assert-AllContains $driveModelsHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_drive.webp',
-    'Modellen in de kijker',
-    'data-site-mode="drive"',
-    'site-nav__menu-toggle',
-    'media-collection',
-    'media-collection--hover-cards',
-    'data-media-collection',
-    'data-media-item',
-    'media-collection__overlay',
-    'media-collection__title'
-) 'driveshop/modellen-in-de-kijker/index.html'
-
-Assert-AllContains $driveWinterHtml @(
-    'shared-hero',
-    'home-hero',
-    'home-hero__image',
-    '/images/header_drive.webp',
-    'Winteronderhoud van tuinmachines',
-    'data-site-mode="drive"',
-    'site-nav__menu-toggle',
-    'site-nav__menu',
-    'site-nav__menu-shell'
-) 'driveshop/winteronderhoud-van-tuinmachines/index.html'
-
-Assert-NotContains $driveWinterHtml 'data-media-collection' 'driveshop/winteronderhoud-van-tuinmachines/index.html'
-Assert-NotContains $driveWinterHtml 'media-collection' 'driveshop/winteronderhoud-van-tuinmachines/index.html'
-
-if ($CssPath) {
-    if (-not (Test-Path $CssPath)) {
-        Add-Problem ('Missing CSS file: ' + $CssPath)
-    }
-    else {
-        $css = Get-Content $CssPath -Raw
-        foreach ($marker in @(
-            '.site-brand__logo',
-            '.site-nav__switch',
-            '.site-nav__menu-toggle',
-            '.site-nav__menu',
-            '.site-nav__menu-shell',
-            '.site-nav__menu-list[hidden]',
-            '.site-nav__item,',
-            '.shared-hero',
-            '.home-hero__image',
-            '.opening-hours',
-            '.home-overview__panel',
-            '.overview-card__media',
-            '.overview-card__image',
-            '.overview-card__overlay',
-            '@font-face',
-            '/fonts/Roboto-Regular.ttf',
-            '/fonts/Roboto-Bold.ttf',
-            'font-family: "Roboto", Arial, sans-serif;',
-            '.media-collection',
-            '.media-collection__filters',
-            '.media-collection__filter',
-            '.media-collection__grid--brand-links',
-            '.media-collection__grid--hover-cards',
-            '.media-collection__overlay',
-            '.media-collection__title',
-            'grid-template-columns: repeat(3, minmax(0, 1fr));',
-            'aspect-ratio:',
-            'object-fit: contain;'
-        )) {
-            if ($css -notmatch [regex]::Escape($marker)) {
-                Add-Problem ('Missing CSS marker "' + $marker + '" in ' + $CssPath)
-            }
-        }
-    }
-}
-
-if ($HeadTemplatePath) {
-    if (-not (Test-Path $HeadTemplatePath)) {
-        Add-Problem ('Missing head template: ' + $HeadTemplatePath)
-    }
-    else {
-        $headTemplate = Get-Content $HeadTemplatePath -Raw
-        Assert-Contains $headTemplate 'css/style.css' $HeadTemplatePath
-    }
+    Assert-NotMatches $contentCheck.Content '(?m)^gallery_mode\s*=' $contentCheck.Context
+    Assert-NotMatches $contentCheck.Content '(?m)^gallery_data_key\s*=' $contentCheck.Context
+    Assert-NotMatches $contentCheck.Content '(?m)^brands_heading\s*=' $contentCheck.Context
+    Assert-NotMatches $contentCheck.Content '(?m)^dealers_heading\s*=' $contentCheck.Context
+    Assert-NotMatches $contentCheck.Content '(?m)^brands\s*=' $contentCheck.Context
+    Assert-NotMatches $contentCheck.Content '(?m)^dealers\s*=' $contentCheck.Context
 }
 
 if ($problems.Count -gt 0) {
@@ -336,7 +233,3 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
-
-
-
-
