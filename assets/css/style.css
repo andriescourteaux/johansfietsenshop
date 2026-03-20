@@ -368,7 +368,6 @@ h1 {
     display: block;
     padding: 1.5rem;
     min-height: 12rem;
-    border: 1px solid rgba(255, 248, 238, 0.12);
     background: rgba(24, 28, 27, 0.88);
     color: rgba(255, 248, 238, 0.9);
     box-shadow: 0 0.5rem 1.4rem rgba(16, 16, 16, 0.16);
@@ -725,7 +724,9 @@ h1 {
     background: var(--surface);
     color: var(--text);
     cursor: pointer;
-    font-variant: small-caps;
+    font-variant: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .merken-gallery__filter.is-active {
@@ -901,7 +902,6 @@ h1 {
     padding: 0;
     overflow: hidden;
     contain: paint;
-    border: 1px solid rgba(255, 248, 238, 0.12);
     background: rgba(24, 28, 27, 0.9);
     color: rgba(255, 248, 238, 0.94);
     backdrop-filter: none;
@@ -1009,7 +1009,9 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     background: var(--surface);
     color: var(--text);
     cursor: pointer;
-    font-variant: small-caps;
+    font-variant: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .media-collection__filter.is-active {
@@ -1038,6 +1040,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 .media-collection__card {
     display: block;
     color: inherit;
+    transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .media-collection__media {
@@ -1063,6 +1066,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 .media-collection__image {
     width: 100%;
     height: 100%;
+    transition: transform 220ms ease;
 }
 
 .media-collection__media--brand-links .media-collection__image {
@@ -1264,5 +1268,26 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 
     .site-footer__hours-line {
         gap: 0.15rem;
+    }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .media-collection__card:hover,
+    .media-collection__card:focus-visible,
+    .media-collection__card--static:hover {
+        transform: translateY(-0.2rem);
+        box-shadow: 0 1rem 2.1rem rgba(16, 16, 16, 0.18);
+    }
+
+    .media-collection__card:hover .media-collection__image,
+    .media-collection__card:focus-visible .media-collection__image,
+    .media-collection__card--static:hover .media-collection__image {
+        transform: scale(1.03);
+    }
+
+    .media-collection__card:hover .media-collection__overlay,
+    .media-collection__card:focus-visible .media-collection__overlay,
+    .media-collection__card--static:hover .media-collection__overlay {
+        opacity: 0.92;
     }
 }
