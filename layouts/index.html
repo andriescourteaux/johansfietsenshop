@@ -1,6 +1,7 @@
 {{ define "main" }}
-{{ partial "shared-hero.html" (dict "Page" . "ShowContent" true "ShowOpeningHours" true "ShowTitle" true "ShowIntro" true) }}
+{{ partial "shared-hero.html" (dict "Page" . "ShowContent" true "ShowOpeningHours" false "ShowTitle" true "ShowIntro" true) }}
 {{- $siteMode := partial "site-mode.html" . -}}
+{{- $openingHours := partial "opening-hours-data.html" (or .Params.opening_hours (slice)) -}}
 <section class="home-overview home-overview--mode-aware" data-mode-transition-root="home-overview">
     <div class="container">
         <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike" data-mode-transition-panel="bike">
@@ -13,7 +14,6 @@
                     </span>
                     <span class="overview-card__body">
                         <span class="overview-card__title">{{ .title }}</span>
-                        <!-- <span class="overview-card__summary">{{ .summary }}</span> -->
                     </span>
                 </a>
                 {{ end }}
@@ -37,7 +37,7 @@
         </div>
     </div>
 </section>
-{{ with .Params.opening_hours }}
+{{ with $openingHours }}
 <section class="opening-hours-section">
     <div class="container">
         <div class="opening-hours-card">
@@ -45,13 +45,13 @@
             <table class="opening-hours-table">
                 <tbody>
                     {{ range . }}
-                    {{- $serialized := replaceRE "^([^:]+):\\s*(.*)$" "$1||$2" . -}}
-                    {{- $parts := split $serialized "||" -}}
-                    {{- $day := index $parts 0 -}}
-                    {{- $hours := cond (gt (len $parts) 1) (index $parts 1) "" -}}
                     <tr>
-                        <th scope="row">{{ $day }}</th>
-                        <td>{{ $hours }}</td>
+                        <th scope="row">{{ .day }}</th>
+                        <td>
+                            {{ range .slots }}
+                            <span class="opening-hours-slot">{{ . }}</span>
+                            {{ end }}
+                        </td>
                     </tr>
                     {{ end }}
                 </tbody>

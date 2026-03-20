@@ -926,16 +926,27 @@ $openingHoursTableSection = Get-SectionFragment `
     'index.html after home cards'
 
 if ($null -ne $openingHoursTableSection) {
-    foreach ($hoursPair in $homeOpeningHoursPairs) {
-        Assert-Matches `
-            $openingHoursTableSection `
-            ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($hoursPair.Day) + '.*?' + [regex]::Escape($hoursPair.Value) + '.*?</tr>') `
-            'index.html opening-hours table rows'
-    }
-}
+    foreach ($hoursLine in $homeOpeningHours) {
+        $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
+        $parts = $serialized -split '\|\|', 2
+        $day = $parts[0]
+        $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        $rowPattern = '(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day)
 
-foreach ($hoursLine in $homeOpeningHours) {
-    Assert-NormalizedContains $homeFooterSection $hoursLine 'index.html footer'
+        if ($slots.Count -gt 0) {
+            $rowPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
+        }
+
+        $rowPattern += '.*?</tr>'
+        Assert-Matches $openingHoursTableSection $rowPattern 'index.html opening-hours table rows'
+
+        $footerPattern = '(?is)' + [regex]::Escape($day)
+        if ($slots.Count -gt 0) {
+            $footerPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
+        }
+
+        Assert-Matches $homeFooterSection $footerPattern 'index.html footer'
+    }
 }
 
 $overviewCardImageTags = @([regex]::Matches($homeHtml, '<img\b[^>]*\bclass="[^"]*\boverview-card__image\b[^"]*"[^>]*>'))
@@ -986,6 +997,57 @@ Assert-Matches `
     $cssContent `
     '@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)' `
     'assets/css/style.css reduced motion branch'
+
+# Issue 8: hero eyebrow must be removed, contact must move into both menus, split hours must not render raw pipes, and contact needs accent hooks plus a map embed.
+Assert-NotContains $sharedHeroTemplate 'Site2' 'layouts/partials/shared-hero.html'
+Assert-NotContains $homeHeroSection 'Site2' 'index.html shared hero'
+Assert-NotContains $homeHeaderSection 'site-nav__contact' 'index.html header'
+Assert-NotContains $modeScriptTemplate "applyHref('.site-nav__contact');" 'layouts/partials/mode-script.html'
+Assert-Matches `
+    $homeHeaderSection `
+    '(?is)<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?>Contact<' `
+    'index.html bike header menu'
+Assert-Matches `
+    $homeHeaderSection `
+    '(?is)<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?>Contact<' `
+    'index.html drive header menu'
+Assert-Matches `
+    $modeScriptTemplate `
+    "(?s)const openMenu = \(\) => \{.*?menu\.hidden = false;.*?applyMenuState\('closed'\);.*?requestAnimationFrame\(\(\) => \{.*?applyMenuState\('opening'\);" `
+    'layouts/partials/mode-script.html menu opening animation hook'
+
+Assert-NotContains $openingHoursTableSection '|' 'index.html opening-hours table'
+Assert-NotContains $homeFooterSection '|' 'index.html footer opening hours'
+
+foreach ($hoursLine in @($homeOpeningHours | Where-Object { $_ -match '\|' })) {
+    $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
+    $parts = $serialized -split '\|\|', 2
+    $day = $parts[0]
+    $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+
+    Assert-NotContains $openingHoursTableSection $hoursLine 'index.html opening-hours table'
+    Assert-NotContains $homeFooterSection $hoursLine 'index.html footer opening hours'
+
+    if ($slots.Count -gt 0) {
+        Assert-Matches `
+            $openingHoursTableSection `
+            ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day) + '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?') + '.*?</tr>') `
+            'index.html split opening-hours table row'
+
+        Assert-Matches `
+            $homeFooterSection `
+            ('(?is)' + [regex]::Escape($day) + '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')) `
+            'index.html split footer opening hours'
+    }
+}
+
+Assert-Matches $contactHtml '(?is)\bcontact-panel__name\b' 'contact/index.html'
+Assert-Matches $contactHtml '(?is)\bcontact-panel__term\b' 'contact/index.html'
+Assert-Matches $contactHtml '(?is)\bcontact-panel__map\b' 'contact/index.html'
+Assert-Matches `
+    $contactHtml `
+    '(?is)<iframe\b[^>]*src="https://www\.google\.com/maps[^"]*"' `
+    'contact/index.html Google Maps embed'
 
 if ($problems.Count -gt 0) {
     Write-Error ($problems -join "`n")

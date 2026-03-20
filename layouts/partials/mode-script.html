@@ -143,10 +143,11 @@
 
     clearCloseMenuTimer();
     menu.hidden = false;
-    applyMenuState('opening');
+    applyMenuState('closed');
     menuToggle.setAttribute('aria-expanded', 'true');
     body.classList.add('site-menu-open');
     window.requestAnimationFrame(() => {
+      applyMenuState('opening');
       window.requestAnimationFrame(() => {
         applyMenuState('open');
       });
@@ -211,7 +212,6 @@
     }
 
     applyHref('.site-brand');
-    applyHref('.site-nav__contact');
     applyHref('.site-footer__link--contact');
     applyHref('.site-footer__link--merken');
 

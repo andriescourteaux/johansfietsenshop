@@ -1,12 +1,20 @@
 {{- $siteMode := partial "site-mode.html" . -}}
 {{- $home := site.Home -}}
+{{- $openingHours := partial "opening-hours-data.html" (or $home.Params.opening_hours (slice)) -}}
 <footer class="site-footer">
     <div class="container site-footer__inner">
         <div class="site-footer__hours">
             {{ with $home.Params.opening_hours_title }}<p class="site-footer__title">{{ . }}</p>{{ end }}
-            {{ with $home.Params.opening_hours }}
+            {{ with $openingHours }}
                 {{ range . }}
-                <p class="site-footer__hours-line">{{ . }}</p>
+                <p class="site-footer__hours-line">
+                    <span class="site-footer__hours-day">{{ .day }}:</span>
+                    <span class="site-footer__hours-values">
+                        {{ range .slots }}
+                        <span class="site-footer__hours-slot">{{ . }}</span>
+                        {{ end }}
+                    </span>
+                </p>
                 {{ end }}
             {{ end }}
         </div>
@@ -20,4 +28,3 @@
         </div>
     </div>
 </footer>
-

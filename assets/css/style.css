@@ -261,6 +261,24 @@ h1 {
     color: rgba(255, 248, 238, 0.86);
 }
 
+.page--home .page-copy--hero {
+    max-width: 48rem;
+}
+
+@media (min-width: 961px) {
+    .page--home .page-copy--hero {
+        max-width: none;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 960px) {
+    .page--home .page-copy--hero {
+        max-width: 42rem;
+        white-space: normal;
+    }
+}
+
 .page-intro {
     padding: 3rem 0;
 }
@@ -1150,3 +1168,93 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 }
 
 
+
+
+.opening-hours-table td {
+    vertical-align: top;
+}
+
+.opening-hours-slot {
+    display: block;
+}
+
+.opening-hours-slot + .opening-hours-slot {
+    margin-top: 0.3rem;
+}
+
+.site-footer__hours-line {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.15rem 0.7rem;
+    align-items: start;
+}
+
+.site-footer__hours-day {
+    color: var(--footer-foreground);
+    font-weight: 700;
+}
+
+.site-footer__hours-values {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.site-footer__hours-slot {
+    display: block;
+}
+
+.contact-panel__name {
+    margin: 0 0 1.25rem;
+    color: var(--accent);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.contact-panel__list {
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.contact-panel__row {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.35rem 0.85rem;
+    align-items: start;
+}
+
+.contact-panel__term,
+.contact-panel__value {
+    margin: 0;
+}
+
+.contact-panel__term {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.contact-panel__map {
+    grid-column: 1 / -1;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: rgba(255, 253, 249, 0.92);
+    box-shadow: 0 0.8rem 2rem rgba(49, 39, 26, 0.08);
+}
+
+.contact-panel__map iframe {
+    display: block;
+    width: 100%;
+    min-height: 22rem;
+    border: 0;
+}
+
+@media (max-width: 640px) {
+    .site-footer__hours-line,
+    .contact-panel__row {
+        grid-template-columns: 1fr;
+    }
+
+    .site-footer__hours-line {
+        gap: 0.15rem;
+    }
+}

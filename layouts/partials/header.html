@@ -5,7 +5,6 @@
             <img class="site-brand__logo" src="{{ $siteMode.logoPath }}" data-bike-src="{{ $siteMode.logoBikePath }}" data-drive-src="{{ $siteMode.logoDrivePath }}" alt="{{ if $siteMode.isDrive }}Johan's Driveshop{{ else }}Bikeshop{{ end }} logo">
         </a>
         <nav class="site-nav" aria-label="Hoofdnavigatie">
-            <a class="site-nav__item site-nav__contact" href="{{ $siteMode.contactHref }}" data-bike-href="{{ $siteMode.contactBikeHref }}" data-drive-href="{{ $siteMode.contactDriveHref }}">Contact</a>
             <a class="site-nav__item site-nav__mode-toggle" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="Johan's Fietsenshop" data-drive-label="Johan's Driveshop" data-mode-state="{{ $siteMode.mode }}">
                 <span class="site-nav__mode-track" aria-hidden="true">
                     <span class="site-nav__mode-thumb"></span>
@@ -39,4 +38,3 @@
         </nav>
     </div>
 </header>
-

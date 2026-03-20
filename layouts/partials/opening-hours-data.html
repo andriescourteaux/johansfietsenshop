@@ -1,0 +1,16 @@
+{{- $entries := slice -}}
+{{- range . -}}
+  {{- $serialized := replaceRE "^([^:]+):\\s*(.*)$" "$1||$2" . -}}
+  {{- $parts := split $serialized "||" -}}
+  {{- $day := index $parts 0 -}}
+  {{- $hours := cond (gt (len $parts) 1) (index $parts 1) "" -}}
+  {{- $slots := slice -}}
+  {{- range (split $hours "|") -}}
+    {{- $slot := replaceRE "^\\s+|\\s+$" "" . -}}
+    {{- if $slot -}}
+      {{- $slots = $slots | append $slot -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $entries = $entries | append (dict "day" $day "slots" $slots) -}}
+{{- end -}}
+{{- return $entries -}}

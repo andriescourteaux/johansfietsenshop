@@ -54,12 +54,29 @@
         <div class="contact-panel">
             <div class="contact-panel__details">
                 <p class="contact-panel__label">Contactgegevens</p>
-                <p>Johan Alliet</p>
-                <p>Adres: Kalve 62, 9185 Wachtebeke</p>
-                <p>GSM: 0472/93 03 56</p>
-                <p>E-mail: johan.alliet@telenet.be</p>
-                <p>Btw nr. 0898284633</p>
-                <p>Betaalmogelijkheden: cash, bancontact of Payconiq</p>
+                <p class="contact-panel__name">Johan Alliet</p>
+                <dl class="contact-panel__list">
+                    <div class="contact-panel__row">
+                        <dt class="contact-panel__term">Adres:</dt>
+                        <dd class="contact-panel__value">Kalve 62, 9185 Wachtebeke</dd>
+                    </div>
+                    <div class="contact-panel__row">
+                        <dt class="contact-panel__term">GSM:</dt>
+                        <dd class="contact-panel__value">0472/93 03 56</dd>
+                    </div>
+                    <div class="contact-panel__row">
+                        <dt class="contact-panel__term">E-mail:</dt>
+                        <dd class="contact-panel__value">johan.alliet@telenet.be</dd>
+                    </div>
+                    <div class="contact-panel__row">
+                        <dt class="contact-panel__term">Btw nr.:</dt>
+                        <dd class="contact-panel__value">0898284633</dd>
+                    </div>
+                    <div class="contact-panel__row">
+                        <dt class="contact-panel__term">Betaalmogelijkheden:</dt>
+                        <dd class="contact-panel__value">cash, bancontact of Payconiq</dd>
+                    </div>
+                </dl>
             </div>
             <form class="contact-form" action="#" method="post">
                 <label>
@@ -81,6 +98,9 @@
                 <p class="contact-form__notice">Online verzending is nog niet actief.</p>
                 <button type="submit" disabled>Verzenden</button>
             </form>
+            <div class="contact-panel__map">
+                <iframe src="https://www.google.com/maps?q=Kalve%2062%2C%209185%20Wachtebeke&z=15&output=embed" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps kaart van Johan Alliet"></iframe>
+            </div>
         </div>
         {{ end }}
 
