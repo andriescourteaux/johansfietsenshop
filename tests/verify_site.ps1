@@ -926,16 +926,27 @@ $openingHoursTableSection = Get-SectionFragment `
     'index.html after home cards'
 
 if ($null -ne $openingHoursTableSection) {
-    foreach ($hoursPair in $homeOpeningHoursPairs) {
-        Assert-Matches `
-            $openingHoursTableSection `
-            ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($hoursPair.Day) + '.*?' + [regex]::Escape($hoursPair.Value) + '.*?</tr>') `
-            'index.html opening-hours table rows'
-    }
-}
+    foreach ($hoursLine in $homeOpeningHours) {
+        $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
+        $parts = $serialized -split '\|\|', 2
+        $day = $parts[0]
+        $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        $rowPattern = '(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day)
 
-foreach ($hoursLine in $homeOpeningHours) {
-    Assert-NormalizedContains $homeFooterSection $hoursLine 'index.html footer'
+        if ($slots.Count -gt 0) {
+            $rowPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
+        }
+
+        $rowPattern += '.*?</tr>'
+        Assert-Matches $openingHoursTableSection $rowPattern 'index.html opening-hours table rows'
+
+        $footerPattern = '(?is)' + [regex]::Escape($day)
+        if ($slots.Count -gt 0) {
+            $footerPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
+        }
+
+        Assert-Matches $homeFooterSection $footerPattern 'index.html footer'
+    }
 }
 
 $overviewCardImageTags = @([regex]::Matches($homeHtml, '<img\b[^>]*\bclass="[^"]*\boverview-card__image\b[^"]*"[^>]*>'))
