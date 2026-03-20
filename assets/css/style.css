@@ -44,6 +44,8 @@
     --footer-link: #1f1c18;
     --footer-link-hover: rgba(31, 28, 24, 0.72);
     --footer-border: rgba(31, 28, 24, 0.12);
+    --header-overlay-gradient-default: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 25%, rgba(14, 22, 20, 0) 100%);
+    --header-overlay-gradient-scrolled: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 25%, rgba(14, 22, 20, 0.08) 100%);
 }
 
 * {
@@ -66,6 +68,8 @@ body[data-theme="bike"] {
     --footer-link: #1f1c18;
     --footer-link-hover: rgba(31, 28, 24, 0.72);
     --footer-border: rgba(31, 28, 24, 0.12);
+    --header-overlay-gradient-default: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 25%, rgba(14, 22, 20, 0) 100%);
+    --header-overlay-gradient-scrolled: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 25%, rgba(14, 22, 20, 0.08) 100%);
 }
 
 body[data-site-mode="drive"],
@@ -94,21 +98,22 @@ img {
 }
 
 .site-header {
-    position: relative;
-    z-index: 10;
+    position: sticky;
+    top: 0;
+    z-index: 40;
     border-bottom: 1px solid var(--border);
     background: rgba(255, 253, 249, 1);
 }
 
 .site-header--overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     border-bottom: none;
-    background: linear-gradient(180deg, rgba(255, 255, 255, .75) 25%, rgba(14, 22, 20, 0) 100%);
+    background: var(--header-overlay-gradient-default);
 }
 
+body.site-header-scrolled .site-header--overlay {
+    background: var(--header-overlay-gradient-scrolled);
+}
 .site-header__inner,
 .site-footer__inner {
     display: flex;
@@ -164,6 +169,11 @@ img {
 }
 
 .site-header--overlay .site-brand,
+.site-header--overlay .site-brand:hover,
+.site-header--overlay .site-brand:focus-visible {
+    color: black;
+}
+
 .site-header--overlay .site-nav__item,
 .site-header--overlay .site-nav__menu-toggle {
     color: black;
@@ -171,12 +181,10 @@ img {
 }
 
 .site-header--overlay .site-nav__item:hover,
-.site-header--overlay .site-brand:hover,
 .site-header--overlay .site-nav__menu-toggle:hover {
     color: #ffffff;
     opacity: 1;
 }
-
 .site-header--overlay .site-nav__mode-toggle,
 .site-header--overlay .site-nav__mode-toggle:hover,
 .site-header--overlay .site-nav__mode-toggle:focus-visible {

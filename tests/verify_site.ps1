@@ -1053,7 +1053,7 @@ Assert-Matches `
     $homeHeaderSection `
     '(?is)<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?>Merken en verdelers<.*?>Modellen in de kijker<.*?>Winteronderhoud van tuinmachines<.*?>Contact<.*?</ul>' `
     'index.html drive header menu order'
-Assert-NotMatches $cssContent '(?is)\.site-header--overlay\s+\.site-brand(?:,|\s*\{).*?opacity\s*:' 'assets/css/style.css overlay logo opacity fade'
+Assert-NotMatches $cssContent '(?is)\\.site-header--overlay\\s+\\.site-brand\\s*,\\s*\\.site-header--overlay\\s+\\.site-brand:hover\\s*,\\s*\\.site-header--overlay\\s+\\.site-brand:focus-visible\\s*\\{[^}]*opacity\\s*:' 'assets/css/style.css overlay logo opacity fade'
 Assert-Matches $cssContent '(?is)\.site-header\b[^{}]*\{[^}]*\bposition\s*:\s*sticky\b[^}]*\btop\s*:\s*0' 'assets/css/style.css sticky header hook'
 Assert-Matches $modeScriptTemplate 'site-header-scrolled' 'layouts/partials/mode-script.html scrolled header hook'
 Assert-NotMatches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*\bborder\s*:' 'assets/css/style.css home card border removal'
