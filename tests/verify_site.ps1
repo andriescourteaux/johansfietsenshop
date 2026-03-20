@@ -998,7 +998,7 @@ Assert-Matches `
     '@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)' `
     'assets/css/style.css reduced motion branch'
 
-# Issue 8: hero eyebrow must be removed, contact must move into both menus, split hours must not render raw pipes, and contact needs accent hooks plus a map embed.
+# Issue 8: hero eyebrow removed, contact stays inside the dropdown, the home table splits midday slots, and the contact page exposes the expected hooks.
 Assert-NotContains $sharedHeroTemplate 'Site2' 'layouts/partials/shared-hero.html'
 Assert-NotContains $homeHeroSection 'Site2' 'index.html shared hero'
 Assert-NotContains $homeHeaderSection 'site-nav__contact' 'index.html header'
@@ -1017,7 +1017,7 @@ Assert-Matches `
     'layouts/partials/mode-script.html menu opening animation hook'
 
 Assert-NotContains $openingHoursTableSection '|' 'index.html opening-hours table'
-Assert-NotContains $homeFooterSection '|' 'index.html footer opening hours'
+Assert-Contains $homeFooterSection '|' 'index.html footer opening hours'
 
 foreach ($hoursLine in @($homeOpeningHours | Where-Object { $_ -match '\|' })) {
     $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
@@ -1026,18 +1026,13 @@ foreach ($hoursLine in @($homeOpeningHours | Where-Object { $_ -match '\|' })) {
     $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
 
     Assert-NotContains $openingHoursTableSection $hoursLine 'index.html opening-hours table'
-    Assert-NotContains $homeFooterSection $hoursLine 'index.html footer opening hours'
+    Assert-NormalizedContains $homeFooterSection $hoursLine 'index.html footer opening hours'
 
     if ($slots.Count -gt 0) {
         Assert-Matches `
             $openingHoursTableSection `
             ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day) + '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?') + '.*?</tr>') `
             'index.html split opening-hours table row'
-
-        Assert-Matches `
-            $homeFooterSection `
-            ('(?is)' + [regex]::Escape($day) + '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')) `
-            'index.html split footer opening hours'
     }
 }
 
@@ -1049,6 +1044,27 @@ Assert-Matches `
     '(?is)<iframe\b[^>]*src="https://www\.google\.com/maps[^"]*"' `
     'contact/index.html Google Maps embed'
 
+# Issue 9: sticky header polish, raw footer hours, hover parity, uppercase filters, and mode-aware contact accents.
+Assert-Matches `
+    $homeHeaderSection `
+    '(?is)<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?>Merken en verdelers<.*?>Accessoires<.*?>Enkele modellen in de kijker<.*?>Leasing fietsen<.*?>Contact<.*?</ul>' `
+    'index.html bike header menu order'
+Assert-Matches `
+    $homeHeaderSection `
+    '(?is)<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?>Merken en verdelers<.*?>Modellen in de kijker<.*?>Winteronderhoud van tuinmachines<.*?>Contact<.*?</ul>' `
+    'index.html drive header menu order'
+Assert-NotMatches $cssContent '(?is)\.site-header--overlay\s+\.site-brand(?:,|\s*\{).*?opacity\s*:' 'assets/css/style.css overlay logo opacity fade'
+Assert-Matches $cssContent '(?is)\.site-header\b[^{}]*\{[^}]*\bposition\s*:\s*sticky\b[^}]*\btop\s*:\s*0' 'assets/css/style.css sticky header hook'
+Assert-Matches $modeScriptTemplate 'site-header-scrolled' 'layouts/partials/mode-script.html scrolled header hook'
+Assert-NotMatches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*\bborder\s*:' 'assets/css/style.css home card border removal'
+Assert-NotMatches $cssContent '(?is)\.media-collection__filter\b[^{}]*\{[^}]*font-variant\s*:\s*small-caps' 'assets/css/style.css media collection filter small-caps'
+Assert-Matches $cssContent '(?is)\.media-collection__filter\b[^{}]*\{[^}]*text-transform\s*:\s*uppercase' 'assets/css/style.css media collection filter uppercase'
+Assert-Matches $cssContent '(?is)\.media-collection__card:hover[^{}]*\{[^}]*transform\s*:\s*translateY' 'assets/css/style.css media collection hover lift'
+Assert-Matches $cssContent '(?is)\.media-collection__card:hover\s+\.media-collection__image[^{}]*\{[^}]*transform\s*:\s*scale' 'assets/css/style.css media collection hover zoom'
+Assert-Matches $cssContent '(?is)body\[data-site-mode="bike"\][^{]*\{[^}]*--accent\s*:\s*#ffc100' 'assets/css/style.css bike accent variable'
+Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\][^{]*\{[^}]*--accent\s*:\s*#b93f33' 'assets/css/style.css drive accent variable'
+Assert-Matches $cssContent '(?is)\.contact-form input\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form input border contrast'
+Assert-Matches $cssContent '(?is)\.contact-form textarea\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form textarea border contrast'
 if ($problems.Count -gt 0) {
     Write-Error ($problems -join "`n")
     exit 1
