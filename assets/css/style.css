@@ -261,6 +261,24 @@ h1 {
     color: rgba(255, 248, 238, 0.86);
 }
 
+.page--home .page-copy--hero {
+    max-width: 48rem;
+}
+
+@media (min-width: 961px) {
+    .page--home .page-copy--hero {
+        max-width: none;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 960px) {
+    .page--home .page-copy--hero {
+        max-width: 42rem;
+        white-space: normal;
+    }
+}
+
 .page-intro {
     padding: 3rem 0;
 }
@@ -1148,5 +1166,6 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
         transform: none !important;
     }
 }
+
 
 
