@@ -37,6 +37,7 @@
     --muted: #686159;
     /*--border: #d8cfbf;*/
     --accent: #999999;
+    --accent-rgb: 153, 153, 153;
     --container: 72rem;
     --footer-background: #ffc100;
     --footer-foreground: #1f1c18;
@@ -62,6 +63,8 @@ body {
 
 body[data-site-mode="bike"],
 body[data-theme="bike"] {
+    --accent: #ffc100;
+    --accent-rgb: 255, 193, 0;
     --footer-background: #ffc100;
     --footer-foreground: #1f1c18;
     --footer-muted: #5f5032;
@@ -74,6 +77,8 @@ body[data-theme="bike"] {
 
 body[data-site-mode="drive"],
 body[data-theme="drive"] {
+    --accent: #b93f33;
+    --accent-rgb: 185, 63, 51;
     --footer-background: #b93f33;
     --footer-foreground: #fff8ee;
     --footer-muted: rgba(255, 248, 238, 0.82);
@@ -106,6 +111,10 @@ img {
 }
 
 .site-header--overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     border-bottom: none;
     background: var(--header-overlay-gradient-default);
@@ -305,7 +314,7 @@ h1 {
 
 .opening-hours-card {
     max-width: 38rem;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
     background: rgba(255, 253, 249, 0.96);
     box-shadow: 0 0.9rem 2rem rgba(49, 39, 26, 0.08);
 }
@@ -500,7 +509,7 @@ h1 {
     display: grid;
     gap: 1rem;
     padding: 1.75rem;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
     background: rgba(255, 253, 249, 0.92);
 }
 
@@ -510,11 +519,15 @@ h1 {
     color: var(--muted);
 }
 
+.contact-form label span {
+    color: var(--accent);
+    font-weight: 700;
+}
+
 .contact-form input,
 .contact-form textarea,
 .contact-form button {
     width: 100%;
-    border: 1px solid var(--border);
 }
 
 .contact-form input,
@@ -524,13 +537,18 @@ h1 {
     color: var(--text);
 }
 
+.contact-form input {
+    border: 1px solid rgba(var(--accent-rgb), 0.46);
+}
+
 .contact-form input:focus,
 .contact-form textarea:focus {
-    outline: 2px solid rgba(48, 84, 74, 0.18);
+    outline: 2px solid rgba(var(--accent-rgb), 0.18);
     border-color: var(--accent);
 }
 
 .contact-form textarea {
+    border: 1px solid rgba(var(--accent-rgb), 0.46);
     resize: vertical;
     min-height: 9rem;
 }
