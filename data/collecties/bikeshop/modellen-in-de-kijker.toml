@@ -1,17 +1,23 @@
-[items."elektrische-fiets.webp"]
-title = "Elektrische fiets"
-alt = "Elektrische fiets"
-image = "/images/header_bike.webp"
+[items."oxford-s-pedelec.webp"]
+title = "Oxford S-Pedelec"
+alt = "Oxford S-Pedelec"
+image = "/images/collecties/bikeshop/modellen-in-de-kijker/oxford-s-pedelec.webp"
 weight = 10
 
-[items."stadsfiets.webp"]
-title = "Stadsfiets"
-alt = "Stadsfiets"
-image = "/images/header_bike.jpg"
+[items."flanders_navigator.webp"]
+title = "Flanders Navigator"
+alt = "Flanders Navigator"
+image = "/images/collecties/bikeshop/modellen-in-de-kijker/flanders_navigator.webp"
 weight = 20
 
-[items."sportfiets.webp"]
-title = "Sportieve fiets"
-alt = "Sportieve fiets"
-image = "/images/header_bike.webp"
+[items."gazelle_eclipse_speed.webp"]
+title = "Gazelle Eclipse Speed"
+alt = "Gazelle Eclipse Speed"
+image = "/images/collecties/bikeshop/modellen-in-de-kijker/gazelle_eclipse_speed.webp"
 weight = 30
+
+[items."HPlus-POWERDRIVE-Pinion-Sport-Zwart-S.webp"]
+title = "HPlus POWERDRIVE Pinion Sport (Zwart, S)"
+alt = "HPlus POWERDRIVE Pinion Sport (Zwart, S)"
+image = "/images/collecties/bikeshop/modellen-in-de-kijker/HPlus-POWERDRIVE-Pinion-Sport-Zwart-S.webp"
+weight = 40
