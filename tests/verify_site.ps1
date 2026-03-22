@@ -680,6 +680,49 @@ function Get-TomlStringArray {
     return $values
 }
 
+
+function Get-TomlStringValue {
+    param(
+        [string]$Content,
+        [string]$Key,
+        [string]$Context
+    )
+
+    if ($null -eq $Content) {
+        return $null
+    }
+
+    $pattern = '(?m)^\s*' + [regex]::Escape($Key) + '\s*=\s*["''](?<value>[^"'']+)["'']'
+    $match = [regex]::Match($Content, $pattern)
+    if (-not $match.Success) {
+        Add-Problem ('Missing TOML string key "' + $Key + '" in ' + $Context)
+        return $null
+    }
+
+    return $match.Groups['value'].Value.Trim()
+}
+
+function Get-TomlBooleanValue {
+    param(
+        [string]$Content,
+        [string]$Key,
+        [string]$Context
+    )
+
+    if ($null -eq $Content) {
+        return $null
+    }
+
+    $pattern = '(?m)^\s*' + [regex]::Escape($Key) + '\s*=\s*(?<value>true|false)\b'
+    $match = [regex]::Match($Content, $pattern)
+    if (-not $match.Success) {
+        Add-Problem ('Missing TOML boolean key "' + $Key + '" in ' + $Context)
+        return $null
+    }
+
+    return $match.Groups['value'].Value -eq 'true'
+}
+
 function Get-OpeningHoursPairs {
     param(
         [string[]]$Lines,
@@ -848,6 +891,11 @@ $driveBrandsHtml = Read-GeneratedText 'driveshop/merken-en-verdelers/index.html'
 $modeScriptTemplate = Read-RepoText 'layouts/partials/mode-script.html'
 $sharedHeroTemplate = Read-RepoText 'layouts/partials/shared-hero.html'
 $singleTemplate = Read-RepoText 'layouts/_default/single.html'
+
+$baseTemplate = Read-RepoText 'layouts/_default/baseof.html'
+$promoPopupTemplate = Read-RepoText 'layouts/partials/promo-popup.html'
+$promoPopupScriptTemplate = Read-RepoText 'layouts/partials/promo-popup-script.html'
+$promoPopupData = Read-RepoText 'data/promo-popup.toml'
 $bikeBrandsData = Read-RepoText 'data/collecties/bikeshop/merken-en-verdelers.toml'
 $driveBrandsData = Read-RepoText 'data/collecties/driveshop/merken-en-verdelers.toml'
 $bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
@@ -855,6 +903,10 @@ $driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
 $homeFrontMatter = Get-FrontMatter 'content/_index.md'
 $cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-RepoText $CssPath }
 
+
+$promoPopupEnabled = Get-TomlBooleanValue $promoPopupData 'enabled' 'data/promo-popup.toml'
+$promoPopupImage = Get-TomlStringValue $promoPopupData 'image' 'data/promo-popup.toml'
+$promoPopupAlt = Get-TomlStringValue $promoPopupData 'alt' 'data/promo-popup.toml'
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
 $homeOpeningHours = Get-TomlStringArray $homeFrontMatter 'opening_hours' 'content/_index.md front matter'
@@ -1071,9 +1123,47 @@ Assert-Matches $cssContent '(?is)\.contact-form label span\b[^{}]*\{[^}]*color\s
 Assert-Matches $cssContent '(?is)\.contact-form label span\b[^{}]*\{[^}]*color\s*:\s*var\(--accent\)[^}]*font-weight\s*:\s*700' 'assets/css/style.css contact form label accent'
 Assert-Matches $cssContent '(?is)\.contact-form input\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form input border contrast'
 Assert-Matches $cssContent '(?is)\.contact-form textarea\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form textarea border contrast'
+
+# Issue 10: session promo popup must be globally wired, data-driven, and honor enabled state.
+Assert-Contains $baseTemplate 'partial "promo-popup.html" .' 'layouts/_default/baseof.html'
+Assert-Contains $baseTemplate 'partial "promo-popup-script.html" .' 'layouts/_default/baseof.html'
+Assert-Contains $promoPopupTemplate 'data-promo-popup="root"' 'layouts/partials/promo-popup.html'
+Assert-Contains $promoPopupTemplate 'data-promo-popup="backdrop"' 'layouts/partials/promo-popup.html'
+Assert-Contains $promoPopupTemplate 'data-promo-popup="close"' 'layouts/partials/promo-popup.html'
+Assert-Contains $promoPopupScriptTemplate 'promo-popup-dismissed' 'layouts/partials/promo-popup-script.html'
+Assert-Contains $promoPopupScriptTemplate 'sessionStorage' 'layouts/partials/promo-popup-script.html'
+Assert-Matches $cssContent '(?is)\.promo-popup\[hidden\][^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css promo popup hidden display reset'
+Assert-Matches $cssContent '(?is)\.promo-popup\[data-state="(?:closed|closing)"\][^{}]*\{[^}]*pointer-events\s*:\s*none' 'assets/css/style.css promo popup closed pointer events'
+Assert-NotMatches $cssContent '(?is)\.shared-hero\b[^{}]*\{[^}]*z-index\s*:\s*-' 'assets/css/style.css shared hero negative z-index'
+
+if ($promoPopupEnabled -eq $true) {
+    Assert-Matches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
+    Assert-Matches $homeHtml '(?is)<button\b[^>]*data-promo-popup="backdrop"' 'index.html promo popup backdrop'
+    Assert-Matches $homeHtml '(?is)<button\b[^>]*data-promo-popup="close"' 'index.html promo popup close'
+    Assert-Contains $homeHtml 'promo-popup-script' 'index.html promo popup'
+
+    if (-not [string]::IsNullOrWhiteSpace($promoPopupImage)) {
+        Assert-Matches $homeHtml ('(?is)<img\b[^>]*src="[^"]*' + [regex]::Escape($promoPopupImage) + '"') 'index.html promo popup image'
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($promoPopupAlt)) {
+        Assert-Matches $homeHtml ('(?is)<img\b[^>]*alt="' + [regex]::Escape($promoPopupAlt) + '"') 'index.html promo popup image alt'
+    }
+}
+elseif ($promoPopupEnabled -eq $false) {
+    Assert-NotMatches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
+    Assert-NotMatches $homeHtml '(?is)<button\b[^>]*data-promo-popup="backdrop"' 'index.html promo popup backdrop'
+    Assert-NotMatches $homeHtml '(?is)<button\b[^>]*data-promo-popup="close"' 'index.html promo popup close'
+}
+else {
+    Add-Problem 'Unable to determine popup enabled state from data/promo-popup.toml'
+}
+
 if ($problems.Count -gt 0) {
     Write-Error ($problems -join "`n")
     exit 1
 }
 
 Write-Host 'All site verification checks passed.'
+
+

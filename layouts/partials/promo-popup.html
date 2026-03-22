@@ -1,0 +1,11 @@
+{{ with index .Site.Data "promo-popup" }}
+{{ if (index . "enabled") }}
+<div class="promo-popup" data-promo-popup="root" hidden>
+    <button class="promo-popup__backdrop" type="button" aria-label="Sluit promotie" data-promo-popup="backdrop"></button>
+    <div class="promo-popup__dialog" role="dialog" aria-modal="true" aria-label="Promotie">
+        <button class="promo-popup__close" type="button" aria-label="Sluit promotie" data-promo-popup="close">&times;</button>
+        <img class="promo-popup__image" src="{{ index . "image" }}" alt="{{ index . "alt" }}" loading="eager" decoding="async">
+    </div>
+</div>
+{{ end }}
+{{ end }}

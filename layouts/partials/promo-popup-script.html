@@ -1,0 +1,59 @@
+<script id="promo-popup-script">
+(() => {
+  const root = document.querySelector('[data-promo-popup="root"]');
+  if (!root) {
+    return;
+  }
+
+  const closeButton = root.querySelector('[data-promo-popup="close"]');
+  const backdrop = root.querySelector('[data-promo-popup="backdrop"]');
+  const storageKey = 'promo-popup-dismissed';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let closeTimer = null;
+
+  const finishClose = () => {
+    if (closeTimer !== null) {
+      window.clearTimeout(closeTimer);
+      closeTimer = null;
+    }
+
+    root.hidden = true;
+    root.dataset.state = 'closed';
+  };
+
+  const closePopup = () => {
+    window.sessionStorage.setItem(storageKey, '1');
+
+    if (reducedMotion) {
+      finishClose();
+      return;
+    }
+
+    root.dataset.state = 'closing';
+    closeTimer = window.setTimeout(finishClose, 180);
+  };
+
+  if (window.sessionStorage.getItem(storageKey) === '1') {
+    finishClose();
+    return;
+  }
+
+  root.hidden = false;
+  root.dataset.state = 'closed';
+
+  if (reducedMotion) {
+    root.dataset.state = 'open';
+  }
+  else {
+    window.requestAnimationFrame(() => {
+      root.dataset.state = 'opening';
+      window.requestAnimationFrame(() => {
+        root.dataset.state = 'open';
+      });
+    });
+  }
+
+  closeButton?.addEventListener('click', closePopup);
+  backdrop?.addEventListener('click', closePopup);
+})();
+</script>
