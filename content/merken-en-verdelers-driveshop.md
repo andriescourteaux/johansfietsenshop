@@ -8,4 +8,4 @@ collection_variant = 'brand-links'
 collection_filters = true
 +++
 
-Hieronder kunt u een overzicht vinden van de merken die wij verdelen.
+Bij Johan's Driveshop bieden we ook een ruim aanbod aan merken en verdelers van tuinmachines en grasmaaiers. We werken samen met betrouwbare en kwalitatieve merken zodat je kan rekenen op sterke prestaties en een lange levensduur van je machines.

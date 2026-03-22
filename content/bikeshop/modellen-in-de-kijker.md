@@ -8,4 +8,5 @@ collection_variant = 'hover-cards'
 collection_filters = false
 +++
 
-Binnenkort vindt u hier enkele modellen die we in de bikeshop extra in de kijker zetten.
+Bij Johan's Fietsenshop hebben we een ruim aanbod aan verschillende fietsmodellen voor elke type fietser. Van stadsfietsen en e-bikes tot sportieve modellen, in onze winkel vind je nog veel meer dan wat je hier ziet. Dit is slechts een voorsmaakje van ons assortiment. Kom gerust langs om alle modellen te ontdekken en de fiets te vinden die perfect bij jou past.
+

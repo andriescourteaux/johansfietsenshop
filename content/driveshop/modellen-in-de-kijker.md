@@ -8,4 +8,4 @@ collection_variant = 'hover-cards'
 collection_filters = false
 +++
 
-Binnenkort vindt u hier enkele modellen die we in de driveshop extra in de kijker zetten.
+Bij Johan's Driveshop hebben we een ruim assortiment aan modellen van tuinmachines en grasmaaiers. Of je nu op zoek bent naar een compacte grasmaaier, een krachtige zitmaaier of handige tuingereedschappen, wij hebben voor elke klus de juiste oplossing. Hieronder vind je een overzicht van enkele populaire modellen uit ons aanbod.

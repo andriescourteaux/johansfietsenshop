@@ -2,20 +2,20 @@
 title = "Castelgarden"
 alt = "Castelgarden logo"
 image = "/images/collecties/driveshop/merken-en-verdelers/castelgarden.webp"
-tags = ["tuinmachine"]
+tags = ["grasmaaiers"]
 weight = 10
 
 [items."iseki.webp"]
 title = "Iseki"
 alt = "Iseki logo"
 image = "/images/collecties/driveshop/merken-en-verdelers/iseki.webp"
-tags = ["tuinmachine"]
+tags = ["grasmaaiers"]
 weight = 20
 
 [items."stiga.webp"]
 title = "Stiga"
 alt = "Stiga logo"
 image = "/images/collecties/driveshop/merken-en-verdelers/stiga.webp"
-tags = ["tuinmachine", "winteronderhoud"]
+tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
 url = "https://www.stiga.com/int/"
 weight = 30
