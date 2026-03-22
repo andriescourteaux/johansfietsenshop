@@ -5,11 +5,11 @@
             <img class="site-brand__logo" src="{{ $siteMode.logoPath }}" data-bike-src="{{ $siteMode.logoBikePath }}" data-drive-src="{{ $siteMode.logoDrivePath }}" alt="{{ if $siteMode.isDrive }}Johan's Driveshop{{ else }}Bikeshop{{ end }} logo">
         </a>
         <nav class="site-nav" aria-label="Hoofdnavigatie">
-            <a class="site-nav__item site-nav__mode-toggle" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="Johan's Fietsenshop" data-drive-label="Johan's Driveshop" data-mode-state="{{ $siteMode.mode }}">
+            <a class="site-nav__item site-nav__mode-toggle" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="Naar Johan's Driveshop" data-drive-label="Naar Johan's Fietsenshop" data-mode-state="{{ $siteMode.mode }}">
+                <span class="site-nav__mode-text">{{ if $siteMode.isDrive }}Naar Johan's Fietsshop{{ else }}Naar Johan's Driveshop{{ end }}</span>
                 <span class="site-nav__mode-track" aria-hidden="true">
                     <span class="site-nav__mode-thumb"></span>
                 </span>
-                <span class="site-nav__mode-text">{{ if $siteMode.isDrive }}Johan's Driveshop{{ else }}Johan's Fietsenshop{{ end }}</span>
             </a>
             <div class="site-nav__menu-shell">
                 <button class="site-nav__menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu">
