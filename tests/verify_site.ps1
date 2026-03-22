@@ -1134,23 +1134,23 @@ Assert-Contains $promoPopupScriptTemplate 'promo-popup-dismissed' 'layouts/parti
 Assert-Contains $promoPopupScriptTemplate 'sessionStorage' 'layouts/partials/promo-popup-script.html'
 
 if ($promoPopupEnabled -eq $true) {
-    Assert-Contains $homeHtml 'data-promo-popup="root"' 'index.html promo popup'
-    Assert-Contains $homeHtml 'data-promo-popup="backdrop"' 'index.html promo popup'
-    Assert-Contains $homeHtml 'data-promo-popup="close"' 'index.html promo popup'
+    Assert-Matches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
+    Assert-Matches $homeHtml '(?is)<button\b[^>]*data-promo-popup="backdrop"' 'index.html promo popup backdrop'
+    Assert-Matches $homeHtml '(?is)<button\b[^>]*data-promo-popup="close"' 'index.html promo popup close'
     Assert-Contains $homeHtml 'promo-popup-script' 'index.html promo popup'
 
     if (-not [string]::IsNullOrWhiteSpace($promoPopupImage)) {
-        Assert-Contains $homeHtml $promoPopupImage 'index.html promo popup image'
+        Assert-Matches $homeHtml ('(?is)<img\b[^>]*src="[^"]*' + [regex]::Escape($promoPopupImage) + '"') 'index.html promo popup image'
     }
 
     if (-not [string]::IsNullOrWhiteSpace($promoPopupAlt)) {
-        Assert-Contains $homeHtml ('alt="' + $promoPopupAlt + '"') 'index.html promo popup image alt'
+        Assert-Matches $homeHtml ('(?is)<img\b[^>]*alt="' + [regex]::Escape($promoPopupAlt) + '"') 'index.html promo popup image alt'
     }
 }
 elseif ($promoPopupEnabled -eq $false) {
-    Assert-NotContains $homeHtml 'data-promo-popup="root"' 'index.html promo popup'
-    Assert-NotContains $homeHtml 'data-promo-popup="backdrop"' 'index.html promo popup'
-    Assert-NotContains $homeHtml 'data-promo-popup="close"' 'index.html promo popup'
+    Assert-NotMatches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
+    Assert-NotMatches $homeHtml '(?is)<button\b[^>]*data-promo-popup="backdrop"' 'index.html promo popup backdrop'
+    Assert-NotMatches $homeHtml '(?is)<button\b[^>]*data-promo-popup="close"' 'index.html promo popup close'
 }
 else {
     Add-Problem 'Unable to determine popup enabled state from data/promo-popup.toml'
