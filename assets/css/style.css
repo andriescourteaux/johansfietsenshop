@@ -1179,8 +1179,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 
 .shared-hero {
     position: relative;
-    z-index: -5;
-
+    z-index: 0;
 }
 
 .page-intro--after-hero {
@@ -1330,6 +1329,21 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     display: grid;
     place-items: center;
     padding: 1.5rem;
+    pointer-events: none;
+}
+
+.promo-popup[hidden] {
+    display: none !important;
+}
+
+.promo-popup[data-state="opening"],
+.promo-popup[data-state="open"] {
+    pointer-events: auto;
+}
+
+.promo-popup[data-state="closed"],
+.promo-popup[data-state="closing"] {
+    pointer-events: none;
 }
 
 .promo-popup__backdrop {

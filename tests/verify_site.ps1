@@ -1132,6 +1132,9 @@ Assert-Contains $promoPopupTemplate 'data-promo-popup="backdrop"' 'layouts/parti
 Assert-Contains $promoPopupTemplate 'data-promo-popup="close"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupScriptTemplate 'promo-popup-dismissed' 'layouts/partials/promo-popup-script.html'
 Assert-Contains $promoPopupScriptTemplate 'sessionStorage' 'layouts/partials/promo-popup-script.html'
+Assert-Matches $cssContent '(?is)\.promo-popup\[hidden\][^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css promo popup hidden display reset'
+Assert-Matches $cssContent '(?is)\.promo-popup\[data-state="(?:closed|closing)"\][^{}]*\{[^}]*pointer-events\s*:\s*none' 'assets/css/style.css promo popup closed pointer events'
+Assert-NotMatches $cssContent '(?is)\.shared-hero\b[^{}]*\{[^}]*z-index\s*:\s*-' 'assets/css/style.css shared hero negative z-index'
 
 if ($promoPopupEnabled -eq $true) {
     Assert-Matches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
@@ -1162,4 +1165,5 @@ if ($problems.Count -gt 0) {
 }
 
 Write-Host 'All site verification checks passed.'
+
 
