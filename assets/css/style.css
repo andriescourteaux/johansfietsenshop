@@ -1059,6 +1059,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     display: block;
     color: inherit;
     transition: transform 180ms ease, box-shadow 180ms ease;
+    border-radius: 10px;
 }
 
 .media-collection__media {
@@ -1074,6 +1075,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     justify-content: center;
     padding: 1.5rem;
     aspect-ratio: 4 / 3;
+    border-radius: 10px;
 }
 
 .media-collection__media--hover-cards {
