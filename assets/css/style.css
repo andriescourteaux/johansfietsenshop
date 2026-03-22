@@ -46,7 +46,7 @@
     --footer-link-hover: rgba(31, 28, 24, 0.72);
     --footer-border: rgba(31, 28, 24, 0.12);
     --header-overlay-gradient-default: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 25%, rgba(14, 22, 20, 0) 100%);
-    --header-overlay-gradient-scrolled: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 25%, rgba(14, 22, 20, 0.08) 100%);
+    --header-overlay-gradient-scrolled: linear-gradient(180deg, rgba(255, 255, 255, 1) 5%, rgba(14, 22, 20, 0.08) 100%);
 }
 
 * {
