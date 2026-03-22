@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://example.org/bikeshop/accessoires/</loc>
+  </url><url>
+    <loc>https://example.org/bikeshop/</loc>
+  </url><url>
+    <loc>https://example.org/contact/</loc>
+  </url><url>
+    <loc>https://example.org/driveshop/</loc>
+  </url><url>
+    <loc>https://example.org/bikeshop/modellen-in-de-kijker/</loc>
+  </url><url>
+    <loc>https://example.org/bikeshop/leasing-fietsen/</loc>
+  </url><url>
+    <loc>https://example.org/bikeshop/merken-en-verdelers/</loc>
+  </url><url>
+    <loc>https://example.org/driveshop/merken-en-verdelers/</loc>
+  </url><url>
+    <loc>https://example.org/driveshop/modellen-in-de-kijker/</loc>
+  </url><url>
+    <loc>https://example.org/</loc>
+  </url><url>
+    <loc>https://example.org/driveshop/winteronderhoud-van-tuinmachines/</loc>
+  </url>
+</urlset>
