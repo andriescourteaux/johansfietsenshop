@@ -713,7 +713,7 @@ function Get-TomlBooleanValue {
         return $null
     }
 
-    $pattern = '(?m)^\s*' + [regex]::Escape($Key) + '\s*=\s*(?<value>true|false)'
+    $pattern = '(?m)^\s*' + [regex]::Escape($Key) + '\s*=\s*(?<value>true|false)\b'
     $match = [regex]::Match($Content, $pattern)
     if (-not $match.Success) {
         Add-Problem ('Missing TOML boolean key "' + $Key + '" in ' + $Context)
