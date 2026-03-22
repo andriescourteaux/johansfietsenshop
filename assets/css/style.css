@@ -1321,3 +1321,91 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
         opacity: 0.92;
     }
 }
+
+
+.promo-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+}
+
+.promo-popup__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(16, 16, 16, 0.48);
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+
+.promo-popup__dialog {
+    position: relative;
+    width: min(34rem, 100%);
+    border-radius: 0.9rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1.4rem 3rem rgba(16, 16, 16, 0.22);
+    transform: translateY(0.6rem) scale(0.985);
+    opacity: 0;
+    transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.promo-popup__image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.promo-popup__close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    width: 2.35rem;
+    height: 2.35rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(16, 16, 16, 0.76);
+    color: #fff;
+    font: inherit;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.promo-popup__close:hover,
+.promo-popup__close:focus-visible {
+    background: rgba(16, 16, 16, 0.9);
+    transform: scale(1.03);
+}
+
+.promo-popup[data-state="opening"] .promo-popup__backdrop,
+.promo-popup[data-state="open"] .promo-popup__backdrop {
+    opacity: 1;
+}
+
+.promo-popup[data-state="opening"] .promo-popup__dialog,
+.promo-popup[data-state="open"] .promo-popup__dialog {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.promo-popup[data-state="closing"] .promo-popup__backdrop {
+    opacity: 0;
+}
+
+.promo-popup[data-state="closing"] .promo-popup__dialog {
+    transform: translateY(0.45rem) scale(0.985);
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .promo-popup__backdrop,
+    .promo-popup__dialog,
+    .promo-popup__close {
+        transition: none;
+    }
+}
