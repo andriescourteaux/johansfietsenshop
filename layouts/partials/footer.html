@@ -1,5 +1,6 @@
 {{- $siteMode := partial "site-mode.html" . -}}
 {{- $home := site.Home -}}
+{{- $contact := site.Data.contact -}}
 <footer class="site-footer">
     <div class="container site-footer__inner">
         <div class="site-footer__hours">
@@ -9,6 +10,23 @@
                 <p class="site-footer__hours-line">{{ . }}</p>
                 {{ end }}
             {{ end }}
+        </div>
+        <div class="site-footer__contact">
+            <p class="site-footer__title">Contact</p>
+            <dl class="site-footer__contact-list">
+                <div class="site-footer__contact-row">
+                    <dt class="site-footer__contact-term">Adres</dt>
+                    <dd class="site-footer__contact-value">{{ $contact.address }}</dd>
+                </div>
+                <div class="site-footer__contact-row">
+                    <dt class="site-footer__contact-term">E-mail</dt>
+                    <dd class="site-footer__contact-value">{{ $contact.email }}</dd>
+                </div>
+                <div class="site-footer__contact-row">
+                    <dt class="site-footer__contact-term">Telefoon</dt>
+                    <dd class="site-footer__contact-value">{{ $contact.phone }}</dd>
+                </div>
+            </dl>
         </div>
         <div>
             <ul class="site-footer__links">

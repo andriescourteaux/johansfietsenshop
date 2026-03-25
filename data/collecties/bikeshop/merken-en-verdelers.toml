@@ -69,3 +69,12 @@ image = "/images/collecties/bikeshop/merken-en-verdelers/bfk.webp"
 tags = ["kinderfietsen"]
 url = "https://shop.vdbparts.be/collections/bike-fun-kids"
 weight = 130
+
+[items."ravr.webp"]
+title = "RAVR"
+alt = "RAVR logo"
+image = "/images/collecties/bikeshop/merken-en-verdelers/ravr.webp"
+tags = ["elektrische fietsen"]
+url = "https://ravrbikes.be/"
+weight = 140
+

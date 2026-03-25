@@ -1,4 +1,5 @@
 {{ define "main" }}
+{{- $contact := site.Data.contact -}}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
 <section class="page-intro page-intro--after-hero">
     <div class="container">
@@ -54,19 +55,19 @@
         <div class="contact-panel">
             <div class="contact-panel__details">
                 <p class="contact-panel__label">Contactgegevens</p>
-                <p class="contact-panel__name">Johan Alliet</p>
+                <p class="contact-panel__name">{{ $contact.name }}</p>
                 <dl class="contact-panel__list">
                     <div class="contact-panel__row">
                         <dt class="contact-panel__term">Adres:</dt>
-                        <dd class="contact-panel__value">Kalve 62, 9185 Wachtebeke</dd>
+                        <dd class="contact-panel__value">{{ $contact.address }}</dd>
                     </div>
                     <div class="contact-panel__row">
                         <dt class="contact-panel__term">GSM:</dt>
-                        <dd class="contact-panel__value">0472/93 03 56</dd>
+                        <dd class="contact-panel__value">{{ $contact.phone }}</dd>
                     </div>
                     <div class="contact-panel__row">
                         <dt class="contact-panel__term">E-mail:</dt>
-                        <dd class="contact-panel__value">johan.alliet@telenet.be</dd>
+                        <dd class="contact-panel__value">{{ $contact.email }}</dd>
                     </div>
                     <div class="contact-panel__row">
                         <dt class="contact-panel__term">Btw nr.:</dt>

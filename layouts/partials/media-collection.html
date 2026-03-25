@@ -25,12 +25,20 @@
         {{- $knownKeys = $knownKeys | append $name -}}
         {{- $title := humanize (replaceRE "\\.[^.]+$" "" $name) -}}
         {{- $alt := $title -}}
+        {{- $intro := "" -}}
+        {{- $specs := slice -}}
         {{- $tags := slice -}}
         {{- $url := "" -}}
         {{- $weight := 9999 -}}
         {{- with index $metadata $name -}}
           {{- $title = or .title $title -}}
           {{- $alt = or .alt .title $alt -}}
+          {{- with .intro -}}
+            {{- $intro = . -}}
+          {{- end -}}
+          {{- with .specs -}}
+            {{- $specs = . -}}
+          {{- end -}}
           {{- with .tags -}}
             {{- $tags = . -}}
           {{- end -}}
@@ -51,6 +59,8 @@
           "src" (printf "%s/%s" $collectionBasePath $name | relURL)
           "title" $title
           "alt" $alt
+          "intro" $intro
+          "specs" $specs
           "tags" $tags
           "tagsAttr" (delimit $tags "|")
           "url" $url
@@ -77,6 +87,11 @@
     {{- if ne $src "" -}}
       {{- $title := or $entry.title (humanize (replaceRE "\\.[^.]+$" "" $name)) -}}
       {{- $alt := or $entry.alt $entry.title $title -}}
+      {{- $intro := or $entry.intro "" -}}
+      {{- $specs := slice -}}
+      {{- with $entry.specs -}}
+        {{- $specs = . -}}
+      {{- end -}}
       {{- $tags := slice -}}
       {{- with $entry.tags -}}
         {{- $tags = . -}}
@@ -93,6 +108,8 @@
         "src" $src
         "title" $title
         "alt" $alt
+        "intro" $intro
+        "specs" $specs
         "tags" $tags
         "tagsAttr" (delimit $tags "|")
         "url" $url
@@ -105,24 +122,69 @@
 {{- $items = sort $items "sortKey" -}}
 {{- $uniqueTags = sort $uniqueTags -}}
 <section class="media-collection media-collection--{{ $collectionVariant }}" data-media-collection data-collection-variant="{{ $collectionVariant }}">
-    {{- if and $collectionFilters (gt (len $items) 0) -}}
+    {{- if eq $collectionVariant "showcase" -}}
+        {{- if gt (len $items) 0 -}}
+    <div class="media-showcase">
+            {{- range $index, $item := $items -}}
+        <article class="media-showcase__item{{ if eq (mod $index 2) 1 }} media-showcase__item--reverse{{ end }}" data-media-item>
+            <div class="media-showcase__media">
+                    {{- if $item.url -}}
+                <a class="media-showcase__media-link" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $item.title }}">
+                    <img class="media-showcase__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
+                </a>
+                    {{- else -}}
+                <img class="media-showcase__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
+                    {{- end -}}
+            </div>
+            <div class="media-showcase__content">
+                <h2 class="media-showcase__title">{{ $item.title }}</h2>
+                    {{- with $item.intro -}}
+                <p class="media-showcase__intro">{{ . }}</p>
+                    {{- end -}}
+                    {{- with $item.specs -}}
+                <ul class="media-showcase__specs">
+                        {{- range . -}}
+                        {{- $specText := . -}}
+                        {{- $specParts := split $specText ":" -}}
+                    <li class="media-showcase__spec">
+                        {{- if gt (len $specParts) 1 -}}
+                        <strong>{{ index $specParts 0 }}:</strong> {{ trim (delimit (after 1 $specParts) ":") " " }}
+                        {{- else -}}
+                        {{ $specText }}
+                        {{- end -}}
+                    </li>
+                        {{- end -}}
+                </ul>
+                    {{- end -}}
+                    {{- if $item.url -}}
+                <a class="media-showcase__link" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer">Meer info</a>
+                    {{- end -}}
+            </div>
+        </article>
+            {{- end -}}
+    </div>
+        {{- else -}}
+    <p class="media-collection__empty">Afbeeldingen volgen binnenkort.</p>
+        {{- end -}}
+    {{- else -}}
+        {{- if and $collectionFilters (gt (len $items) 0) -}}
     <div class="media-collection__filters">
         <button class="media-collection__filter is-active" type="button" data-media-filter="all" aria-pressed="true">Alles</button>
-        {{- range $uniqueTags -}}
+            {{- range $uniqueTags -}}
         <button class="media-collection__filter" type="button" data-media-filter="{{ . }}" aria-pressed="false">{{ . }}</button>
-        {{- end -}}
-    </div>
-    {{- end -}}
-
-    {{- if gt (len $items) 0 -}}
-    <div class="media-collection__grid media-collection__grid--{{ $collectionVariant }}">
-        {{- range $items -}}
-        <article class="media-collection__item" data-media-item data-tags="{{ .tagsAttr }}">
-            {{- if .url -}}
-            <a class="media-collection__card" href="{{ .url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .title }}">
-            {{- else -}}
-            <div class="media-collection__card media-collection__card--static" aria-label="{{ .title }}">
             {{- end -}}
+    </div>
+        {{- end -}}
+
+        {{- if gt (len $items) 0 -}}
+    <div class="media-collection__grid media-collection__grid--{{ $collectionVariant }}">
+            {{- range $items -}}
+        <article class="media-collection__item" data-media-item data-tags="{{ .tagsAttr }}">
+                {{- if .url -}}
+            <a class="media-collection__card" href="{{ .url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .title }}">
+                {{- else -}}
+            <div class="media-collection__card media-collection__card--static" aria-label="{{ .title }}">
+                {{- end -}}
                 <div class="media-collection__media media-collection__media--{{ $collectionVariant }}">
                     <img class="media-collection__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
                     {{- if eq $collectionVariant "hover-cards" -}}
@@ -131,15 +193,16 @@
                     </span>
                     {{- end -}}
                 </div>
-            {{- if .url -}}
+                {{- if .url -}}
             </a>
-            {{- else -}}
+                {{- else -}}
             </div>
-            {{- end -}}
+                {{- end -}}
         </article>
-        {{- end -}}
+            {{- end -}}
     </div>
-    {{- else -}}
+        {{- else -}}
     <p class="media-collection__empty">Afbeeldingen volgen binnenkort.</p>
+        {{- end -}}
     {{- end -}}
 </section>

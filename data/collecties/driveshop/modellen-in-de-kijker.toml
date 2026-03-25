@@ -1,17 +1,32 @@
-[items."zitmaaier.webp"]
-title = "Zitmaaier"
-alt = "Zitmaaier"
-image = "/images/header_drive.webp"
-weight = 10
-
 [items."compacttractor.webp"]
 title = "Compacttractor"
 alt = "Compacttractor"
-image = "/images/header_drive.jpg"
-weight = 20
+image = "/images/home-cards/drive-modellen.webp"
+intro = "Een compacte maar stevige werkmachine voor wie een wendbare oplossing zoekt voor uiteenlopende tuin- en onderhoudstaken."
+specs = [
+  "Compact formaat",
+  "Wendbaar in kleinere zones",
+  "Geschikt voor veelzijdig buitenwerk"
+]
 
 [items."tuinmachine.webp"]
 title = "Tuinmachine"
 alt = "Tuinmachine"
+image = "/images/home-cards/drive-maintenance.webp"
+intro = "Een praktische oplossing voor terugkerend seizoenswerk, met een focus op gebruiksgemak en betrouwbare inzetbaarheid."
+specs = [
+  "Veelzijdig inzetbaar",
+  "Praktisch voor onderhoudswerk",
+  "Gebruiksvriendelijke opbouw"
+]
+
+[items."zitmaaier.webp"]
+title = "Zitmaaier"
+alt = "Zitmaaier"
 image = "/images/header_drive.webp"
-weight = 30
+intro = "Een comfortabele zitmaaier voor grotere oppervlaktes waar vlot maaien en een aangename werkhouding belangrijk zijn."
+specs = [
+  "Ideaal voor grotere gazons",
+  "Comfortabele zitpositie",
+  "Vlot werken op ruime percelen"
+]

@@ -2,22 +2,42 @@
 title = "Oxford S-Pedelec"
 alt = "Oxford S-Pedelec"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/oxford-s-pedelec.webp"
-weight = 10
+intro = "Jouw ideale reisgenoot om aan “high speed” grote afstanden af te leggen. Zijn krachtige 4th generation Bosch Performance Line motor produceert 85 Nm maximaal koppel. De traploze Enviolo Heavy Duty naafversnelling in combinatie met een onderhoudsarme Gates riem zorgt voor een soepele en bovenal stille overbrenging. Met de 1125 Wh power batterij combinatie levert dit een actieradius tot 110 Km."
+specs = [
+  "Motor: Bosch Performance Speed GEN4",
+  "Batterij: 1125 Wh",
+  "Bereik: 130"
+]
 
 [items."flanders_navigator.webp"]
 title = "Flanders Navigator"
 alt = "Flanders Navigator"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/flanders_navigator.webp"
-weight = 20
+intro = "De Flanders e-bike NAVIGATOR combineert comfort, betrouwbaarheid en een strak design in één praktische elektrische fiets. De stille achterwielmotor en geïntegreerde 36V/12,5Ah batterij zorgen voor vlotte ondersteuning, ideaal voor stadsverkeer en recreatieve tochten. Dankzij het lage zwaartepunt en onderhoudsvriendelijke ontwerp geniet je van stabiel rijgedrag en zorgeloos fietsplezier, elke dag opnieuw."
+specs = [
+  "Motor: Bafang M400",
+  "Batterij: 468 Wh",
+  "Bereik: 100+ km"
+]
 
 [items."gazelle_eclipse_speed.webp"]
 title = "Gazelle Eclipse Speed"
 alt = "Gazelle Eclipse Speed"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/gazelle_eclipse_speed.webp"
-weight = 30
+intro = "De Gazelle Eclipse Speed is de highspeed variant van de bekroonde Eclipse e-bike, verkozen tot fiets van het jaar 2024 door VAB. Met zijn strakke lijnen, clean design en krachtige Bosch Performance Line Speed middenmotor, is deze fiets ontworpen om je woon-werkverkeer naar een hoger niveau te tillen. "
+specs = [
+  "Motor: Performance Line Speed",
+  "Batterij: 750 Wh",
+  "Bereik: 110 - 210 km"
+]
 
 [items."HPlus-POWERDRIVE-Pinion-Sport-Zwart-S.webp"]
-title = "HPlus POWERDRIVE Pinion Sport (Zwart, S)"
-alt = "HPlus POWERDRIVE Pinion Sport (Zwart, S)"
+title = "HPlus POWERDRIVE Pinion Sport"
+alt = "HPlus POWERDRIVE Pinion Sport"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/HPlus-POWERDRIVE-Pinion-Sport-Zwart-S.webp"
-weight = 40
+intro = "Voor mensen die lang moeten pendelen is de powerdrive de fiets. Met een reeel gemiddeld bereik van 140 km mogelijk met één acculading. Zeer krachtige achterwielnaafmotor met 1000W en 55Nm. De e-bike met een van de grootste batterijen in België (1440Wh). Onverslaanbare kracht die een constante 45km/h haalt en houd. De sport staat niet alleen voor snelheid maar ook voor de sportievere zithouding met een iets hoger geplaatste bovenbuis. Volledige assemblage, gedeeltelijke productie en kwaliteitsborging in Zwitserland. Er worden robuuste en beproefde onderdelen gebruikt van Pletscher, KMC, SKS, Samsung, Shimano en Magura. Ondersteuning en service door Hplus en hun dealernetwerk."
+specs = [
+  "Motor: Achterwielnaafmotor met max. 1000Watt en 55 Nm",
+  "Batterij: 1440Wh lithium-ion batterij",
+  "Bereik: 70 – 200 km"
+]

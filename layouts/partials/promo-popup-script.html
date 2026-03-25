@@ -7,7 +7,7 @@
 
   const closeButton = root.querySelector('[data-promo-popup="close"]');
   const backdrop = root.querySelector('[data-promo-popup="backdrop"]');
-  const storageKey = 'promo-popup-dismissed';
+  const storageKey = root.dataset.promoPopupKey || 'promo-popup-dismissed';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let closeTimer = null;
 

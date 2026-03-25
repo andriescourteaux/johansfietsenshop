@@ -4,7 +4,7 @@ draft = false
 url = '/driveshop/modellen-in-de-kijker/'
 collection_mode = 'driveshop'
 collection_key = 'modellen-in-de-kijker'
-collection_variant = 'hover-cards'
+collection_variant = 'showcase'
 collection_filters = false
 +++
 

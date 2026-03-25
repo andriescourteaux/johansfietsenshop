@@ -887,6 +887,8 @@ $bikeLandingHtml = Read-GeneratedText 'bikeshop/index.html'
 $driveLandingHtml = Read-GeneratedText 'driveshop/index.html'
 $bikeBrandsHtml = Read-GeneratedText 'bikeshop/merken-en-verdelers/index.html'
 $driveBrandsHtml = Read-GeneratedText 'driveshop/merken-en-verdelers/index.html'
+$bikeModelsHtml = Read-GeneratedText 'bikeshop/modellen-in-de-kijker/index.html'
+$driveModelsHtml = Read-GeneratedText 'driveshop/modellen-in-de-kijker/index.html'
 
 $modeScriptTemplate = Read-RepoText 'layouts/partials/mode-script.html'
 $sharedHeroTemplate = Read-RepoText 'layouts/partials/shared-hero.html'
@@ -907,6 +909,11 @@ $cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-
 $promoPopupEnabled = Get-TomlBooleanValue $promoPopupData 'enabled' 'data/promo-popup.toml'
 $promoPopupImage = Get-TomlStringValue $promoPopupData 'image' 'data/promo-popup.toml'
 $promoPopupAlt = Get-TomlStringValue $promoPopupData 'alt' 'data/promo-popup.toml'
+$sharedContactData = Read-RepoText 'data/contact.toml'
+$sharedContactName = Get-TomlStringValue $sharedContactData 'name' 'data/contact.toml'
+$sharedContactAddress = Get-TomlStringValue $sharedContactData 'address' 'data/contact.toml'
+$sharedContactEmail = Get-TomlStringValue $sharedContactData 'email' 'data/contact.toml'
+$sharedContactPhone = Get-TomlStringValue $sharedContactData 'phone' 'data/contact.toml'
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
 $homeOpeningHours = Get-TomlStringArray $homeFrontMatter 'opening_hours' 'content/_index.md front matter'
@@ -1130,11 +1137,16 @@ Assert-Contains $baseTemplate 'partial "promo-popup-script.html" .' 'layouts/_de
 Assert-Contains $promoPopupTemplate 'data-promo-popup="root"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'data-promo-popup="backdrop"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'data-promo-popup="close"' 'layouts/partials/promo-popup.html'
-Assert-Contains $promoPopupScriptTemplate 'promo-popup-dismissed' 'layouts/partials/promo-popup-script.html'
+Assert-Contains $promoPopupTemplate 'data-promo-popup-key=' 'layouts/partials/promo-popup.html'
+Assert-Contains $promoPopupScriptTemplate 'root.dataset.promoPopupKey' 'layouts/partials/promo-popup-script.html'
 Assert-Contains $promoPopupScriptTemplate 'sessionStorage' 'layouts/partials/promo-popup-script.html'
 Assert-Matches $cssContent '(?is)\.promo-popup\[hidden\][^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css promo popup hidden display reset'
+Assert-Matches $cssContent '(?is)\.promo-popup__dialog[^{}]*\{[^}]*width\s*:\s*min\(\s*52vw\s*,\s*52rem\s*\)' 'assets/css/style.css promo popup larger dialog width'
 Assert-Matches $cssContent '(?is)\.promo-popup\[data-state="(?:closed|closing)"\][^{}]*\{[^}]*pointer-events\s*:\s*none' 'assets/css/style.css promo popup closed pointer events'
 Assert-NotMatches $cssContent '(?is)\.shared-hero\b[^{}]*\{[^}]*z-index\s*:\s*-' 'assets/css/style.css shared hero negative z-index'
+Assert-Matches $cssContent '(?is)\.page-intro--after-hero\s+\.container\b[^{}]*\{[^}]*margin-top\s*:\s*-50vh' 'assets/css/style.css single page intro overlap restore'
+Assert-Matches $cssContent '(?is)\.page-intro--after-hero\b[^{}]*\{[^}]*position\s*:\s*relative' 'assets/css/style.css single page intro stacking context'
+Assert-Matches $cssContent '(?is)\.page-intro--after-hero\s+\.container\b[^{}]*\{[^}]*z-index\s*:\s*2' 'assets/css/style.css single page intro foreground layer'
 
 if ($promoPopupEnabled -eq $true) {
     Assert-Matches $homeHtml '(?is)<div\b[^>]*data-promo-popup="root"' 'index.html promo popup root'
@@ -1157,6 +1169,41 @@ elseif ($promoPopupEnabled -eq $false) {
 }
 else {
     Add-Problem 'Unable to determine popup enabled state from data/promo-popup.toml'
+}
+
+# Issue 12: models pages must render the richer showcase variant.
+Assert-Matches $bikeModelsHtml '(?is)\bmedia-collection--showcase\b' 'bikeshop/modellen-in-de-kijker/index.html showcase variant'
+Assert-Matches $driveModelsHtml '(?is)\bmedia-collection--showcase\b' 'driveshop/modellen-in-de-kijker/index.html showcase variant'
+Assert-Matches $bikeModelsHtml '(?is)\bmedia-showcase__intro\b' 'bikeshop/modellen-in-de-kijker/index.html showcase intro'
+Assert-Matches $driveModelsHtml '(?is)\bmedia-showcase__intro\b' 'driveshop/modellen-in-de-kijker/index.html showcase intro'
+Assert-Matches $bikeModelsHtml '(?is)\bmedia-showcase__specs\b' 'bikeshop/modellen-in-de-kijker/index.html showcase specs'
+Assert-Matches $driveModelsHtml '(?is)\bmedia-showcase__specs\b' 'driveshop/modellen-in-de-kijker/index.html showcase specs'
+Assert-Matches $cssContent '(?is)\.media-collection--showcase\b' 'assets/css/style.css showcase collection CSS hook'
+Assert-Matches $cssContent '(?is)\.media-showcase__image\b[^{}]*\{[^}]*aspect-ratio\s*:\s*4\s*/\s*3' 'assets/css/style.css showcase uniform image ratio'
+Assert-Matches $cssContent '(?is)\.media-showcase__item\b[^{}]*\{[^}]*grid-template-columns\s*:\s*1fr\s+1fr' 'assets/css/style.css showcase equal width columns'
+Assert-Matches $cssContent '(?is)\.media-showcase__item--reverse\b' 'assets/css/style.css alternating showcase CSS hook'
+
+# Issue 11: footer and contact page must share the same core contact data.
+Assert-Matches $homeFooterSection '(?is)\bsite-footer__contact\b' 'index.html footer contact column'
+Assert-Matches $homeFooterSection '(?is)Adres.*?E-mail.*?Telefoon' 'index.html footer contact order'
+
+if (-not [string]::IsNullOrWhiteSpace($sharedContactAddress)) {
+    Assert-Contains $homeFooterSection $sharedContactAddress 'index.html footer address'
+    Assert-Contains $contactHtml $sharedContactAddress 'contact/index.html shared address'
+}
+
+if (-not [string]::IsNullOrWhiteSpace($sharedContactEmail)) {
+    Assert-Contains $homeFooterSection $sharedContactEmail 'index.html footer email'
+    Assert-Contains $contactHtml $sharedContactEmail 'contact/index.html shared email'
+}
+
+if (-not [string]::IsNullOrWhiteSpace($sharedContactPhone)) {
+    Assert-Contains $homeFooterSection $sharedContactPhone 'index.html footer phone'
+    Assert-Contains $contactHtml $sharedContactPhone 'contact/index.html shared phone'
+}
+
+if (-not [string]::IsNullOrWhiteSpace($sharedContactName)) {
+    Assert-Contains $contactHtml $sharedContactName 'contact/index.html shared name'
 }
 
 if ($problems.Count -gt 0) {
