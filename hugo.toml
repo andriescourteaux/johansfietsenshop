@@ -1,9 +1,13 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://andriescourteaux.github.io/johansfietsenshop/'
 languageCode = 'nl'
 defaultContentLanguage = 'nl'
 title = "Johan's Fietsenshop"
 relativeURLs = true
 disableKinds = ['taxonomy', 'term']
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
 
 [markup]
   [markup.goldmark]
