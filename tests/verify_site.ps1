@@ -929,6 +929,8 @@ Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
 Assert-Contains $homeHtml 'site-footer__link--merken' 'index.html'
 Assert-Contains $contactHtml 'site-footer__link--contact' 'contact/index.html'
 Assert-Contains $contactHtml 'site-footer__link--merken' 'contact/index.html'
+Assert-Matches $homeHtml '(?is)<link\b[^>]*rel="?stylesheet"?[^>]*href="\./css/' 'index.html GitHub Pages stylesheet path'
+Assert-NotMatches $homeHtml '(?is)<link\b[^>]*rel="?stylesheet"?[^>]*href="\./johansfietsenshop/css/' 'index.html duplicated GitHub Pages stylesheet path'
 Assert-Contains $modeScriptTemplate "applyHref('.site-footer__link--contact');" 'layouts/partials/mode-script.html'
 Assert-Contains $modeScriptTemplate "applyHref('.site-footer__link--merken');" 'layouts/partials/mode-script.html'
 

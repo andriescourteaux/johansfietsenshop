@@ -1,5 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-{{ $styles := resources.Get "css/style.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+{{- $styles := resources.Get "css/style.css" | minify | fingerprint -}}
+{{- $styleHref := $styles.RelPermalink -}}
+{{- $basePath := replaceRE "^https?://[^/]+(/.*)$" "$1" site.BaseURL -}}
+{{- if and (ne $basePath "/") (hasPrefix $styleHref $basePath) -}}
+    {{- $styleHref = replaceRE (printf "^%s" $basePath) "/" $styleHref -}}
+{{- end }}
+<link rel="stylesheet" href="{{ $styleHref }}" integrity="{{ $styles.Data.Integrity }}">
