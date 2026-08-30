@@ -168,11 +168,13 @@
         </section>
         {{ end }}
 
-        {{ if .Params.cta_title }}
+        {{ if or .Params.cta_title .Params.cta_label }}
+        {{- $ctaLabel := or .Params.cta_label "Ga naar contact" -}}
+        {{- $ctaUrl := or .Params.cta_url "/contact/" -}}
         <aside class="page-cta">
-            <h2>{{ .Params.cta_title }}</h2>
-            <p>{{ .Params.cta_text }}</p>
-            <a class="page-cta__link" href="{{ "/contact/" | relLangURL }}">Ga naar contact</a>
+            {{ with .Params.cta_title }}<h2>{{ . }}</h2>{{ end }}
+            {{ with .Params.cta_text }}<p>{{ . }}</p>{{ end }}
+            <a class="page-cta__link" href="{{ $ctaUrl | relURL }}">{{ $ctaLabel }}</a>
         </aside>
         {{ end }}
     </div>

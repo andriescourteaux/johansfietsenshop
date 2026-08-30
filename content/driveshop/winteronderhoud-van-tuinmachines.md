@@ -1,9 +1,29 @@
 +++
-title = 'Winteronderhoud van tuinmachines'
+title = 'Maak je tuinmachines winterklaar (inclusief haal- en brengservice!)'
 draft = false
 url = '/driveshop/winteronderhoud-van-tuinmachines/'
+cta_label = 'Neem contact op'
+cta_url = '/contact/?mode=drive'
 +++
 
-Winteronderhoud van tuinmachines is essentieel om ze in topconditie te houden en dure herstellingen in het voorjaar te voorkomen. Bij Johan's Driveshop maken we het extra gemakkelijk: tijdens de winterperiode is het mogelijk om je tuinmachines te laten ophalen en na het onderhoud weer netjes terug te laten brengen naar huis. Zo ben je zeker dat alles klaar is voor het nieuwe seizoen.
+Waarom winteronderhoud?
 
-Meer informatie in de winkel.
+Een tuinmachine die maandenlang stilstaat met oude brandstof of vuil, start in het voorjaar vaak moeizaam of loopt schade op. Winteronderhoud voorkomt dure herstellingen en zorgt ervoor dat je machine direct startklaar is zodra het gras weer begint te groeien.
+
+De voordelen op een rij:
+
+- Geen startproblemen in het voorjaar.
+- Langere levensduur van je motor, accu en bewegende delen.
+- Minder kans op onverwachte herstellingen.
+- Je machine is klaar zodra je ze opnieuw nodig hebt.
+
+Geen zin of geen geschikt vervoer om je grasmaaier, zitmaaier of andere tuinmachine naar de winkel te brengen? Geen probleem. Tijdens de winterperiode maken we het je extra gemakkelijk:
+
+- Aanmelden: Geef je machine op voor onderhoud.
+- Ophalen: Wij halen de machine bij je thuis op wanneer het uitkomt.
+- Onderhoud: We voeren een complete inspectie en onderhoudsbeurt uit.
+- Terugbrengen: Je krijgt je machine netjes onderhouden en startklaar weer thuisbezorgd.
+
+Interesse of direct inplannen?
+
+Kom langs in de winkel voor meer informatie over de tarieven en voorwaarden, of neem direct contact met ons op om een afspraak te maken.
