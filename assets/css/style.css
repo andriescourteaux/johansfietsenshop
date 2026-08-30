@@ -799,7 +799,7 @@ h1 {
 }
 
 .winter-value.page-value p {
-    font-size: clamp(1.15rem, 1.7vw, 1.35rem);
+    font-size: clamp(1.38rem, 2vw, 1.62rem);
 }
 
 .winter-values__grid {
