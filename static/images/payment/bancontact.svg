@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 64" role="img" aria-labelledby="title">
+  <title id="title">Bancontact</title>
+  <rect width="160" height="64" rx="6" fill="#f4f1ea"/>
+  <path d="M24 42h52c12 0 18-20 30-20h30v12h-26c-12 0-18 20-30 20H24z" fill="#ffc100"/>
+  <path d="M24 10h52c12 0 18 20 30 20h30v12h-30c-12 0-18-20-30-20H24z" fill="#1f1c18"/>
+</svg>

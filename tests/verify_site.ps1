@@ -1085,8 +1085,8 @@ Assert-Matches `
     "(?s)const openMenu = \(\) => \{.*?menu\.hidden = false;.*?applyMenuState\('closed'\);.*?requestAnimationFrame\(\(\) => \{.*?applyMenuState\('opening'\);" `
     'layouts/partials/mode-script.html menu opening animation hook'
 
-Assert-Matches $contactHtml '(?is)\bcontact-panel__name\b' 'contact/index.html'
-Assert-Matches $contactHtml '(?is)\bcontact-panel__term\b' 'contact/index.html'
+Assert-Matches $contactHtml '(?is)\bcontact-page__block\b' 'contact/index.html'
+Assert-Matches $contactHtml '(?is)\bcontact-page__button\b' 'contact/index.html'
 Assert-Matches $contactHtml '(?is)\bcontact-panel__map\b' 'contact/index.html'
 Assert-Matches `
     $contactHtml `

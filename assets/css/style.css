@@ -648,6 +648,90 @@ h1 {
     margin-top: 0.85rem;
 }
 
+.contact-page {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.contact-page__intro {
+    margin: 0;
+    max-width: 48rem;
+    color: var(--text);
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    line-height: 1.35;
+}
+
+.contact-page__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.contact-page__block,
+.contact-page__hours,
+.contact-page__payments {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.contact-page h2 {
+    margin: 0 0 0.8rem;
+    font-size: 1.25rem;
+}
+
+.contact-page__block p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+}
+
+.contact-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.contact-page__button {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--text);
+    background: var(--text);
+    color: var(--surface);
+    font-weight: 700;
+}
+
+.contact-page__button:hover,
+.contact-page__button:focus-visible {
+    background: transparent;
+    color: var(--text);
+}
+
+.contact-page__payments ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.contact-page__payments li {
+    display: grid;
+    place-items: center;
+    gap: 0.5rem;
+    min-height: 7rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text);
+    font-weight: 700;
+}
+
+.contact-page__payments img {
+    max-height: 2.4rem;
+    object-fit: contain;
+}
+
 .contact-form {
     display: grid;
     gap: 1rem;
@@ -767,6 +851,8 @@ h1 {
 
 @media (max-width: 640px) {
     .contact-panel,
+    .contact-page__grid,
+    .contact-page__payments ul,
     .content-highlights__grid,
     .brands-placeholder-grid,
     .dealers-placeholder-grid {

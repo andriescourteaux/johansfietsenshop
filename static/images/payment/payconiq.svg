@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 64" role="img" aria-labelledby="title">
+  <title id="title">Payconiq</title>
+  <rect width="160" height="64" rx="6" fill="#f4f1ea"/>
+  <circle cx="52" cy="32" r="18" fill="#b93f33"/>
+  <path d="M52 22v20M42 32h20" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <text x="102" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1f1c18">Payconiq</text>
+</svg>

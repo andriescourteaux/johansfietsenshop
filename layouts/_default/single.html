@@ -51,58 +51,65 @@
         </section>
         {{ end }}
 
-        {{ if .Params.showContactForm }}
-        <div class="contact-panel">
-            <div class="contact-panel__details">
-                <p class="contact-panel__label">Contactgegevens</p>
-                <p class="contact-panel__name">{{ $contact.name }}</p>
-                <dl class="contact-panel__list">
-                    <div class="contact-panel__row">
-                        <dt class="contact-panel__term">Adres:</dt>
-                        <dd class="contact-panel__value">{{ $contact.address }}</dd>
-                    </div>
-                    <div class="contact-panel__row">
-                        <dt class="contact-panel__term">GSM:</dt>
-                        <dd class="contact-panel__value">{{ $contact.phone }}</dd>
-                    </div>
-                    <div class="contact-panel__row">
-                        <dt class="contact-panel__term">E-mail:</dt>
-                        <dd class="contact-panel__value">{{ $contact.email }}</dd>
-                    </div>
-                    <div class="contact-panel__row">
-                        <dt class="contact-panel__term">Btw nr.:</dt>
-                        <dd class="contact-panel__value">0898284633</dd>
-                    </div>
-                    <div class="contact-panel__row">
-                        <dt class="contact-panel__term">Betaalmogelijkheden:</dt>
-                        <dd class="contact-panel__value">cash, bancontact of Payconiq</dd>
-                    </div>
-                </dl>
+        {{ if .Params.showContactPage }}
+        {{- $openingHours := partial "opening-hours-data.html" (or $contact.opening_hours (slice)) -}}
+        <section class="contact-page">
+            <p class="contact-page__intro">Vragen, een nieuwe fiets kopen of onderhoud nodig? Wij staan voor je klaar.</p>
+            <div class="contact-page__grid">
+                <article class="contact-page__block">
+                    <h2>Herstellingen &amp; Onderhoud</h2>
+                    <p>Je kunt je fiets tijdens de openingsuren zonder afspraak binnenbrengen, of vooraf bellen zodat we de planning kunnen afstemmen.</p>
+                </article>
+                <article class="contact-page__block">
+                    <h2>Fiets kopen?</h2>
+                    <p>Kom gerust langs voor vrijblijvend advies en een testrit op onze modellen.</p>
+                </article>
             </div>
-            <form class="contact-form" action="#" method="post">
-                <label>
-                    <span>Naam</span>
-                    <input type="text" name="name" autocomplete="name">
-                </label>
-                <label>
-                    <span>E-mail</span>
-                    <input type="email" name="email" autocomplete="email">
-                </label>
-                <label>
-                    <span>Onderwerp</span>
-                    <input type="text" name="subject">
-                </label>
-                <label>
-                    <span>Bericht</span>
-                    <textarea name="message" rows="6"></textarea>
-                </label>
-                <p class="contact-form__notice">Online verzending is nog niet actief.</p>
-                <button type="submit" disabled>Verzenden</button>
-            </form>
+            <div class="contact-page__actions">
+                <a class="contact-page__button" href="tel:{{ replaceRE `[^0-9+]` `` $contact.phone }}">{{ $contact.phone }}</a>
+                <a class="contact-page__button" href="mailto:{{ $contact.email }}">{{ $contact.email }}</a>
+            </div>
+            {{ with $openingHours }}
+            <section class="contact-page__hours">
+                <h2>{{ or $contact.opening_hours_title "Openingsuren" }}</h2>
+                <table class="opening-hours-table">
+                    <tbody>
+                        {{ range . }}
+                        <tr>
+                            <th scope="row">{{ .day }}</th>
+                            <td>
+                                {{ range .slots }}
+                                <span class="opening-hours-slot">{{ . }}</span>
+                                {{ end }}
+                            </td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </section>
+            {{ end }}
+            <section class="contact-page__payments">
+                <h2>Betaal mogelijkheden</h2>
+                <ul>
+                    <li><img src="{{ "/images/payment/cash.svg" | relURL }}" alt="Cash"><span>Cash</span></li>
+                    <li><img src="{{ "/images/payment/bancontact.svg" | relURL }}" alt="Bancontact"><span>Bancontact</span></li>
+                    <li><img src="{{ "/images/payment/payconiq.svg" | relURL }}" alt="Payconiq"><span>Payconiq</span></li>
+                </ul>
+            </section>
             <div class="contact-panel__map">
                 <iframe src="https://www.google.com/maps?q=Kalve%2062%2C%209185%20Wachtebeke&z=15&output=embed" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps kaart van Johan Alliet"></iframe>
             </div>
-        </div>
+            <div class="contact-page__grid">
+                <article class="contact-page__block">
+                    <h2>Vervangfiets</h2>
+                    <p>Herstelling die langer duurt? Vraag naar de mogelijkheden voor een vervangfiets.</p>
+                </article>
+                <article class="contact-page__block">
+                    <h2>Ophaaldienst</h2>
+                    <p>Niet in de mogelijkheid om je fiets te brengen? Wij kunnen deze in overleg bij je ophalen.</p>
+                </article>
+            </div>
+        </section>
         {{ end }}
 
         {{ if .Params.cta_title }}
