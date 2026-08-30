@@ -1,5 +1,6 @@
 {{ define "main" }}
 {{- $contact := site.Data.contact -}}
+{{- $siteMode := partial "site-mode.html" . -}}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
 <section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}">
     <div class="container">
@@ -11,7 +12,7 @@
         {{ end }}
         {{ end }}
 
-        {{ if .Params.highlights }}
+        {{ if and (not $siteMode.isDrive) .Params.highlights }}
         <section class="content-highlights">
             <h2>Highlights</h2>
             <div class="content-highlights__grid">

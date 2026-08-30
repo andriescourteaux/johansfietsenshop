@@ -72,7 +72,7 @@
             </blockquote>
             {{ end }}
             {{ end }}
-            {{ with $panel.highlights }}
+            {{ if eq $panel.mode "bike" }}{{ with $panel.highlights }}
             <section class="home-highlights">
                 <div class="home-highlights__grid">
                     {{ range . }}
@@ -85,7 +85,7 @@
                     {{ end }}
                 </div>
             </section>
-            {{ end }}
+            {{ end }}{{ end }}
         </div>
         {{- end }}
     </div>

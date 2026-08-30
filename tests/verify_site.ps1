@@ -985,15 +985,19 @@ if ($drivePanelStart -lt 0) {
     Add-Problem 'Missing drive homepage panel in index.html'
 }
 else {
-    Assert-NotContains $homeHtml.Substring($drivePanelStart) 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html drive panel bike quote'
-    foreach ($driveHighlightName in @(
-        'Compacttractor',
-        'Tuinmachine',
-        'Zitmaaier'
-    )) {
-        Assert-Contains $homeHtml.Substring($drivePanelStart) ('<span class="home-highlight__title">' + $driveHighlightName + '</span>') 'index.html drive model highlights'
-    }
-    Assert-NotContains $homeHtml.Substring($drivePanelStart) '<span class="home-highlight__title">Gazelle Eclipse Speed</span>' 'index.html drive panel bike highlight removed'
+    $drivePanelHtml = $homeHtml.Substring($drivePanelStart)
+    Assert-NotContains $drivePanelHtml 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html drive panel bike quote'
+    Assert-NotContains $drivePanelHtml 'home-highlights' 'index.html drive panel highlights disabled'
+    Assert-NotContains $drivePanelHtml 'home-highlight__title' 'index.html drive panel highlight titles disabled'
+}
+foreach ($drivePage in @(
+    @{ Html = $driveLandingHtml; Context = 'driveshop/index.html' },
+    @{ Html = $driveBrandsHtml; Context = 'driveshop/merken-en-verdelers/index.html' },
+    @{ Html = $driveModelsHtml; Context = 'driveshop/modellen-in-de-kijker/index.html' },
+    @{ Html = $winterHtml; Context = 'driveshop/winteronderhoud-van-tuinmachines/index.html' }
+)) {
+    Assert-NotContains $drivePage.Html 'content-highlights' ($drivePage.Context + ' content highlights disabled')
+    Assert-NotContains $drivePage.Html 'home-highlights' ($drivePage.Context + ' home highlights disabled')
 }
 Assert-Contains $bikeBrandsHtml 'media-collection--split-blocks' 'bike brands split blocks'
 Assert-Contains $driveBrandsHtml 'media-collection--split-blocks' 'drive brands split blocks'
@@ -1270,6 +1274,8 @@ Assert-Matches $cssContent '(?is)\.home-highlight__body\b[^{}]*\{[^}]*text-align
 Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlight support plane'
 Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*background\s*:\s*#f4f4f4' 'assets/css/style.css highlight support plane'
 Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4' 'assets/css/style.css full bleed highlight support plane'
+Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\]\s+\.home-highlights\b[^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css drive mode highlights disabled'
+Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\]\s+\.content-highlights\b[^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css drive mode content highlights disabled'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__media\b[^{}]*\{[^}]*padding\s*:' 'assets/css/style.css leasing logo padding'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__image\b[^{}]*\{[^}]*object-fit\s*:\s*contain' 'assets/css/style.css contained leasing logos'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block\[data-collection-item="welease\.svg"\]\s+\.split-block__media\b[^{}]*\{[^}]*border\s*:\s*0[^}]*background\s*:\s*#17122f' 'assets/css/style.css Welease picture background'

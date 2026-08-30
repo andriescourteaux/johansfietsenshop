@@ -522,6 +522,11 @@ h1 {
     font-weight: 700;
 }
 
+body[data-site-mode="drive"] .home-highlights,
+body[data-site-mode="drive"] .content-highlights {
+    display: none;
+}
+
 .site-footer {
     border-top: 1px solid var(--footer-border);
     background-color: var(--footer-background);
