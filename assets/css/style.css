@@ -38,7 +38,7 @@
     --border: #d8cfbf;
     --accent: #999999;
     --accent-rgb: 153, 153, 153;
-    --container: 92rem;
+    --container: 108rem;
     --footer-background: #ffc100;
     --footer-foreground: #1f1c18;
     --footer-muted: #5f5032;
@@ -98,7 +98,7 @@ img {
 }
 
 .container {
-    width: min(calc(100% - 3rem), var(--container));
+    width: min(calc(100% - 2rem), var(--container));
     margin: 0 auto;
 }
 
@@ -268,7 +268,7 @@ h1 {
 .page-copy {
     margin-top: 1.5rem;
     max-width: 44rem;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.7;
     font-size: 1.05rem;
 }
@@ -360,7 +360,7 @@ h1 {
 }
 
 .opening-hours-table td {
-    color: var(--muted);
+    color: var(--text);
 }
 
 .home-overview {
@@ -454,7 +454,7 @@ h1 {
     display: grid;
     gap: 0.65rem;
     padding: 0.9rem 0 0;
-    text-align: center;
+    text-align: left;
 }
 
 .home-highlight__title {
@@ -634,7 +634,7 @@ h1 {
 
 .contact-page__block p {
     margin: 0;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.65;
 }
 
@@ -648,8 +648,8 @@ h1 {
 .contact-page__button {
     display: inline-grid;
     place-items: center;
-    width: 3.75rem;
-    height: 3.75rem;
+    width: 4.75rem;
+    height: 4.75rem;
     padding: 0;
     border: 1px solid var(--text);
     border-radius: 999px;
@@ -659,8 +659,8 @@ h1 {
 }
 
 .contact-page__button-icon {
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 2.35rem;
+    height: 2.35rem;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
@@ -731,7 +731,7 @@ h1 {
 .about-page__vision p,
 .about-page__value p {
     margin: 0;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.7;
 }
 
@@ -747,8 +747,13 @@ h1 {
 .page-value {
     padding: clamp(1.25rem, 3vw, 1.75rem);
     border: 0;
-    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.03));
+    background: transparent;
     text-align: center;
+}
+
+.page-value h2 {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
 }
 
 .contact-form {
@@ -852,7 +857,7 @@ h1 {
 .content-card p,
 .page-cta p {
     margin: 0.75rem 0 0;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.6;
 }
 
@@ -1319,7 +1324,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 
 .media-collection__empty {
     margin: 0;
-    color: var(--muted);
+    color: var(--text);
 }
 
 .split-blocks {
@@ -1369,7 +1374,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 .split-block__intro {
     margin: 0;
     max-width: 36rem;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.7;
 }
 
@@ -1449,7 +1454,7 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 
 .media-showcase__intro {
     margin: 0;
-    color: var(--muted);
+    color: var(--text);
     line-height: 1.7;
 }
 
