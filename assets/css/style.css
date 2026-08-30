@@ -451,11 +451,9 @@ h1 {
 
 .home-overview__grid + .home-mode-sections::before {
     content: "";
-    position: absolute;
-    top: calc(clamp(5rem, 10vw, 8rem) * -1);
-    right: 0;
-    left: 0;
+    display: block;
     height: clamp(7.5rem, 15vw, 12rem);
+    margin-bottom: clamp(2rem, 5vw, 4rem);
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
     clip-path: inset(0 -100vmax);
@@ -993,7 +991,6 @@ h1 {
 
 @media (max-width: 640px) {
     .contact-panel,
-    .contact-page__grid,
     .contact-page__payments ul,
     .about-page__values,
     .content-highlights__grid,
