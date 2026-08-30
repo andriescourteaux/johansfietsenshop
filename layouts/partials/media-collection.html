@@ -145,13 +145,7 @@
             {{- range $index, $item := $items -}}
         <article class="split-block{{ if eq (mod $index 2) 1 }} split-block--reverse{{ end }}">
             <div class="split-block__media">
-                    {{- if $item.url -}}
-                <a class="split-block__media-link" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $item.title }}">
-                    <img class="split-block__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
-                </a>
-                    {{- else -}}
                 <img class="split-block__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
-                    {{- end -}}
             </div>
             <div class="split-block__content">
                 <h2 class="split-block__title">{{ $item.title }}</h2>

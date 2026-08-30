@@ -8,7 +8,7 @@
   {{- with index site.Data.collecties $config.collection_mode -}}
     {{- with index . $config.collection_key -}}
       {{- range $name, $entry := .items -}}
-        {{- $bikeHighlights = $bikeHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "intro" $entry.intro "url" (or $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+        {{- $bikeHighlights = $bikeHighlights | append (dict "title" (or $entry.highlight_title $entry.title) "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -20,7 +20,7 @@
   {{- with index site.Data.collecties $config.collection_mode -}}
     {{- with index . $config.collection_key -}}
       {{- range $name, $entry := .items -}}
-        {{- $driveHighlights = $driveHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "intro" $entry.intro "url" (or $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+        {{- $driveHighlights = $driveHighlights | append (dict "title" (or $entry.highlight_title $entry.title) "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -43,7 +43,6 @@
                     </span>
                     <span class="overview-card__body">
                         <span class="overview-card__title">{{ .title }}</span>
-                        {{ with .summary }}<span class="overview-card__summary">{{ . }}</span>{{ end }}
                     </span>
                 </a>
                 {{ end }}
@@ -75,14 +74,12 @@
             {{ end }}
             {{ with $panel.highlights }}
             <section class="home-highlights">
-                <h2>Highlights</h2>
                 <div class="home-highlights__grid">
                     {{ range . }}
                     {{ if .url }}<a class="home-highlight" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ else }}<article class="home-highlight">{{ end }}
                         <img class="home-highlight__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
                         <span class="home-highlight__body">
                             <span class="home-highlight__title">{{ .title }}</span>
-                            {{ with .intro }}<span class="home-highlight__intro">{{ . }}</span>{{ end }}
                         </span>
                     {{ if .url }}</a>{{ else }}</article>{{ end }}
                     {{ end }}

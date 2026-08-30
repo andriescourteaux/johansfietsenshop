@@ -936,6 +936,7 @@ $eDiaeresis = [string][char]0x00EB
 
 $homeHeaderSection = Get-SectionFragment $homeHtml '<header\b[^>]*class="[^"]*\bsite-header\b[^"]*"[^>]*>.*?</header>' 'index.html header'
 $homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'index.html'
+$aboutHeroSection = Get-SectionFragment $aboutHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'over-ons/index.html'
 $homeFooterSection = Get-SectionFragment $homeHtml '<footer\b[^>]*class="[^"]*\bsite-footer\b[^"]*"[^>]*>.*?</footer>' 'index.html footer'
 $contactMainSection = Get-SectionFragment $contactHtml '<main\b[^>]*>.*?</main>' 'contact/index.html main'
 $bikeNavSection = Get-SectionFragment $homeHeaderSection '<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?</ul>' 'index.html bike header menu'
@@ -955,6 +956,19 @@ Assert-Contains $bikeBrandsHtml 'Onze merken' 'bike brands title'
 Assert-NotContains $bikeBrandsHtml 'data-media-filter=' 'bike brands filters disabled'
 Assert-Contains $homeHtml 'split-block' 'index.html split blocks'
 Assert-Contains $homeHtml 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html bike quote'
+Assert-NotContains $homeHtml 'overview-card__summary' 'index.html overview card subtitles removed'
+Assert-NotContains $homeHtml '<h2>Highlights</h2>' 'index.html highlights heading removed'
+Assert-NotContains $aboutHtml '<h2>Highlights</h2>' 'over-ons/index.html highlights heading removed'
+Assert-NotContains $homeHtml 'home-highlight__intro' 'index.html highlight descriptions removed'
+Assert-NotContains $aboutHtml 'home-highlight__intro' 'over-ons/index.html highlight descriptions removed'
+foreach ($highlightLink in @(
+    'https://www.gazellebikes.com/nl-be',
+    'https://flandersfietsen.be/wp/',
+    'https://www.hplus-mobility.com/en_GB'
+)) {
+    Assert-Contains $homeHtml $highlightLink 'index.html manufacturer highlight links'
+    Assert-Contains $aboutHtml $highlightLink 'over-ons/index.html manufacturer highlight links'
+}
 $drivePanelStart = $homeHtml.IndexOf('home-overview__panel--drive')
 if ($drivePanelStart -lt 0) {
     Add-Problem 'Missing drive homepage panel in index.html'
@@ -972,13 +986,30 @@ Assert-Contains $bikeAccessoriesHtml ('essenti' + $eDiaeresis + 'le fietsonderde
 Assert-Contains $driveBrandsHtml ('Betrouwbare en effici' + $eDiaeresis + 'nte grasmachines') 'drive brands accented copy'
 Assert-Contains $aboutHtml ($eAcute + $eAcute + 'n ding') 'about accented copy'
 Assert-Contains $aboutHtml ($eAcute + 'cht nodig heeft') 'about accented copy'
+Assert-Contains $aboutHeroSection '/images/about/headshot.webp' 'over-ons/index.html headshot hero override'
+Assert-Contains $aboutHtml 'page-value' 'over-ons/index.html page values'
+Assert-Contains $contactHtml 'page-value' 'contact/index.html page values'
+Assert-Contains $aboutHtml '&#128295;' 'over-ons/index.html about emoji'
+Assert-Contains $aboutHtml '&#9989;' 'over-ons/index.html about emoji'
+Assert-Contains $aboutHtml '&#128690;' 'over-ons/index.html about emoji'
 Assert-NotMatches $homeHtml '(?is)<a\b[^>]*href="[^"]*/bikeshop/modellen-in-de-kijker/' 'index.html old bike models link'
 Assert-NotMatches $homeHtml '(?is)<a\b[^>]*href="[^"]*/driveshop/modellen-in-de-kijker/' 'index.html old drive models link'
 Assert-NotContains $homeHtml 'Enkele modellen in de kijker' 'index.html old bike models label'
 Assert-NotContains $homeHtml 'Modellen in de kijker' 'index.html old drive models label'
+Assert-Contains $bikeAccessoriesHtml 'https://www.basil.com/nl/' 'bike accessories Basil link'
+Assert-Contains $bikeAccessoriesHtml 'https://shop.vdbparts.be/' 'bike accessories VDB Parts link'
+Assert-Contains $bikeAccessoriesHtml 'https://axabikesecurity.com/nl/' 'bike accessories Axa link'
+Assert-Contains $bikeAccessoriesHtml 'https://www.verwimp.nl/nl' 'bike accessories Louis Verwimp link'
+Assert-Contains $bikeAccessoriesHtml 'https://www.thule.com/nl-be/' 'bike accessories Thule link'
+Assert-Contains $bikeAccessoriesHtml 'Bekijk assortiment' 'bike accessories buttons'
+Assert-Contains $bikeBrandsHtml 'Meer info' 'bike brands buttons'
+Assert-Contains $driveBrandsHtml 'Meer info' 'drive brands buttons'
+Assert-NotContains $bikeBrandsHtml 'split-block__media-link' 'bike brands image links removed'
+Assert-NotContains $driveBrandsHtml 'split-block__media-link' 'drive brands image links removed'
 Assert-Contains $contactHtml 'Betaal mogelijkheden' 'contact payment methods'
 Assert-Contains $contactHtml 'Vervangfiets' 'contact replacement bike block'
 Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
+Assert-Contains $contactHtml 'contact-page__button-icon' 'contact icon buttons'
 Assert-Contains $winterHtml 'Maak je tuinmachines winterklaar' 'winter maintenance title'
 Assert-Contains $winterHtml 'Scherp en veilig: Messen worden geslepen en gebalanceerd voor een perfect maairesultaat.' 'winter maintenance sharp copy'
 Assert-Contains $winterHtml 'Optimaal gemak: Wij doen het zware werk.' 'winter maintenance ease copy'
@@ -1014,8 +1045,9 @@ Assert-NotContains $bikeBrandsData '/images/merken-verdelers/' 'data/collecties/
 Assert-NotContains $driveBrandsData '/images/merken-verdelers/' 'data/collecties/driveshop/merken-en-verdelers.toml'
 Assert-NotContains $bikeBrandsHtml '/images/merken-verdelers/' 'bikeshop/merken-en-verdelers/index.html'
 Assert-NotContains $driveBrandsHtml '/images/merken-verdelers/' 'driveshop/merken-en-verdelers/index.html'
-Assert-Contains $bikeBrandsHtml 'aria-label="BFK"' 'bikeshop/merken-en-verdelers/index.html'
-Assert-NotMatches $bikeBrandsHtml '<a[^>]+href="https://flandersfietsen\.be/wp/"[^>]+aria-label="BFK"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-Contains $bikeBrandsHtml '<h2 class="split-block__title">BFK</h2>' 'bikeshop/merken-en-verdelers/index.html'
+Assert-Contains $bikeBrandsHtml 'https://shop.vdbparts.be/collections/bike-fun-kids' 'bikeshop/merken-en-verdelers/index.html BFK link'
+Assert-NotMatches $bikeBrandsHtml '(?is)<article\b[^>]*>.*?<h2 class="split-block__title">BFK</h2>.*?href="https://flandersfietsen\.be/wp/"' 'bikeshop/merken-en-verdelers/index.html'
 
 # Issue 5: active brands content must not keep dead legacy front matter keys.
 foreach ($contentCheck in @(
@@ -1141,6 +1173,21 @@ Assert-NotMatches $cssContent '(?is)\.media-collection__filter\b[^{}]*\{[^}]*fon
 Assert-Matches $cssContent '(?is)\.media-collection__filter\b[^{}]*\{[^}]*text-transform\s*:\s*uppercase' 'assets/css/style.css media collection filter uppercase'
 Assert-Matches $cssContent '(?is)\.media-collection__card:hover[^{}]*\{[^}]*transform\s*:\s*translateY' 'assets/css/style.css media collection hover lift'
 Assert-Matches $cssContent '(?is)\.media-collection__card:hover\s+\.media-collection__image[^{}]*\{[^}]*transform\s*:\s*scale' 'assets/css/style.css media collection hover zoom'
+Assert-Matches $cssContent '(?is):root\s*\{[^}]*--container\s*:\s*92rem' 'assets/css/style.css wider page canvas'
+Assert-Matches $cssContent '(?is)\.split-block__media\b[^{}]*\{[^}]*aspect-ratio\s*:\s*1\s*/\s*1' 'assets/css/style.css square split block images'
+Assert-Matches $cssContent '(?is)\.page-intro\s+\.container\b[^{}]*\{[^}]*box-shadow\s*:\s*none' 'assets/css/style.css page canvas shadow removed'
+Assert-Matches $cssContent '(?is)\.home-overview__panel--bike\s+\.home-overview__grid\b[^{}]*\{[^}]*repeat\(3,\s*minmax\(0,\s*24rem\)\)' 'assets/css/style.css capped bike overview cards'
+Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
+Assert-Matches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless page values'
+Assert-Matches $cssContent '(?is)\.contact-page__hours\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css contact hours border removed'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css payment border removed'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css payment background removed'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css payment icon border removed'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css payment icon background removed'
+Assert-Matches $cssContent '(?is)\.contact-page__actions\b[^{}]*\{[^}]*justify-content\s*:\s*center' 'assets/css/style.css centered contact buttons'
+Assert-Matches $cssContent '(?is)\.page-cta\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css CTA canvas border removed'
+Assert-Matches $cssContent '(?is)\.page-cta\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css CTA canvas background removed'
+Assert-Matches $cssContent '(?is)\.page-cta\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered CTA canvas'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="bike"\][^{]*\{[^}]*--accent\s*:\s*#ffc100' 'assets/css/style.css bike accent variable'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="bike"\][^{]*\{[^}]*--accent-rgb\s*:\s*255,\s*193,\s*0' 'assets/css/style.css bike accent rgb variable'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\][^{]*\{[^}]*--accent\s*:\s*#b93f33' 'assets/css/style.css drive accent variable'
@@ -1220,7 +1267,7 @@ Assert-Matches $cssContent '(?is)\.media-showcase__item--reverse\b' 'assets/css/
 
 # Issue 11: footer and contact page must share the same core contact data.
 Assert-Matches $homeFooterSection '(?is)\bsite-footer__contact\b' 'index.html footer contact column'
-Assert-Matches $homeFooterSection '(?is)Adres.*?E-mail.*?Telefoon' 'index.html footer contact order'
+Assert-NotContains $homeFooterSection 'site-footer__contact-term' 'index.html footer contact titles removed'
 
 if (-not [string]::IsNullOrWhiteSpace($sharedContactAddress)) {
     Assert-Contains $homeFooterSection $sharedContactAddress 'index.html footer address'

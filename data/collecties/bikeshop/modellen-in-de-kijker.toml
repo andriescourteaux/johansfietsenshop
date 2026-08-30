@@ -13,6 +13,8 @@ specs = [
 title = "Flanders Navigator"
 alt = "Flanders Navigator"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/flanders_navigator.webp"
+highlight_title = "Flanders"
+highlight_url = "https://flandersfietsen.be/wp/"
 intro = "De Flanders e-bike NAVIGATOR combineert comfort, betrouwbaarheid en een strak design in één praktische elektrische fiets. De stille achterwielmotor en geïntegreerde 36V/12,5Ah batterij zorgen voor vlotte ondersteuning, ideaal voor stadsverkeer en recreatieve tochten. Dankzij het lage zwaartepunt en onderhoudsvriendelijke ontwerp geniet je van stabiel rijgedrag en zorgeloos fietsplezier, elke dag opnieuw."
 specs = [
   "Motor: Bafang M400",
@@ -24,6 +26,8 @@ specs = [
 title = "Gazelle Eclipse Speed"
 alt = "Gazelle Eclipse Speed"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/gazelle_eclipse_speed.webp"
+highlight_title = "Gazelle"
+highlight_url = "https://www.gazellebikes.com/nl-be"
 intro = "De Gazelle Eclipse Speed is de highspeed variant van de bekroonde Eclipse e-bike, verkozen tot fiets van het jaar 2024 door VAB. Met zijn strakke lijnen, clean design en krachtige Bosch Performance Line Speed middenmotor, is deze fiets ontworpen om je woon-werkverkeer naar een hoger niveau te tillen. "
 specs = [
   "Motor: Performance Line Speed",
@@ -35,6 +39,8 @@ specs = [
 title = "HPlus POWERDRIVE Pinion Sport"
 alt = "HPlus POWERDRIVE Pinion Sport"
 image = "/images/collecties/bikeshop/modellen-in-de-kijker/HPlus-POWERDRIVE-Pinion-Sport-Zwart-S.webp"
+highlight_title = "HPlus"
+highlight_url = "https://www.hplus-mobility.com/en_GB"
 intro = "Voor mensen die lang moeten pendelen is de powerdrive de fiets. Met een reeel gemiddeld bereik van 140 km mogelijk met één acculading. Zeer krachtige achterwielnaafmotor met 1000W en 55Nm. De e-bike met een van de grootste batterijen in België (1440Wh). Onverslaanbare kracht die een constante 45km/h haalt en houd. De sport staat niet alleen voor snelheid maar ook voor de sportievere zithouding met een iets hoger geplaatste bovenbuis. Volledige assemblage, gedeeltelijke productie en kwaliteitsborging in Zwitserland. Er worden robuuste en beproefde onderdelen gebruikt van Pletscher, KMC, SKS, Samsung, Shimano en Magura. Ondersteuning en service door Hplus en hun dealernetwerk."
 specs = [
   "Motor: Achterwielnaafmotor met max. 1000Watt en 55 Nm",
