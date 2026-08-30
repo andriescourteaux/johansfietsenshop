@@ -9,7 +9,7 @@ weight = 10
 title = "VDB Parts"
 alt = "VDB Parts"
 image = "/images/collecties/bikeshop/accessoires/vdb.jpg"
-intro = "De betrouwbare specialist in essentiele fietsonderdelen, waarmee we jouw fiets altijd snel en met de juiste kwaliteit herstellen."
+intro = "De betrouwbare specialist in essentiële fietsonderdelen, waarmee we jouw fiets altijd snel en met de juiste kwaliteit herstellen."
 weight = 20
 
 [items."axa.webp"]

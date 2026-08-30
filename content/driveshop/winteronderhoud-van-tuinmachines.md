@@ -14,8 +14,10 @@ De voordelen op een rij:
 
 - Geen startproblemen in het voorjaar.
 - Langere levensduur van je motor, accu en bewegende delen.
-- Minder kans op onverwachte herstellingen.
-- Je machine is klaar zodra je ze opnieuw nodig hebt.
+- Scherp en veilig: Messen worden geslepen en gebalanceerd voor een perfect maairesultaat.
+- Optimaal gemak: Wij doen het zware werk.
+
+Unieke service: Wij halen en brengen je machine
 
 Geen zin of geen geschikt vervoer om je grasmaaier, zitmaaier of andere tuinmachine naar de winkel te brengen? Geen probleem. Tijdens de winterperiode maken we het je extra gemakkelijk:
 

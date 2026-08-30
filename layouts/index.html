@@ -66,10 +66,12 @@
                 {{ end }}
             </div>
             {{ end }}
+            {{ if eq $panel.mode "bike" }}
             {{ with $homeData.quote }}
             <blockquote class="home-quote">
                 <p>{{ . }}</p>
             </blockquote>
+            {{ end }}
             {{ end }}
             {{ with $panel.highlights }}
             <section class="home-highlights">

@@ -24,7 +24,7 @@ function Read-GeneratedText {
         return $null
     }
 
-    return Get-Content $fullPath -Raw
+    return [System.IO.File]::ReadAllText($fullPath, [System.Text.Encoding]::UTF8)
 }
 
 function Read-RepoText {
@@ -36,7 +36,7 @@ function Read-RepoText {
         return $null
     }
 
-    return Get-Content $fullPath -Raw
+    return [System.IO.File]::ReadAllText($fullPath, [System.Text.Encoding]::UTF8)
 }
 
 function Assert-Contains {
@@ -918,6 +918,11 @@ $promoPopupBody = Get-TomlStringArray $promoPopupData 'body' 'data/promo-popup.t
 $promoPopupBullets = Get-TomlStringArray $promoPopupData 'bullets' 'data/promo-popup.toml'
 $promoPopupCtaLabel = Get-TomlStringValue $promoPopupData 'cta_label' 'data/promo-popup.toml'
 $promoPopupCtaUrl = Get-TomlStringValue $promoPopupData 'cta_url' 'data/promo-popup.toml'
+$promoPopupSourceImageExists = $false
+if (-not [string]::IsNullOrWhiteSpace($promoPopupImage)) {
+    $promoPopupSourcePath = Join-Path $RepoRoot ('static' + $promoPopupImage.Replace('/', [string][System.IO.Path]::DirectorySeparatorChar))
+    $promoPopupSourceImageExists = Test-Path -LiteralPath $promoPopupSourcePath
+}
 $sharedContactData = Read-RepoText 'data/contact.toml'
 $sharedContactName = Get-TomlStringValue $sharedContactData 'name' 'data/contact.toml'
 $sharedContactAddress = Get-TomlStringValue $sharedContactData 'address' 'data/contact.toml'
@@ -926,6 +931,8 @@ $sharedContactPhone = Get-TomlStringValue $sharedContactData 'phone' 'data/conta
 $openingHours = Get-TomlStringArray $sharedContactData 'opening_hours' 'data/contact.toml'
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
+$eAcute = [string][char]0x00E9
+$eDiaeresis = [string][char]0x00EB
 
 $homeHeaderSection = Get-SectionFragment $homeHtml '<header\b[^>]*class="[^"]*\bsite-header\b[^"]*"[^>]*>.*?</header>' 'index.html header'
 $homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'index.html'
@@ -947,10 +954,24 @@ Assert-Matches $homeHeroSection '(?is)<h1\b(?=[^>]*\bdata-bike-title="Start een 
 Assert-Contains $bikeBrandsHtml 'Onze merken' 'bike brands title'
 Assert-NotContains $bikeBrandsHtml 'data-media-filter=' 'bike brands filters disabled'
 Assert-Contains $homeHtml 'split-block' 'index.html split blocks'
+Assert-Contains $homeHtml 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html bike quote'
+$drivePanelStart = $homeHtml.IndexOf('home-overview__panel--drive')
+if ($drivePanelStart -lt 0) {
+    Add-Problem 'Missing drive homepage panel in index.html'
+}
+else {
+    Assert-NotContains $homeHtml.Substring($drivePanelStart) 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html drive panel bike quote'
+}
 Assert-Contains $bikeBrandsHtml 'media-collection--split-blocks' 'bike brands split blocks'
 Assert-Contains $driveBrandsHtml 'media-collection--split-blocks' 'drive brands split blocks'
 Assert-Contains $bikeLeasingHtml 'media-collection--split-blocks' 'bike leasing split blocks'
 Assert-Contains $bikeAccessoriesHtml 'media-collection--split-blocks' 'bike accessories split blocks'
+Assert-Contains $bikeBrandsHtml ('effici' + $eDiaeresis + 'nt en betrouwbaar vervoermiddel') 'bike brands accented copy'
+Assert-Contains $bikeLeasingHtml ('We cre' + $eDiaeresis + 'ren samen enthousiasme') 'bike leasing accented copy'
+Assert-Contains $bikeAccessoriesHtml ('essenti' + $eDiaeresis + 'le fietsonderdelen') 'bike accessories accented copy'
+Assert-Contains $driveBrandsHtml ('Betrouwbare en effici' + $eDiaeresis + 'nte grasmachines') 'drive brands accented copy'
+Assert-Contains $aboutHtml ($eAcute + $eAcute + 'n ding') 'about accented copy'
+Assert-Contains $aboutHtml ($eAcute + 'cht nodig heeft') 'about accented copy'
 Assert-NotMatches $homeHtml '(?is)<a\b[^>]*href="[^"]*/bikeshop/modellen-in-de-kijker/' 'index.html old bike models link'
 Assert-NotMatches $homeHtml '(?is)<a\b[^>]*href="[^"]*/driveshop/modellen-in-de-kijker/' 'index.html old drive models link'
 Assert-NotContains $homeHtml 'Enkele modellen in de kijker' 'index.html old bike models label'
@@ -959,6 +980,10 @@ Assert-Contains $contactHtml 'Betaal mogelijkheden' 'contact payment methods'
 Assert-Contains $contactHtml 'Vervangfiets' 'contact replacement bike block'
 Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
 Assert-Contains $winterHtml 'Maak je tuinmachines winterklaar' 'winter maintenance title'
+Assert-Contains $winterHtml 'Scherp en veilig: Messen worden geslepen en gebalanceerd voor een perfect maairesultaat.' 'winter maintenance sharp copy'
+Assert-Contains $winterHtml 'Optimaal gemak: Wij doen het zware werk.' 'winter maintenance ease copy'
+Assert-Contains $winterHtml 'Unieke service: Wij halen en brengen je machine' 'winter maintenance pickup section'
+Assert-Contains $winterHtml 'Interesse of direct inplannen?' 'winter maintenance planning section'
 Assert-Contains $winterHtml 'Neem contact op' 'winter contact CTA'
 
 # Issue 1: shared-page footer links must be drive-mode aware in the mode script.
@@ -1129,6 +1154,7 @@ Assert-Contains $promoPopupTemplate 'data-promo-popup="backdrop"' 'layouts/parti
 Assert-Contains $promoPopupTemplate 'data-promo-popup="close"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'data-promo-popup-key=' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'fileExists' 'layouts/partials/promo-popup.html local image priority'
+Assert-Contains $promoPopupTemplate '{{ else }}' 'layouts/partials/promo-popup.html text fallback branch'
 Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']title["'']|\$[a-z0-9_]*title\b|\.title\b)' 'layouts/partials/promo-popup.html title fallback'
 Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']body["'']|\$[a-z0-9_]*body\b|\.body\b)' 'layouts/partials/promo-popup.html body fallback'
 Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']bullets["'']|\$[a-z0-9_]*bullets\b|\.bullets\b)' 'layouts/partials/promo-popup.html bullets fallback'
@@ -1150,12 +1176,25 @@ if ($promoPopupEnabled -eq $true) {
     Assert-Matches $homeHtml '(?is)<button\b[^>]*data-promo-popup="close"' 'index.html promo popup close'
     Assert-Contains $homeHtml 'promo-popup-script' 'index.html promo popup'
 
-    if (-not [string]::IsNullOrWhiteSpace($promoPopupImage)) {
+    if (-not [string]::IsNullOrWhiteSpace($promoPopupImage) -and $promoPopupSourceImageExists) {
         Assert-Matches $homeHtml ('(?is)<img\b[^>]*src="[^"]*' + [regex]::Escape($promoPopupImage) + '"') 'index.html promo popup image'
+        if (-not [string]::IsNullOrWhiteSpace($promoPopupAlt)) {
+            Assert-Matches $homeHtml ('(?is)<img\b[^>]*alt="' + [regex]::Escape($promoPopupAlt) + '"') 'index.html promo popup image alt'
+        }
+        Assert-NotContains $homeHtml 'promo-popup__content' 'index.html promo popup image priority'
+        Assert-NotContains $homeHtml $promoPopupTitle 'index.html promo popup image priority title fallback'
     }
-
-    if (-not [string]::IsNullOrWhiteSpace($promoPopupAlt)) {
-        Assert-Matches $homeHtml ('(?is)<img\b[^>]*alt="' + [regex]::Escape($promoPopupAlt) + '"') 'index.html promo popup image alt'
+    else {
+        Assert-NotMatches $homeHtml ('(?is)<img\b[^>]*src="[^"]*' + [regex]::Escape($promoPopupImage) + '"') 'index.html promo popup missing image fallback'
+        Assert-Contains $homeHtml $promoPopupTitle 'index.html promo popup fallback title'
+        foreach ($line in $promoPopupBody) {
+            Assert-Contains $homeHtml $line 'index.html promo popup fallback body'
+        }
+        foreach ($line in $promoPopupBullets) {
+            Assert-Contains $homeHtml $line 'index.html promo popup fallback bullets'
+        }
+        Assert-Contains $homeHtml $promoPopupCtaLabel 'index.html promo popup fallback CTA'
+        Assert-Contains $homeHtml $promoPopupCtaUrl 'index.html promo popup fallback CTA URL'
     }
 }
 elseif ($promoPopupEnabled -eq $false) {
