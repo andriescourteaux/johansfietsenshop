@@ -939,6 +939,7 @@ $homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bs
 $aboutHeroSection = Get-SectionFragment $aboutHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'over-ons/index.html'
 $homeFooterSection = Get-SectionFragment $homeHtml '<footer\b[^>]*class="[^"]*\bsite-footer\b[^"]*"[^>]*>.*?</footer>' 'index.html footer'
 $contactMainSection = Get-SectionFragment $contactHtml '<main\b[^>]*>.*?</main>' 'contact/index.html main'
+$winterMainSection = Get-SectionFragment $winterHtml '<main\b[^>]*>.*?</main>' 'winter maintenance main'
 $bikeNavSection = Get-SectionFragment $homeHeaderSection '<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?</ul>' 'index.html bike header menu'
 $driveNavSection = Get-SectionFragment $homeHeaderSection '<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?</ul>' 'index.html drive header menu'
 
@@ -1035,11 +1036,11 @@ Assert-Contains $contactHtml 'Vervangfiets' 'contact replacement bike block'
 Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
 Assert-Matches $contactMainSection '(?is)Herstellingen &amp; Onderhoud.*?Fiets kopen\?.*?Vervangfiets.*?Ophaaldienst.*?contact-page__actions' 'contact/index.html page values grouped before actions'
 Assert-Contains $contactHtml 'contact-page__button-icon' 'contact icon buttons'
-Assert-Contains $winterHtml 'Maak je tuinmachines winterklaar' 'winter maintenance title'
-Assert-Contains $winterHtml 'Unieke service: Wij halen en brengen je machine' 'winter maintenance pickup section'
-Assert-Contains $winterHtml 'Interesse of direct inplannen?' 'winter maintenance planning section'
-Assert-Contains $winterHtml 'Neem contact op' 'winter contact CTA'
-$winterValueCards = @([regex]::Matches($winterHtml, 'class="winter-value page-value"'))
+Assert-Contains $winterMainSection 'Maak je tuinmachines winterklaar' 'winter maintenance title'
+Assert-Contains $winterMainSection 'Unieke service: Wij halen en brengen je machine' 'winter maintenance pickup section'
+Assert-Contains $winterMainSection 'Interesse of direct inplannen?' 'winter maintenance planning section'
+Assert-Contains $winterMainSection 'Neem contact op' 'winter contact CTA'
+$winterValueCards = @([regex]::Matches($winterMainSection, 'class="winter-value page-value"'))
 Assert-True ($winterValueCards.Count -eq 8) 'winter maintenance value cards'
 foreach ($winterValue in @(
     @{ Title = 'Betrouwbaarheid'; Text = 'Geen startproblemen in het voorjaar.' },
@@ -1051,9 +1052,9 @@ foreach ($winterValue in @(
     @{ Title = 'Onderhoud'; Text = 'We voeren een complete inspectie en onderhoudsbeurt uit.' },
     @{ Title = 'Terugbrengen'; Text = 'Je krijgt je machine netjes onderhouden en startklaar weer thuisbezorgd.' }
 )) {
-    Assert-Matches $winterHtml ('(?is)<article class="winter-value page-value">\s*<h2>' + [regex]::Escape($winterValue.Title) + '</h2>\s*<p>' + [regex]::Escape($winterValue.Text) + '</p>\s*</article>') 'winter maintenance split bullet cards'
+    Assert-Matches $winterMainSection ('(?is)<article class="winter-value page-value">\s*<h2>' + [regex]::Escape($winterValue.Title) + '</h2>\s*<p>' + [regex]::Escape($winterValue.Text) + '</p>\s*</article>') 'winter maintenance split bullet cards'
 }
-Assert-NotMatches $winterHtml '(?is)<li>\s*(?:Betrouwbaarheid|Gezondheid|Scherp en veilig|Optimaal gemak|Aanmelden|Ophalen|Onderhoud|Terugbrengen)\s*:' 'winter maintenance bullets converted to page values'
+Assert-NotMatches $winterMainSection '(?is)<li>\s*(?:Betrouwbaarheid|Gezondheid|Scherp en veilig|Optimaal gemak|Aanmelden|Ophalen|Onderhoud|Terugbrengen)\s*:' 'winter maintenance bullets converted to page values'
 
 # Issue 1: shared-page footer links must be drive-mode aware in the mode script.
 Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'

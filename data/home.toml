@@ -13,13 +13,13 @@ title = "Hulp nodig?"
 text = "Persoonlijk fietsadvies? Kom naar onze winkel en laat je helpen door ons."
 button_label = "Plan Adviesafspraak"
 button_url = "/contact/?mode=bike"
-image = "/images/home/advies.webp"
+image = "/images/home/advies.jpg"
 alt = "Persoonlijk fietsadvies"
 
 [[drive_promos]]
 title = "Voor elk werk de juiste machine"
 text = "Voor elk werk de juiste machine."
-image = "/images/home-cards/drive-maintenance.webp"
+image = "/images/home-cards/drive-tool.jpg"
 alt = "Tuinmachine"
 
 [[drive_promos]]
@@ -27,7 +27,7 @@ title = "Hulp nodig?"
 text = "Persoonlijk advies voor jouw tuinonderhoud? Kom naar onze winkel en laat je helpen door ons."
 button_label = "Plan afspraak"
 button_url = "/contact/?mode=drive"
-image = "/images/home/advies.webp"
+image = "/images/home/drive-advies.webp"
 alt = "Persoonlijk tuinmachineadvies"
 
 [bike_highlights]
