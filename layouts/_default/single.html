@@ -2,7 +2,7 @@
 {{- $contact := site.Data.contact -}}
 {{- $siteMode := partial "site-mode.html" . -}}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
-<section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}">
+<section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}{{ if .Params.showWinterPage }} page-intro--winter{{ end }}">
     <div class="container">
         {{ if not .Params.hide_page_intro }}
         <!-- <p class="eyebrow">Pagina</p> -->
