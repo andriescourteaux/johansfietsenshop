@@ -1259,7 +1259,7 @@ Assert-Matches $cssContent '(?is)\.home-overview__panel--drive\s+\.home-overview
 Assert-Matches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card__body\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview card body'
 Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b(?=[^{}]*\{[^}]*position\s*:\s*relative)(?=[^{}]*\{[^}]*margin-top\s*:\s*clamp\(9rem,\s*17vw,\s*14rem\))' 'assets/css/style.css more space below overview cards'
-Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b(?=[^{}]*\{[^}]*height\s*:\s*clamp\(2\.5rem,\s*5vw,\s*4rem\))(?=[^{}]*\{[^}]*background\s*:\s*#f4f4f4)(?=[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4)' 'assets/css/style.css homepage separator plane'
+Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b(?=[^{}]*\{[^}]*height\s*:\s*clamp\(7\.5rem,\s*15vw,\s*12rem\))(?=[^{}]*\{[^}]*background\s*:\s*#f4f4f4)(?=[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4)' 'assets/css/style.css homepage separator plane'
 Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)[^}]*margin-bottom\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)' 'assets/css/style.css homepage quote vertical spacing'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*background\s*:\s*#fff' 'assets/css/style.css white highlight cards'

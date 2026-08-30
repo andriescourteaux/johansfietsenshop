@@ -455,7 +455,7 @@ h1 {
     top: calc(clamp(5rem, 10vw, 8rem) * -1);
     right: 0;
     left: 0;
-    height: clamp(2.5rem, 5vw, 4rem);
+    height: clamp(7.5rem, 15vw, 12rem);
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
     clip-path: inset(0 -100vmax);
