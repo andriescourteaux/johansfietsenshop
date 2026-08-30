@@ -798,6 +798,19 @@ h1 {
     line-height: 1.7;
 }
 
+.winter-values {
+    margin: clamp(1.5rem, 5vw, 3.5rem) 0;
+}
+
+.winter-value.page-value {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+    min-height: clamp(12rem, 18vw, 15rem);
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+}
+
 .winter-values__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

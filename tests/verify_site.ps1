@@ -1300,6 +1300,8 @@ Assert-Matches $cssContent '(?is)\.page-copy--center\b[^{}]*\{[^}]*text-align\s*
 Assert-Matches $cssContent '(?is)\.winter-values__grid\b[^{}]*\{[^}]*grid-template-columns\s*:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)' 'assets/css/style.css winter value grid'
 Assert-NotMatches $cssContent '(?is)\.winter-values__grid\b[^{}]*\{[^}]*grid-template-columns\s*:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\)' 'assets/css/style.css winter value grid not four columns'
 Assert-NotMatches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.winter-values__grid[^@]*grid-template-columns\s*:\s*1fr' 'assets/css/style.css winter value grid stays 2x2'
+Assert-Matches $cssContent '(?is)\.winter-values\b[^{}]*\{[^}]*margin\s*:\s*clamp\(1\.5rem,\s*5vw,\s*3\.5rem\)\s+0' 'assets/css/style.css winter values separated from copy'
+Assert-Matches $cssContent '(?is)\.winter-value\.page-value\b[^{}]*\{(?=[^}]*padding\s*:\s*clamp\(1\.75rem,\s*4vw,\s*2\.75rem\))(?=[^}]*min-height\s*:\s*clamp\(12rem,\s*18vw,\s*15rem\))' 'assets/css/style.css larger winter value cards'
 Assert-Matches $cssContent '(?is)\.page-copy\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black page copy'
 Assert-Matches $cssContent '(?is)\.contact-page__block\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black contact page text'
 Assert-Matches $cssContent '(?is)\.about-page__vision\s+p\s*,\s*\.about-page__value\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black about page text'
