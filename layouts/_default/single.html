@@ -5,7 +5,7 @@
     <div class="container">
         <!-- <p class="eyebrow">Pagina</p> -->
         <h1>{{ .Title }}</h1>
-        <div class="page-copy">{{ .Content }}</div>
+        <div class="page-copy{{ if .Params.narrow_copy }} page-copy--narrow{{ end }}">{{ .Content }}</div>
 
         {{ if .Params.highlights }}
         <section class="content-highlights">
@@ -64,6 +64,14 @@
                     <h2>Fiets kopen?</h2>
                     <p>Kom gerust langs voor vrijblijvend advies en een testrit op onze modellen.</p>
                 </article>
+                <article class="contact-page__block page-value">
+                    <h2>Vervangfiets</h2>
+                    <p>Herstelling die langer duurt? Vraag naar de mogelijkheden voor een vervangfiets.</p>
+                </article>
+                <article class="contact-page__block page-value">
+                    <h2>Ophaaldienst</h2>
+                    <p>Niet in de mogelijkheid om je fiets te brengen? Wij kunnen deze in overleg bij je ophalen.</p>
+                </article>
             </div>
             <div class="contact-page__actions">
                 <a class="contact-page__button" href="tel:{{ replaceRE `[^0-9+]` `` $contact.phone }}" aria-label="Bel {{ $contact.phone }}">
@@ -95,23 +103,13 @@
             <section class="contact-page__payments">
                 <h2>Betaal mogelijkheden</h2>
                 <ul>
-                    <li><img src="{{ "/images/payment/cash.svg" | relURL }}" alt="Cash"><span>Cash</span></li>
+                    <li><img src="{{ "/images/payment/cash.png" | relURL }}" alt="Cash"><span>Cash</span></li>
                     <li><img src="{{ "/images/payment/bancontact.svg" | relURL }}" alt="Bancontact"><span>Bancontact</span></li>
-                    <li><img src="{{ "/images/payment/payconiq.svg" | relURL }}" alt="Payconiq"><span>Payconiq</span></li>
+                    <li><img src="{{ "/images/payment/payconiq.png" | relURL }}" alt="Payconiq"><span>Payconiq</span></li>
                 </ul>
             </section>
             <div class="contact-panel__map">
                 <iframe src="https://www.google.com/maps?q=Kalve%2062%2C%209185%20Wachtebeke&z=15&output=embed" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps kaart van Johan Alliet"></iframe>
-            </div>
-            <div class="contact-page__grid">
-                <article class="contact-page__block page-value">
-                    <h2>Vervangfiets</h2>
-                    <p>Herstelling die langer duurt? Vraag naar de mogelijkheden voor een vervangfiets.</p>
-                </article>
-                <article class="contact-page__block page-value">
-                    <h2>Ophaaldienst</h2>
-                    <p>Niet in de mogelijkheid om je fiets te brengen? Wij kunnen deze in overleg bij je ophalen.</p>
-                </article>
             </div>
         </section>
         {{ end }}

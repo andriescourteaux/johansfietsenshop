@@ -38,7 +38,7 @@
     --border: #d8cfbf;
     --accent: #999999;
     --accent-rgb: 153, 153, 153;
-    --container: 108rem;
+    --container: 124rem;
     --footer-background: #ffc100;
     --footer-foreground: #1f1c18;
     --footer-muted: #5f5032;
@@ -273,6 +273,10 @@ h1 {
     font-size: 1.05rem;
 }
 
+.page-copy--narrow {
+    max-width: 40rem;
+}
+
 .page-copy--hero {
     max-width: 34rem;
     color: rgba(255, 248, 238, 0.86);
@@ -363,6 +367,11 @@ h1 {
     color: var(--text);
 }
 
+.contact-page .opening-hours-table th,
+.contact-page .opening-hours-table td {
+    text-align: center;
+}
+
 .home-overview {
     margin-top: -2.5rem;
     position: relative;
@@ -411,6 +420,12 @@ h1 {
 .home-quote,
 .home-highlights {
     margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+.home-highlights {
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid #d6d6d6;
+    background: #f4f4f4;
 }
 
 .home-quote {
@@ -648,8 +663,8 @@ h1 {
 .contact-page__button {
     display: inline-grid;
     place-items: center;
-    width: 4.75rem;
-    height: 4.75rem;
+    width: 5.5rem;
+    height: 5.5rem;
     padding: 0;
     border: 1px solid var(--text);
     border-radius: 999px;
@@ -659,8 +674,8 @@ h1 {
 }
 
 .contact-page__button-icon {
-    width: 2.35rem;
-    height: 2.35rem;
+    width: 3rem;
+    height: 3rem;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
@@ -696,7 +711,7 @@ h1 {
 }
 
 .contact-page__payments img {
-    max-height: 2.4rem;
+    max-height: 3.4rem;
     object-fit: contain;
 }
 

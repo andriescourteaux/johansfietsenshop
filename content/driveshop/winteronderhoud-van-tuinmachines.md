@@ -4,6 +4,7 @@ draft = false
 url = '/driveshop/winteronderhoud-van-tuinmachines/'
 cta_label = 'Neem contact op'
 cta_url = '/contact/?mode=drive'
+narrow_copy = true
 +++
 
 Waarom winteronderhoud?
