@@ -1303,6 +1303,8 @@ Assert-NotMatches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.w
 Assert-NotMatches $cssContent '(?im)^\s*\.winter-values\s*\{[^}]*margin\s*:' 'assets/css/style.css winter values use normal section spacing'
 Assert-NotMatches $cssContent '(?im)^\s*\.winter-value\.page-value\s*\{' 'assets/css/style.css winter value cards use normal page-value spacing'
 Assert-Matches $cssContent '(?is)\.winter-value\.page-value\s+p\b[^{}]*\{[^}]*font-size\s*:\s*clamp\(1\.15rem,\s*1\.7vw,\s*1\.35rem\)' 'assets/css/style.css larger winter value text'
+Assert-Matches $cssContent '(?is)\.winter-page__copy\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--muted\)' 'assets/css/style.css grey winter copy text'
+Assert-NotMatches $cssContent '(?is)\.winter-page__copy\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css winter copy text not black'
 Assert-Matches $cssContent '(?is)\.page-copy\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black page copy'
 Assert-Matches $cssContent '(?is)\.contact-page__block\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black contact page text'
 Assert-Matches $cssContent '(?is)\.about-page__vision\s+p\s*,\s*\.about-page__value\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black about page text'

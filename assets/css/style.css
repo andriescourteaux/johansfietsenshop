@@ -794,7 +794,7 @@ h1 {
 
 .winter-page__copy p {
     margin: 0;
-    color: var(--text);
+    color: var(--muted);
     line-height: 1.7;
 }
 
