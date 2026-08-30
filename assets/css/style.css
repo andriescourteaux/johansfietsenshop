@@ -287,6 +287,12 @@ h1 {
     max-width: 40rem;
 }
 
+.page-copy--center {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
 .page-copy--hero {
     max-width: 34rem;
     color: rgba(255, 248, 238, 0.86);
@@ -335,6 +341,10 @@ h1 {
     position: relative;
     z-index: 2;
     margin-top: -50vh;
+}
+
+.page-intro--center h1 {
+    text-align: center;
 }
 
 .opening-hours-section {
@@ -435,7 +445,21 @@ h1 {
 }
 
 .home-overview__grid + .home-mode-sections {
-    margin-top: clamp(5rem, 11vw, 9rem);
+    position: relative;
+    margin-top: clamp(9rem, 17vw, 14rem);
+}
+
+.home-overview__grid + .home-mode-sections::before {
+    content: "";
+    position: absolute;
+    top: calc(clamp(5rem, 10vw, 8rem) * -1);
+    right: 0;
+    left: 0;
+    height: clamp(2.5rem, 5vw, 4rem);
+    background: #f4f4f4;
+    box-shadow: 0 0 0 100vmax #f4f4f4;
+    clip-path: inset(0 -100vmax);
+    pointer-events: none;
 }
 
 .home-highlights {
@@ -448,8 +472,8 @@ h1 {
 
 .home-quote {
     max-width: 58rem;
-    margin-top: clamp(7rem, 14vw, 11rem);
-    margin-bottom: clamp(7rem, 14vw, 11rem);
+    margin-top: clamp(9rem, 18vw, 15rem);
+    margin-bottom: clamp(9rem, 18vw, 15rem);
     margin-right: auto;
     margin-left: auto;
     padding: 0;
@@ -595,6 +619,10 @@ h1 {
     .home-highlights__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .winter-values__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 720px) {
@@ -638,6 +666,10 @@ h1 {
     .home-highlights__grid {
         grid-template-columns: 1fr;
     }
+
+    .winter-values__grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .contact-page {
@@ -665,6 +697,11 @@ h1 {
 
 .contact-page__payments h2 {
     font-size: 1.6rem;
+}
+
+.contact-page__hours h2,
+.contact-page__payments h2 {
+    text-align: center;
 }
 
 .contact-page__block p {
@@ -740,6 +777,36 @@ h1 {
 .about-page {
     display: grid;
     gap: clamp(2rem, 5vw, 4rem);
+}
+
+.winter-page {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+}
+
+.winter-page__copy {
+    max-width: 50rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.winter-page__copy h2,
+.winter-values h2 {
+    margin: 0 0 1rem;
+}
+
+.winter-page__copy p {
+    margin: 0;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.winter-values__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
 }
 
 .about-page__intro {

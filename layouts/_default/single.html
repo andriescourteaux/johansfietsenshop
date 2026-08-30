@@ -1,12 +1,14 @@
 {{ define "main" }}
 {{- $contact := site.Data.contact -}}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
-<section class="page-intro page-intro--after-hero">
+<section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}">
     <div class="container">
         {{ if not .Params.hide_page_intro }}
         <!-- <p class="eyebrow">Pagina</p> -->
         <h1>{{ .Title }}</h1>
-        <div class="page-copy{{ if .Params.narrow_copy }} page-copy--narrow{{ end }}">{{ .Content }}</div>
+        {{ if not .Params.hide_page_copy }}
+        <div class="page-copy{{ if .Params.narrow_copy }} page-copy--narrow{{ end }}{{ if .Params.center_copy }} page-copy--center{{ end }}">{{ .Content }}</div>
+        {{ end }}
         {{ end }}
 
         {{ if .Params.highlights }}
@@ -112,6 +114,48 @@
             <div class="contact-panel__map">
                 <iframe src="https://www.google.com/maps?q=Kalve%2062%2C%209185%20Wachtebeke&z=15&output=embed" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps kaart van Johan Alliet"></iframe>
             </div>
+        </section>
+        {{ end }}
+
+        {{ if .Params.showWinterPage }}
+        <section class="winter-page">
+            <section class="winter-page__copy">
+                {{ with .Params.winter_intro_title }}<h2>{{ . }}</h2>{{ end }}
+                {{ with .Params.winter_intro }}<p>{{ . }}</p>{{ end }}
+            </section>
+            {{ with .Params.winter_benefits }}
+            <section class="winter-values">
+                {{ with $.Params.winter_benefits_title }}<h2>{{ . }}</h2>{{ end }}
+                <div class="winter-values__grid">
+                    {{ range . }}
+                    <article class="winter-value page-value">
+                        <h2>{{ .title }}</h2>
+                        <p>{{ .text }}</p>
+                    </article>
+                    {{ end }}
+                </div>
+            </section>
+            {{ end }}
+            <section class="winter-page__copy">
+                {{ with .Params.winter_service_title }}<h2>{{ . }}</h2>{{ end }}
+                {{ with .Params.winter_service_intro }}<p>{{ . }}</p>{{ end }}
+            </section>
+            {{ with .Params.winter_service_steps }}
+            <section class="winter-values">
+                <div class="winter-values__grid">
+                    {{ range . }}
+                    <article class="winter-value page-value">
+                        <h2>{{ .title }}</h2>
+                        <p>{{ .text }}</p>
+                    </article>
+                    {{ end }}
+                </div>
+            </section>
+            {{ end }}
+            <section class="winter-page__copy">
+                {{ with .Params.winter_outro_title }}<h2>{{ . }}</h2>{{ end }}
+                {{ with .Params.winter_outro }}<p>{{ . }}</p>{{ end }}
+            </section>
         </section>
         {{ end }}
 

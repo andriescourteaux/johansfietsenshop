@@ -1036,12 +1036,24 @@ Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
 Assert-Matches $contactMainSection '(?is)Herstellingen &amp; Onderhoud.*?Fiets kopen\?.*?Vervangfiets.*?Ophaaldienst.*?contact-page__actions' 'contact/index.html page values grouped before actions'
 Assert-Contains $contactHtml 'contact-page__button-icon' 'contact icon buttons'
 Assert-Contains $winterHtml 'Maak je tuinmachines winterklaar' 'winter maintenance title'
-Assert-Contains $winterHtml 'page-copy--narrow' 'winter maintenance narrow text block'
-Assert-Contains $winterHtml 'Scherp en veilig: Messen worden geslepen en gebalanceerd voor een perfect maairesultaat.' 'winter maintenance sharp copy'
-Assert-Contains $winterHtml 'Optimaal gemak: Wij doen het zware werk.' 'winter maintenance ease copy'
 Assert-Contains $winterHtml 'Unieke service: Wij halen en brengen je machine' 'winter maintenance pickup section'
 Assert-Contains $winterHtml 'Interesse of direct inplannen?' 'winter maintenance planning section'
 Assert-Contains $winterHtml 'Neem contact op' 'winter contact CTA'
+$winterValueCards = @([regex]::Matches($winterHtml, 'class="winter-value page-value"'))
+Assert-True ($winterValueCards.Count -eq 8) 'winter maintenance value cards'
+foreach ($winterValue in @(
+    @{ Title = 'Betrouwbaarheid'; Text = 'Geen startproblemen in het voorjaar.' },
+    @{ Title = 'Gezondheid'; Text = 'Langere levensduur van je motor, accu en bewegende delen.' },
+    @{ Title = 'Scherp en veilig'; Text = 'Messen worden geslepen en gebalanceerd voor een perfect maairesultaat.' },
+    @{ Title = 'Optimaal gemak'; Text = 'Wij doen het zware werk.' },
+    @{ Title = 'Aanmelden'; Text = 'Geef je machine op voor onderhoud.' },
+    @{ Title = 'Ophalen'; Text = 'Wij halen de machine bij je thuis op wanneer het uitkomt.' },
+    @{ Title = 'Onderhoud'; Text = 'We voeren een complete inspectie en onderhoudsbeurt uit.' },
+    @{ Title = 'Terugbrengen'; Text = 'Je krijgt je machine netjes onderhouden en startklaar weer thuisbezorgd.' }
+)) {
+    Assert-Matches $winterHtml ('(?is)<article class="winter-value page-value">\s*<h2>' + [regex]::Escape($winterValue.Title) + '</h2>\s*<p>' + [regex]::Escape($winterValue.Text) + '</p>\s*</article>') 'winter maintenance split bullet cards'
+}
+Assert-NotMatches $winterHtml '(?is)<li>\s*(?:Betrouwbaarheid|Gezondheid|Scherp en veilig|Optimaal gemak|Aanmelden|Ophalen|Onderhoud|Terugbrengen)\s*:' 'winter maintenance bullets converted to page values'
 
 # Issue 1: shared-page footer links must be drive-mode aware in the mode script.
 Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
@@ -1084,11 +1096,20 @@ foreach ($driveLogo in @(
     'iseki.webp',
     'castelgarden.webp',
     'stiga.webp',
-    'images.png'
+    'makita.png'
 )) {
     Assert-Matches $driveBrandsHtml ('(?is)<img class="split-block__logo" src="[^"]*/images/collecties/driveshop/merken-en-verdelers/' + [regex]::Escape($driveLogo) + '"') 'driveshop/merken-en-verdelers/index.html logo titles'
 }
 Assert-NotMatches $driveBrandsHtml '(?is)<img\b[^>]*class="split-block__logo"[^>]*src="[^"]*_tb\.' 'driveshop/merken-en-verdelers/index.html title logos use non-tb files'
+foreach ($driveTbImage in @(
+    'vegemac_tb.webp',
+    'iseki_tb.jpg',
+    'castelgarden_tb.webp',
+    'stiga_tb.png',
+    'makita_tb.jpg'
+)) {
+    Assert-Matches $driveBrandsHtml ('(?is)<img class="split-block__image" src="[^"]*/images/collecties/driveshop/merken-en-verdelers/' + [regex]::Escape($driveTbImage) + '"') 'driveshop/merken-en-verdelers/index.html tb block images'
+}
 
 # Issue 5: active brands content must not keep dead legacy front matter keys.
 foreach ($contentCheck in @(
@@ -1224,8 +1245,9 @@ Assert-Matches $cssContent '(?is)\.home-overview__panel--bike\s+\.home-overview_
 Assert-Matches $cssContent '(?is)\.home-overview__panel--drive\s+\.home-overview__grid\b[^{}]*\{[^}]*repeat\(2,\s*minmax\(0,\s*27rem\)\)' 'assets/css/style.css larger drive overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card__body\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview card body'
-Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(5rem,\s*11vw,\s*9rem\)' 'assets/css/style.css more space below overview cards'
-Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(7rem,\s*14vw,\s*11rem\)[^}]*margin-bottom\s*:\s*clamp\(7rem,\s*14vw,\s*11rem\)' 'assets/css/style.css homepage quote vertical spacing'
+Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b(?=[^{}]*\{[^}]*position\s*:\s*relative)(?=[^{}]*\{[^}]*margin-top\s*:\s*clamp\(9rem,\s*17vw,\s*14rem\))' 'assets/css/style.css more space below overview cards'
+Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b(?=[^{}]*\{[^}]*height\s*:\s*clamp\(2\.5rem,\s*5vw,\s*4rem\))(?=[^{}]*\{[^}]*background\s*:\s*#f4f4f4)(?=[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4)' 'assets/css/style.css homepage separator plane'
+Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)[^}]*margin-bottom\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)' 'assets/css/style.css homepage quote vertical spacing'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*background\s*:\s*#fff' 'assets/css/style.css white highlight cards'
 Assert-Matches $cssContent '(?is)\.home-highlight__body\b[^{}]*\{[^}]*text-align\s*:\s*left' 'assets/css/style.css left aligned highlight names'
@@ -1243,6 +1265,7 @@ Assert-Matches $cssContent '(?is)\.page-value\s+h2\b[^{}]*\{[^}]*text-transform\
 Assert-Matches $cssContent '(?is)\.contact-page__hours\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css contact hours border removed'
 Assert-Matches $cssContent '(?is)\.contact-page__payments\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css payment border removed'
 Assert-Matches $cssContent '(?is)\.contact-page__payments\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css payment background removed'
+Assert-Matches $cssContent '(?is)\.contact-page__hours\s+h2\s*,\s*\.contact-page__payments\s+h2\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered contact section titles'
 Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css payment icon border removed'
 Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css payment icon background removed'
 Assert-Matches $cssContent '(?is)\.contact-page__actions\b[^{}]*\{[^}]*justify-content\s*:\s*center' 'assets/css/style.css centered contact buttons'
@@ -1255,6 +1278,9 @@ Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b(?=[^{}]*\{[^}]*
 Assert-Matches $cssContent '(?is)\.contact-page__payments\s+img\b[^{}]*\{[^}]*max-height\s*:\s*5\.25rem' 'assets/css/style.css larger payment icons'
 Assert-Matches $cssContent '(?is)\.contact-page\s+\.opening-hours-table\s+th\s*,\s*\.contact-page\s+\.opening-hours-table\s+td\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered contact timetable'
 Assert-Matches $cssContent '(?is)\.page-copy--narrow\b[^{}]*\{[^}]*max-width\s*:\s*40rem' 'assets/css/style.css narrow page copy'
+Assert-Matches $cssContent '(?is)\.page-intro--center\s+h1\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered page title'
+Assert-Matches $cssContent '(?is)\.page-copy--center\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered page copy'
+Assert-Matches $cssContent '(?is)\.winter-values__grid\b[^{}]*\{[^}]*grid-template-columns\s*:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\)' 'assets/css/style.css winter value grid'
 Assert-Matches $cssContent '(?is)\.page-copy\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black page copy'
 Assert-Matches $cssContent '(?is)\.contact-page__block\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black contact page text'
 Assert-Matches $cssContent '(?is)\.about-page__vision\s+p\s*,\s*\.about-page__value\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black about page text'
