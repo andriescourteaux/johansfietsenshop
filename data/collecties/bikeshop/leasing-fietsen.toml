@@ -2,28 +2,52 @@
 title = "Cyclis"
 alt = "Cyclis leasingfietsen"
 image = "/images/collecties/bikeshop/leasing-fietsen/cyclis.svg"
+intro = "Gelukkig en gezond naar het werk met een leasefiets van Cyclis Bike Lease."
 url = "https://www.cyclis.be/"
+button_label = "Meer informatie"
 weight = 10
 
 [items."velobility.webp"]
 title = "Velobility"
+alt = "Velobility"
 image = "/images/collecties/bikeshop/leasing-fietsen/velobility.webp"
+intro = "Cyclobility biedt complete en fiscaal voordelige fietsleasing voor bedrijven en werknemers, inclusief verzekering, pechverhelping en onderhoud."
+url = "https://www.cyclobility.be/nl"
+button_label = "Meer informatie"
 weight = 20
 
 [items."lease-a-bike.svg"]
 title = "Lease A Bike"
+alt = "Lease A Bike"
 image = "/images/collecties/bikeshop/leasing-fietsen/lease-a-bike.svg"
-weight = 30
+intro = "Fietsleasing voor elk bedrijf. Een droomfiets voor elke werknemer, makkelijk 40% goedkoper."
 url = "https://www.lease-a-bike.be/"
+button_label = "Meer informatie"
+weight = 30
 
 [items."cyclevalley.gif"]
 title = "Cycle Valley"
+alt = "Cycle Valley"
 image = "/images/collecties/bikeshop/leasing-fietsen/cyclevalley.gif"
-weight = 40
+intro = "De schakel tussen werknemers, werkgevers en fietsenhandelaars. We creeren samen enthousiasme in de fiets, want enthousiasme is het begin van alles."
 url = "https://www.cyclevalley.be/"
+button_label = "Meer informatie"
+weight = 40
 
 [items."o2o.webp"]
 title = "o2o"
+alt = "o2o"
 image = "/images/collecties/bikeshop/leasing-fietsen/o2o.webp"
-weight = 50
+intro = "Bespaar jezelf bakken tijd en administratie met het makkelijkste fietsleaseplatform voor organisaties en werknemers."
 url = "https://www.o2o.be/nl"
+button_label = "Meer informatie"
+weight = 50
+
+[items."welease.svg"]
+title = "Welease"
+alt = "Welease"
+image = "/images/collecties/bikeshop/leasing-fietsen/welease.svg"
+intro = "Op zoek naar een straffe fietsleasing? In 93% van de gevallen biedt welease de voordeligste fietsleasing formules."
+url = "https://www.welease.be/"
+button_label = "Meer informatie"
+weight = 60

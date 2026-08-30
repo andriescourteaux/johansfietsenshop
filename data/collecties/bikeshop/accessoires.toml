@@ -1,5 +1,34 @@
-[items."fietsdrager_thule1.jpg"]
-title = "Fietsdrager Thule"
-alt = "Fietshelmen"
-image = "/images/collecties/bikeshop/accessoires/fietsdrager_thule1.jpg"
+[items."basil.jpg"]
+title = "Basil"
+alt = "Basil"
+image = "/images/collecties/bikeshop/accessoires/basil.jpg"
+intro = "Stijlvolle fietstassen en manden die perfect passen op je stadsfiets of e-bike, zodat je al je spullen dagelijks vlot en droog meeneemt."
 weight = 10
+
+[items."vdb.jpg"]
+title = "VDB Parts"
+alt = "VDB Parts"
+image = "/images/collecties/bikeshop/accessoires/vdb.jpg"
+intro = "De betrouwbare specialist in essentiele fietsonderdelen, waarmee we jouw fiets altijd snel en met de juiste kwaliteit herstellen."
+weight = 20
+
+[items."axa.webp"]
+title = "Axa"
+alt = "Axa"
+image = "/images/collecties/bikeshop/accessoires/axa.webp"
+intro = "Maximale diefstalpreventie en fietsslotoplossingen van het hoogste niveau, zodat je jouw investering met een gerust hart overal kunt achterlaten."
+weight = 30
+
+[items."lvw.jpg"]
+title = "Louis Verwimp"
+alt = "Louis Verwimp"
+image = "/images/collecties/bikeshop/accessoires/lvw.jpg"
+intro = "Een totaalaanbod aan topkwaliteit fietsonderdelen en accessoires om jouw rijcomfort en fietsuitrusting compleet te maken."
+weight = 40
+
+[items."thule.jpg"]
+title = "Thule"
+alt = "Thule"
+image = "/images/collecties/bikeshop/accessoires/thule.jpg"
+intro = "Premium fietsdragers, kinderzitjes en fietskarren die uitblinken in veiligheid en gebruiksgemak, ontworpen om je fietsen of je gezin zorgeloos te vervoeren."
+weight = 50

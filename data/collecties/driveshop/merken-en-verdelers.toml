@@ -1,21 +1,44 @@
-[items."castelgarden.webp"]
-title = "Castelgarden"
-alt = "Castelgarden logo"
-image = "/images/collecties/driveshop/merken-en-verdelers/castelgarden.webp"
-tags = ["grasmaaiers"]
+[items."vegemac_tb.webp"]
+title = "Vegemac"
+alt = "Vegemac"
+image = "/images/collecties/driveshop/merken-en-verdelers/vegemac_tb.webp"
+intro = "Professionele machines voor tuin-, park- en landschapsonderhoud, geselecteerd op maximale duurzaamheid en zware prestaties."
+url = "https://www.vegemac.be/nl"
+tags = ["tuinmachine"]
 weight = 10
 
-[items."iseki.webp"]
+[items."iseki_tb.jpg"]
 title = "Iseki"
-alt = "Iseki logo"
-image = "/images/collecties/driveshop/merken-en-verdelers/iseki.webp"
+alt = "Iseki"
+image = "/images/collecties/driveshop/merken-en-verdelers/iseki_tb.jpg"
+intro = "Hoogwaardige en professionele maaimachines van Japanse topkwaliteit, gebouwd voor het zwaardere werk en intensief terreinbeheer."
+url = "https://www.iseki.co.jp/global/english/"
 tags = ["grasmaaiers"]
 weight = 20
 
-[items."stiga.webp"]
-title = "Stiga"
-alt = "Stiga logo"
-image = "/images/collecties/driveshop/merken-en-verdelers/stiga.webp"
-tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
-url = "https://www.stiga.com/int/"
+[items."castelgarden_tb.webp"]
+title = "Castelgarden"
+alt = "Castelgarden"
+image = "/images/collecties/driveshop/merken-en-verdelers/castelgarden_tb.webp"
+intro = "Betrouwbare en efficiente grasmachines met een uitstekende prijs-kwaliteitverhouding voor een perfect gemaaid gazon."
+url = "https://www.castelgarden.com/be_nl/"
+tags = ["grasmaaiers"]
 weight = 30
+
+[items."stiga_tb.png"]
+title = "Stiga"
+alt = "Stiga"
+image = "/images/collecties/driveshop/merken-en-verdelers/stiga_tb.png"
+intro = "Innovatieve tuinmachines en geavanceerde accumaaiers die ergonomisch comfort combineren met een strak maairesultaat voor elke tuin."
+url = "https://www.stiga.com/int/"
+tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
+weight = 40
+
+[items."makita_tb.jpg"]
+title = "Makita"
+alt = "Makita"
+image = "/images/collecties/driveshop/merken-en-verdelers/makita_tb.jpg"
+intro = "De absolute standaard in krachtig accu-tuingereedschap, waarmee je snoeit, zaagt en trimt met de flexibiliteit van een accu en de kracht van benzine."
+url = "https://www.makita.be/"
+tags = ["tuinmachine"]
+weight = 50
