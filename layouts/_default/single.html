@@ -112,6 +112,62 @@
         </section>
         {{ end }}
 
+        {{ if .Params.showAboutPage }}
+        {{- $aboutHighlights := slice -}}
+        {{- with index site.Data.collecties "bikeshop" -}}
+          {{- with index . "modellen-in-de-kijker" -}}
+            {{- range $name, $entry := .items -}}
+              {{- $aboutHighlights = $aboutHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "intro" $entry.intro "url" (or $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $aboutHighlights = first 3 (sort $aboutHighlights "sortKey") -}}
+        <section class="about-page">
+            <div class="about-page__intro split-block">
+                <div class="split-block__media">
+                    <img class="split-block__image" src="{{ "/images/about/headshot.webp" | relURL }}" alt="Johan Alliet" loading="lazy">
+                </div>
+                <div class="split-block__content">
+                    <p class="about-page__quote">Bij Johan's Fietsenshop draait het om een ding: zorgen dat u met de juiste fiets en met een gerust gevoel de weg op gaat. Geen ingewikkelde uitleg, maar simpel advies, vakkundige service en transparantie. Of u nu langskomt voor een betrouwbare elektrische fiets voor het dagelijkse woon-werkverkeer, een stevige kinderfiets, of een sportieve mountainbike; wij kijken naar wat u echt nodig heeft.</p>
+                </div>
+            </div>
+            <section class="about-page__vision">
+                <h2>Onze visie</h2>
+                <p>Een goede fiets is een investering waar u jarenlang op moet kunnen vertrouwen. Daarom selecteren wij ons aanbod streng op basis van duurzaamheid, technische kwaliteit en comfort. Met sterke kwaliteitsmerken en gecertificeerde expertise, waaronder Bosch eBike service, zorgen we ervoor dat techniek en rijcomfort perfect op elkaar zijn afgestemd. Een fiets koopt u bij ons dan ook op basis van een gerichte proefrit en een exacte afstelling aan uw noden.</p>
+            </section>
+            <div class="about-page__values">
+                <article class="about-page__value">
+                    <h2>Onderhoud en service na verkoop</h2>
+                    <p>Verkopen is eenvoudig, maar goede nazorg is een vak apart. Onze meerwaarde bewijst zich dan ook in de nazorg en de kwaliteit van onze herstellingen.</p>
+                </article>
+                <article class="about-page__value">
+                    <h2>Eerlijk onderhoud</h2>
+                    <p>Geen onnodige kosten, wel de beste oplossing.</p>
+                </article>
+                <article class="about-page__value">
+                    <h2>Leasing</h2>
+                    <p>Naast particuliere verkoop ondersteunen wij ook fiscaal voordelige fietsleasing via diverse partners zoals Cyclis en Lease A Bike.</p>
+                </article>
+            </div>
+            {{ with $aboutHighlights }}
+            <section class="home-highlights">
+                <h2>Highlights</h2>
+                <div class="home-highlights__grid">
+                    {{ range . }}
+                    {{ if .url }}<a class="home-highlight" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ else }}<article class="home-highlight">{{ end }}
+                        <img class="home-highlight__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+                        <span class="home-highlight__body">
+                            <span class="home-highlight__title">{{ .title }}</span>
+                            {{ with .intro }}<span class="home-highlight__intro">{{ . }}</span>{{ end }}
+                        </span>
+                    {{ if .url }}</a>{{ else }}</article>{{ end }}
+                    {{ end }}
+                </div>
+            </section>
+            {{ end }}
+        </section>
+        {{ end }}
+
         {{ if .Params.cta_title }}
         <aside class="page-cta">
             <h2>{{ .Params.cta_title }}</h2>

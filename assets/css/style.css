@@ -732,6 +732,54 @@ h1 {
     object-fit: contain;
 }
 
+.about-page {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+}
+
+.about-page__intro {
+    margin-top: 1rem;
+}
+
+.about-page__quote {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    line-height: 1.45;
+}
+
+.about-page__vision {
+    max-width: 58rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-page__vision h2,
+.about-page__value h2 {
+    margin: 0 0 0.8rem;
+    font-size: 1.35rem;
+}
+
+.about-page__vision p,
+.about-page__value p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.about-page__values {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.about-page__value {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    text-align: center;
+}
+
 .contact-form {
     display: grid;
     gap: 1rem;
@@ -853,6 +901,7 @@ h1 {
     .contact-panel,
     .contact-page__grid,
     .contact-page__payments ul,
+    .about-page__values,
     .content-highlights__grid,
     .brands-placeholder-grid,
     .dealers-placeholder-grid {
