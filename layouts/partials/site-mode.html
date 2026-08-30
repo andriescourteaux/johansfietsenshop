@@ -1,11 +1,15 @@
+{{- $path := "" -}}
+{{- with .File -}}
+  {{- $path = .Path -}}
+{{- end -}}
 {{- $rel := .RelPermalink -}}
 {{- $mode := "bike" -}}
 {{- $isShared := true -}}
 
-{{- if or (eq $rel "/driveshop/") (hasPrefix $rel "/driveshop/") -}}
+{{- if or (hasPrefix $path "driveshop") (hasSuffix $path "-driveshop.md") (hasPrefix $rel "/driveshop/") (hasPrefix $rel "driveshop/") -}}
   {{- $mode = "drive" -}}
   {{- $isShared = false -}}
-{{- else if or (eq $rel "/bikeshop/") (hasPrefix $rel "/bikeshop/") -}}
+{{- else if or (hasPrefix $path "bikeshop") (hasSuffix $path "-bikeshop.md") (hasPrefix $rel "/bikeshop/") (hasPrefix $rel "bikeshop/") -}}
   {{- $mode = "bike" -}}
   {{- $isShared = false -}}
 {{- end -}}
