@@ -37,5 +37,5 @@ limit = 3
 
 [drive_highlights]
 collection_mode = "driveshop"
-collection_key = "merken-en-verdelers"
+collection_key = "modellen-in-de-kijker"
 limit = 3

@@ -30,10 +30,13 @@
         {{- $tags := slice -}}
         {{- $url := "" -}}
         {{- $buttonLabel := "" -}}
+        {{- $logoSrc := "" -}}
+        {{- $logoAlt := "" -}}
         {{- $weight := 9999 -}}
         {{- with index $metadata $name -}}
           {{- $title = or .title $title -}}
           {{- $alt = or .alt .title $alt -}}
+          {{- $logoAlt = or .logo_alt .alt .title $alt -}}
           {{- with .intro -}}
             {{- $intro = . -}}
           {{- end -}}
@@ -48,6 +51,9 @@
           {{- end -}}
           {{- with .button_label -}}
             {{- $buttonLabel = . -}}
+          {{- end -}}
+          {{- with .logo_image -}}
+            {{- $logoSrc = . | relURL -}}
           {{- end -}}
           {{- with .weight -}}
             {{- $weight = . -}}
@@ -69,6 +75,8 @@
           "tagsAttr" (delimit $tags "|")
           "url" $url
           "button_label" $buttonLabel
+          "logo_src" $logoSrc
+          "logo_alt" $logoAlt
           "sortKey" (printf "%06d-%s" $weight $name)
         ) -}}
       {{- end -}}
@@ -103,6 +111,11 @@
       {{- end -}}
       {{- $url := or $entry.url "" -}}
       {{- $buttonLabel := or $entry.button_label "" -}}
+      {{- $logoSrc := "" -}}
+      {{- with $entry.logo_image -}}
+        {{- $logoSrc = . | relURL -}}
+      {{- end -}}
+      {{- $logoAlt := or $entry.logo_alt $entry.alt $entry.title $title -}}
       {{- $weight := or $entry.weight 9999 -}}
       {{- range $tags -}}
         {{- if not (in $uniqueTags .) -}}
@@ -120,6 +133,8 @@
         "tagsAttr" (delimit $tags "|")
         "url" $url
         "button_label" $buttonLabel
+        "logo_src" $logoSrc
+        "logo_alt" $logoAlt
         "sortKey" (printf "%06d-%s" $weight $name)
       ) -}}
     {{- end -}}
@@ -148,7 +163,11 @@
                 <img class="split-block__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
             </div>
             <div class="split-block__content">
+                    {{- if $item.logo_src -}}
+                <img class="split-block__logo" src="{{ $item.logo_src }}" alt="{{ $item.logo_alt }}" loading="lazy">
+                    {{- else -}}
                 <h2 class="split-block__title">{{ $item.title }}</h2>
+                    {{- end -}}
                     {{- with $item.intro -}}
                 <p class="split-block__intro">{{ . }}</p>
                     {{- end -}}

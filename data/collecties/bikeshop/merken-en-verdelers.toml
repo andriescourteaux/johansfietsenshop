@@ -2,6 +2,7 @@
 title = "Swyff"
 alt = "Swyff logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/swyff.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/swyff.webp"
 intro = "Zoek je een efficiënt en betrouwbaar vervoermiddel dat jouw dagelijks woon-werkverkeer transformeert in een vlotte, zweetvrije rit?"
 tags = ["elektrische fietsen"]
 url = "https://www.swyff.com/nl/fietsen-1.htm"
@@ -12,6 +13,7 @@ weight = 10
 title = "Oxford"
 alt = "Oxford logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/oxford.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/oxford.webp"
 intro = "Oxford fietsen, gemaakt voor speelvogels, doorzetters en levensgenieters."
 tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride", "vouwfietsen"]
 url = "https://www.oxfordbikes.be/"
@@ -22,6 +24,7 @@ weight = 20
 title = "Thompson"
 alt = "Thompson logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/thompson.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/thompson.webp"
 intro = "Belgisch vakmanschap op maat: kies voor een hoogwaardige fiets die tot in het kleinste detail en in de gewenste kleur voor jou wordt opgebouwd."
 tags = ["elektrische fietsen", "city", "hybride", "vouwfietsen", "koersfietsen", "MTB"]
 url = "https://thompson-bikebuilder.be/en/"
@@ -32,68 +35,64 @@ weight = 30
 title = "Zannata"
 alt = "Zannata logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/zannata.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/zannata.webp"
 intro = "Gebouwd op een fundament van wereldtitels en profsucces: kies met Zannata voor een hoogtechnologische, op-en-top Belgische koersfiets met pure winnaarsmentaliteit."
 tags = ["koersfietsen"]
 url = "https://www.zannata.be/"
 button_label = "Meer info"
 weight = 40
 
-[items."lavenir.svg"]
-title = "L'Avenir"
-alt = "L'Avenir logo"
-image = "/images/collecties/bikeshop/merken-en-verdelers/lavenir.svg"
-intro = "Kies voor de absolute zekerheid van het oudste Belgische fietsenmerk: decennia aan expertise vertaald in ijzersterke, comfortabele fietsen voor dagelijks gebruik."
-tags = ["city"]
-url = "https://www.lavenir.be/"
-button_label = "Meer info"
-weight = 50
-
 [items."gazelle.webp"]
 title = "Gazelle"
 alt = "Gazelle logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/gazelle.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/gazelle.webp"
 intro = "De absolute standaard in comfort en premium afwerking; een slimme investering voor jarenlang zorgeloos fietsplezier."
 tags = ["city", "elektrische fietsen", "hybride"]
 url = "https://www.gazellebikes.com/nl-be"
 button_label = "Meer info"
-weight = 60
+weight = 50
 
 [items."descheemaeker.svg"]
 title = "Descheemaeker"
 alt = "Descheemaeker logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/descheemaeker.svg"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/descheemaeker.svg"
 intro = "De referentie voor fietsen en fietsonderdelen voor de vakhandel: kies voor de bewezen kwaliteit, betrouwbaarheid en expertise waar fietsenmakers op vertrouwen."
 tags = ["vouwfietsen", "BMX"]
 url = "https://www.descheemaeker.be/nl"
 button_label = "Meer info"
-weight = 70
+weight = 60
 
 [items."flanders.webp"]
 title = "Flanders"
 alt = "Flanders logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/flanders.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/flanders.webp"
 intro = "Kies met Fietsen Flanders voor hoogwaardige Belgische kwaliteit op elk terrein: van vlijmscherpe racefietsen en veelzijdige gravelbikes tot robuuste mountainbikes, volledig gebouwd voor maximale sportieve prestaties."
 tags = ["koersfietsen", "MTB"]
 url = "https://flandersfietsen.be/wp/"
 button_label = "Meer info"
-weight = 80
+weight = 70
 
 [items."bfk.webp"]
 title = "BFK"
 alt = "BFK logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/bfk.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/bfk.webp"
 intro = "Veilige, ergonomische en schokbestendige kinderfietsen die tegen een stootje kunnen."
 tags = ["kinderfietsen"]
 url = "https://shop.vdbparts.be/collections/bike-fun-kids"
 button_label = "Meer info"
-weight = 90
+weight = 80
 
 [items."ravr.webp"]
 title = "RAVR"
 alt = "RAVR logo"
 image = "/images/collecties/bikeshop/merken-en-verdelers/ravr.webp"
+logo_image = "/images/collecties/bikeshop/merken-en-verdelers/ravr.webp"
 intro = "Comfortabele, betrouwbare en innovatieve e-bikes die technologie combineren met maximale actieradius en rijcomfort."
 tags = ["elektrische fietsen"]
 url = "https://ravrbikes.be/"
 button_label = "Meer info"
-weight = 100
+weight = 90

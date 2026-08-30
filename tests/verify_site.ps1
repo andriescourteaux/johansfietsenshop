@@ -950,7 +950,8 @@ Assert-NotContains $homeContent 'opening_hours' 'content/_index.md opening hours
 Assert-NotContains $homeHtml 'opening-hours-section' 'index.html opening hours moved'
 Assert-NotContains $contactHtml 'contact-form' 'contact form removed'
 Assert-NotMatches $contactHtml '(?is)<form\b' 'contact form removed'
-Assert-Contains $contactHtml 'Vragen, een nieuwe fiets kopen of onderhoud nodig?' 'contact intro'
+Assert-NotContains $contactHtml 'Vragen, een nieuwe fiets kopen of onderhoud nodig?' 'contact intro removed'
+Assert-NotMatches $contactMainSection '(?is)<h1>\s*Contact\s*</h1>' 'contact page title removed'
 Assert-Matches $homeHeroSection '(?is)<h1\b(?=[^>]*\bdata-bike-title="Start een nieuw avontuur")(?=[^>]*\bdata-drive-title="Geniet van een perfect verzorgde tuin\.")[^>]*>' 'index.html shared hero h1 title switching'
 Assert-Contains $bikeBrandsHtml 'Onze merken' 'bike brands title'
 Assert-NotContains $bikeBrandsHtml 'data-media-filter=' 'bike brands filters disabled'
@@ -984,6 +985,14 @@ if ($drivePanelStart -lt 0) {
 }
 else {
     Assert-NotContains $homeHtml.Substring($drivePanelStart) 'De aankoop van een fiets is het begin van een nieuw avontuur.' 'index.html drive panel bike quote'
+    foreach ($driveHighlightName in @(
+        'Compacttractor',
+        'Tuinmachine',
+        'Zitmaaier'
+    )) {
+        Assert-Contains $homeHtml.Substring($drivePanelStart) ('<span class="home-highlight__title">' + $driveHighlightName + '</span>') 'index.html drive model highlights'
+    }
+    Assert-NotContains $homeHtml.Substring($drivePanelStart) '<span class="home-highlight__title">Gazelle Eclipse Speed</span>' 'index.html drive panel bike highlight removed'
 }
 Assert-Contains $bikeBrandsHtml 'media-collection--split-blocks' 'bike brands split blocks'
 Assert-Contains $driveBrandsHtml 'media-collection--split-blocks' 'drive brands split blocks'
@@ -1062,9 +1071,24 @@ Assert-NotContains $bikeBrandsData '/images/merken-verdelers/' 'data/collecties/
 Assert-NotContains $driveBrandsData '/images/merken-verdelers/' 'data/collecties/driveshop/merken-en-verdelers.toml'
 Assert-NotContains $bikeBrandsHtml '/images/merken-verdelers/' 'bikeshop/merken-en-verdelers/index.html'
 Assert-NotContains $driveBrandsHtml '/images/merken-verdelers/' 'driveshop/merken-en-verdelers/index.html'
-Assert-Contains $bikeBrandsHtml '<h2 class="split-block__title">BFK</h2>' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotContains $bikeBrandsHtml "L'Avenir" 'bikeshop/merken-en-verdelers/index.html removed LAvenir'
+Assert-NotContains $bikeBrandsHtml 'lavenir.svg' 'bikeshop/merken-en-verdelers/index.html removed LAvenir'
+Assert-Contains $bikeBrandsHtml 'class="split-block__logo"' 'bikeshop/merken-en-verdelers/index.html logo titles'
+Assert-Contains $bikeBrandsHtml 'data-collection-item="bfk.webp"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-Matches $bikeBrandsHtml '(?is)<img class="split-block__logo" src="[^"]*/images/collecties/bikeshop/merken-en-verdelers/bfk\.webp" alt="BFK logo"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotContains $bikeBrandsHtml '<h2 class="split-block__title">BFK</h2>' 'bikeshop/merken-en-verdelers/index.html BFK text title replaced'
 Assert-Contains $bikeBrandsHtml 'https://shop.vdbparts.be/collections/bike-fun-kids' 'bikeshop/merken-en-verdelers/index.html BFK link'
-Assert-NotMatches $bikeBrandsHtml '(?is)<article\b[^>]*>.*?<h2 class="split-block__title">BFK</h2>.*?href="https://flandersfietsen\.be/wp/"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotMatches $bikeBrandsHtml '(?is)<article\b[^>]*data-collection-item="bfk\.webp"[^>]*>.*?href="https://flandersfietsen\.be/wp/"' 'bikeshop/merken-en-verdelers/index.html'
+foreach ($driveLogo in @(
+    'vegemac.webp',
+    'iseki.webp',
+    'castelgarden.webp',
+    'stiga.webp',
+    'images.png'
+)) {
+    Assert-Matches $driveBrandsHtml ('(?is)<img class="split-block__logo" src="[^"]*/images/collecties/driveshop/merken-en-verdelers/' + [regex]::Escape($driveLogo) + '"') 'driveshop/merken-en-verdelers/index.html logo titles'
+}
+Assert-NotMatches $driveBrandsHtml '(?is)<img\b[^>]*class="split-block__logo"[^>]*src="[^"]*_tb\.' 'driveshop/merken-en-verdelers/index.html title logos use non-tb files'
 
 # Issue 5: active brands content must not keep dead legacy front matter keys.
 foreach ($contentCheck in @(
@@ -1200,8 +1224,8 @@ Assert-Matches $cssContent '(?is)\.home-overview__panel--bike\s+\.home-overview_
 Assert-Matches $cssContent '(?is)\.home-overview__panel--drive\s+\.home-overview__grid\b[^{}]*\{[^}]*repeat\(2,\s*minmax\(0,\s*27rem\)\)' 'assets/css/style.css larger drive overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card__body\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview card body'
-Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(3rem,\s*7vw,\s*5rem\)' 'assets/css/style.css more space below overview cards'
-Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(3\.5rem,\s*8vw,\s*6rem\)[^}]*margin-bottom\s*:\s*clamp\(3\.5rem,\s*8vw,\s*6rem\)' 'assets/css/style.css homepage quote vertical spacing'
+Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(5rem,\s*11vw,\s*9rem\)' 'assets/css/style.css more space below overview cards'
+Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(7rem,\s*14vw,\s*11rem\)[^}]*margin-bottom\s*:\s*clamp\(7rem,\s*14vw,\s*11rem\)' 'assets/css/style.css homepage quote vertical spacing'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*background\s*:\s*#fff' 'assets/css/style.css white highlight cards'
 Assert-Matches $cssContent '(?is)\.home-highlight__body\b[^{}]*\{[^}]*text-align\s*:\s*left' 'assets/css/style.css left aligned highlight names'
@@ -1211,6 +1235,7 @@ Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*box-shadow\s*:\
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__media\b[^{}]*\{[^}]*padding\s*:' 'assets/css/style.css leasing logo padding'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__image\b[^{}]*\{[^}]*object-fit\s*:\s*contain' 'assets/css/style.css contained leasing logos'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block\[data-collection-item="welease\.svg"\]\s+\.split-block__media\b[^{}]*\{[^}]*border\s*:\s*0[^}]*background\s*:\s*#17122f' 'assets/css/style.css Welease picture background'
+Assert-Matches $cssContent '(?is)\.split-block__logo\b[^{}]*\{[^}]*height\s*:\s*5rem[^}]*object-fit\s*:\s*contain' 'assets/css/style.css normalized split block logo titles'
 Assert-Matches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless page values'
 Assert-Matches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css page value gradients removed'
 Assert-NotMatches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*linear-gradient' 'assets/css/style.css page value gradients removed'
@@ -1221,7 +1246,13 @@ Assert-Matches $cssContent '(?is)\.contact-page__payments\b[^{}]*\{[^}]*backgrou
 Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css payment icon border removed'
 Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css payment icon background removed'
 Assert-Matches $cssContent '(?is)\.contact-page__actions\b[^{}]*\{[^}]*justify-content\s*:\s*center' 'assets/css/style.css centered contact buttons'
-Assert-Matches $cssContent '(?is)\.contact-page__button-icon\b[^{}]*\{[^}]*width\s*:\s*3rem' 'assets/css/style.css larger contact icons'
+Assert-Matches $cssContent '(?is)\.contact-page__actions\b[^{}]*\{[^}]*gap\s*:\s*clamp\(3rem,\s*8vw,\s*6rem\)' 'assets/css/style.css wider contact icon gap'
+Assert-Matches $cssContent '(?is)\.contact-page__button\b[^{}]*\{[^}]*width\s*:\s*clamp\(6\.5rem,\s*12vw,\s*8rem\)[^}]*height\s*:\s*clamp\(6\.5rem,\s*12vw,\s*8rem\)' 'assets/css/style.css larger contact buttons'
+Assert-Matches $cssContent '(?is)\.contact-page__button-icon\b[^{}]*\{[^}]*width\s*:\s*clamp\(3\.8rem,\s*7vw,\s*4\.75rem\)' 'assets/css/style.css larger contact icons'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+h2\b[^{}]*\{[^}]*font-size\s*:\s*1\.6rem' 'assets/css/style.css larger payment heading'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+ul\b[^{}]*\{[^}]*display\s*:\s*flex[^}]*gap\s*:\s*clamp\(0\.25rem,\s*1vw,\s*0\.5rem\)' 'assets/css/style.css tighter payment icon layout'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+li\b(?=[^{}]*\{[^}]*min-height\s*:\s*8\.5rem)(?=[^{}]*\{[^}]*min-width\s*:\s*8rem)' 'assets/css/style.css larger payment tiles'
+Assert-Matches $cssContent '(?is)\.contact-page__payments\s+img\b[^{}]*\{[^}]*max-height\s*:\s*5\.25rem' 'assets/css/style.css larger payment icons'
 Assert-Matches $cssContent '(?is)\.contact-page\s+\.opening-hours-table\s+th\s*,\s*\.contact-page\s+\.opening-hours-table\s+td\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered contact timetable'
 Assert-Matches $cssContent '(?is)\.page-copy--narrow\b[^{}]*\{[^}]*max-width\s*:\s*40rem' 'assets/css/style.css narrow page copy'
 Assert-Matches $cssContent '(?is)\.page-copy\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black page copy'
