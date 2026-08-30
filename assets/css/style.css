@@ -446,14 +446,14 @@ h1 {
 
 .home-overview__grid + .home-mode-sections {
     position: relative;
-    margin-top: clamp(4.5rem, 8.5vw, 7rem);
+    margin-top: clamp(2.25rem, 4.25vw, 3.5rem);
 }
 
 .home-overview__grid + .home-mode-sections::before {
     content: "";
     display: block;
     height: clamp(11.25rem, 22.5vw, 18rem);
-    margin-bottom: clamp(4.5rem, 8.5vw, 7rem);
+    margin-bottom: clamp(2.25rem, 4.25vw, 3.5rem);
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
     clip-path: inset(0 -100vmax);
