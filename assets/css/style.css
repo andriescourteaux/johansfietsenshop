@@ -242,6 +242,16 @@ main {
     padding: 8rem 0 4.5rem;
 }
 
+.page--home .home-hero {
+    align-items: center;
+}
+
+.page--home .home-hero__content {
+    width: 100%;
+    text-align: center;
+    transform: translateY(-4vh);
+}
+
 .eyebrow {
     margin: 0 0 0.75rem;
     color: var(--accent);
@@ -284,6 +294,8 @@ h1 {
 
 .page--home .page-copy--hero {
     max-width: 48rem;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 @media (min-width: 961px) {
@@ -423,9 +435,11 @@ h1 {
 }
 
 .home-highlights {
-    padding: clamp(1rem, 2.5vw, 1.5rem);
-    border: 1px solid #d6d6d6;
+    padding: clamp(1.25rem, 3vw, 2rem) 0;
+    border: 0;
     background: #f4f4f4;
+    box-shadow: 0 0 0 100vmax #f4f4f4;
+    clip-path: inset(0 -100vmax);
 }
 
 .home-quote {
@@ -453,7 +467,7 @@ h1 {
     display: grid;
     overflow: hidden;
     border: 0;
-    background: transparent;
+    background: #fff;
     color: var(--text);
     transition: transform 180ms ease;
 }
@@ -468,7 +482,7 @@ h1 {
 .home-highlight__body {
     display: grid;
     gap: 0.65rem;
-    padding: 0.9rem 0 0;
+    padding: 1rem;
     text-align: left;
 }
 
@@ -1368,6 +1382,17 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     min-height: 0;
     object-fit: cover;
     transition: transform 180ms ease;
+}
+
+.media-collection--split-blocks[data-collection-key="leasing-fietsen"] .split-block__media {
+    display: grid;
+    place-items: center;
+    padding: clamp(2rem, 6vw, 4rem);
+    background: var(--surface);
+}
+
+.media-collection--split-blocks[data-collection-key="leasing-fietsen"] .split-block__image {
+    object-fit: contain;
 }
 
 .split-block__content {

@@ -8,7 +8,7 @@
   {{- with index site.Data.collecties $config.collection_mode -}}
     {{- with index . $config.collection_key -}}
       {{- range $name, $entry := .items -}}
-        {{- $bikeHighlights = $bikeHighlights | append (dict "title" (or $entry.highlight_title $entry.title) "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+        {{- $bikeHighlights = $bikeHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -20,7 +20,7 @@
   {{- with index site.Data.collecties $config.collection_mode -}}
     {{- with index . $config.collection_key -}}
       {{- range $name, $entry := .items -}}
-        {{- $driveHighlights = $driveHighlights | append (dict "title" (or $entry.highlight_title $entry.title) "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+        {{- $driveHighlights = $driveHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}

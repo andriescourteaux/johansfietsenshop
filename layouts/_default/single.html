@@ -119,7 +119,7 @@
         {{- with index site.Data.collecties "bikeshop" -}}
           {{- with index . "modellen-in-de-kijker" -}}
             {{- range $name, $entry := .items -}}
-              {{- $aboutHighlights = $aboutHighlights | append (dict "title" (or $entry.highlight_title $entry.title) "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+              {{- $aboutHighlights = $aboutHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
             {{- end -}}
           {{- end -}}
         {{- end -}}

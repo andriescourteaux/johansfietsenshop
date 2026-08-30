@@ -961,6 +961,15 @@ Assert-NotContains $homeHtml '<h2>Highlights</h2>' 'index.html highlights headin
 Assert-NotContains $aboutHtml '<h2>Highlights</h2>' 'over-ons/index.html highlights heading removed'
 Assert-NotContains $homeHtml 'home-highlight__intro' 'index.html highlight descriptions removed'
 Assert-NotContains $aboutHtml 'home-highlight__intro' 'over-ons/index.html highlight descriptions removed'
+foreach ($highlightName in @(
+    'Flanders Navigator',
+    'Gazelle Eclipse Speed',
+    'HPlus POWERDRIVE Pinion Sport'
+)) {
+    $highlightTitle = '<span class="home-highlight__title">' + $highlightName + '</span>'
+    Assert-Contains $homeHtml $highlightTitle 'index.html complete highlight names'
+    Assert-Contains $aboutHtml $highlightTitle 'over-ons/index.html complete highlight names'
+}
 foreach ($highlightLink in @(
     'https://www.gazellebikes.com/nl-be',
     'https://flandersfietsen.be/wp/',
@@ -979,6 +988,7 @@ else {
 Assert-Contains $bikeBrandsHtml 'media-collection--split-blocks' 'bike brands split blocks'
 Assert-Contains $driveBrandsHtml 'media-collection--split-blocks' 'drive brands split blocks'
 Assert-Contains $bikeLeasingHtml 'media-collection--split-blocks' 'bike leasing split blocks'
+Assert-Contains $bikeLeasingHtml 'data-collection-key="leasing-fietsen"' 'bike leasing collection key hook'
 Assert-Contains $bikeAccessoriesHtml 'media-collection--split-blocks' 'bike accessories split blocks'
 Assert-Contains $bikeBrandsHtml ('effici' + $eDiaeresis + 'nt en betrouwbaar vervoermiddel') 'bike brands accented copy'
 Assert-Contains $bikeLeasingHtml ('We cre' + $eDiaeresis + 'ren samen enthousiasme') 'bike leasing accented copy'
@@ -986,7 +996,8 @@ Assert-Contains $bikeAccessoriesHtml ('essenti' + $eDiaeresis + 'le fietsonderde
 Assert-Contains $driveBrandsHtml ('Betrouwbare en effici' + $eDiaeresis + 'nte grasmachines') 'drive brands accented copy'
 Assert-Contains $aboutHtml ($eAcute + $eAcute + 'n ding') 'about accented copy'
 Assert-Contains $aboutHtml ($eAcute + 'cht nodig heeft') 'about accented copy'
-Assert-Contains $aboutHeroSection '/images/about/headshot.webp' 'over-ons/index.html headshot hero override'
+Assert-NotContains $aboutHeroSection '/images/about/headshot.webp' 'over-ons/index.html headshot hero override removed'
+Assert-Contains $aboutHeroSection '/images/header_bike_2.webp' 'over-ons/index.html default bike hero'
 Assert-Contains $aboutHtml 'page-value' 'over-ons/index.html page values'
 Assert-Contains $contactHtml 'page-value' 'contact/index.html page values'
 Assert-Contains $aboutHtml '&#128295;' 'over-ons/index.html about emoji'
@@ -1181,11 +1192,18 @@ Assert-Matches $cssContent '(?is)\.media-collection__card:hover\s+\.media-collec
 Assert-Matches $cssContent '(?is):root\s*\{[^}]*--container\s*:\s*124rem' 'assets/css/style.css wider page canvas'
 Assert-Matches $cssContent '(?is)\.split-block__media\b[^{}]*\{[^}]*aspect-ratio\s*:\s*1\s*/\s*1' 'assets/css/style.css square split block images'
 Assert-Matches $cssContent '(?is)\.page-intro\s+\.container\b[^{}]*\{[^}]*box-shadow\s*:\s*none' 'assets/css/style.css page canvas shadow removed'
+Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero\b[^{}]*\{[^}]*align-items\s*:\s*center' 'assets/css/style.css centered home hero titles'
+Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero__content\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered home hero titles'
+Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero__content\b[^{}]*\{[^}]*transform\s*:\s*translateY\(-4vh\)' 'assets/css/style.css lifted home hero titles'
 Assert-Matches $cssContent '(?is)\.home-overview__panel--bike\s+\.home-overview__grid\b[^{}]*\{[^}]*repeat\(3,\s*minmax\(0,\s*24rem\)\)' 'assets/css/style.css capped bike overview cards'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
+Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*background\s*:\s*#fff' 'assets/css/style.css white highlight cards'
 Assert-Matches $cssContent '(?is)\.home-highlight__body\b[^{}]*\{[^}]*text-align\s*:\s*left' 'assets/css/style.css left aligned highlight names'
-Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*border\s*:\s*1px\s+solid\s+#d6d6d6' 'assets/css/style.css highlight support plane'
+Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlight support plane'
 Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*background\s*:\s*#f4f4f4' 'assets/css/style.css highlight support plane'
+Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4' 'assets/css/style.css full bleed highlight support plane'
+Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__media\b[^{}]*\{[^}]*padding\s*:' 'assets/css/style.css leasing logo padding'
+Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__image\b[^{}]*\{[^}]*object-fit\s*:\s*contain' 'assets/css/style.css contained leasing logos'
 Assert-Matches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless page values'
 Assert-Matches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*background\s*:\s*transparent' 'assets/css/style.css page value gradients removed'
 Assert-NotMatches $cssContent '(?is)\.page-value\b[^{}]*\{[^}]*linear-gradient' 'assets/css/style.css page value gradients removed'

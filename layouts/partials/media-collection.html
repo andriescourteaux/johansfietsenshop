@@ -138,7 +138,7 @@
 
 {{- $items = sort $items "sortKey" -}}
 {{- $uniqueTags = sort $uniqueTags -}}
-<section class="media-collection media-collection--{{ $collectionVariant }}" data-media-collection data-collection-variant="{{ $collectionVariant }}">
+<section class="media-collection media-collection--{{ $collectionVariant }}" data-media-collection data-collection-variant="{{ $collectionVariant }}" data-collection-key="{{ $collectionKey }}">
     {{- if eq $collectionVariant "split-blocks" -}}
         {{- if gt (len $items) 0 -}}
     <div class="split-blocks">
