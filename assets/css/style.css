@@ -379,11 +379,11 @@ h1 {
 }
 
 .home-overview__panel--bike .home-overview__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .home-overview__panel--drive .home-overview__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .overview-card {
@@ -404,6 +404,67 @@ h1 {
     margin: 0.75rem 0 0;
     color: rgba(255, 248, 238, 0.72);
     line-height: 1.6;
+}
+
+.home-mode-sections,
+.home-quote,
+.home-highlights {
+    margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+.home-quote {
+    max-width: 58rem;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0;
+    text-align: center;
+}
+
+.home-quote p {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    line-height: 1.35;
+}
+
+.home-highlights h2 {
+    margin: 0 0 1rem;
+    font-size: 1.35rem;
+}
+
+.home-highlights__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.home-highlight {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.home-highlight__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.home-highlight__body {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1rem;
+}
+
+.home-highlight__title {
+    font-weight: 700;
+}
+
+.home-highlight__intro {
+    color: var(--muted);
+    line-height: 1.55;
 }
 
 .site-footer {
@@ -512,6 +573,10 @@ h1 {
     .home-overview__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .home-highlights__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 720px) {
@@ -548,6 +613,10 @@ h1 {
     }
 
     .home-overview__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-highlights__grid {
         grid-template-columns: 1fr;
     }
 }

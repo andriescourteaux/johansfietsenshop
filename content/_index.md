@@ -1,16 +1,8 @@
 +++
-title = "Welkom bij Johan's Fietsenshop!"
+title = "Start een nieuw avontuur"
 draft = false
-opening_hours_title = 'Openingsuren'
-opening_hours = [
-  'Maandag: Gesloten',
-  'Dinsdag: 10:00u - 12:00 | 13:00 - 19:00',
-  'Woensdag: 10:00u - 12:00 | 13:00 - 18:00',
-  'Donderdag: 10:00u - 12:00 | 13:00 - 19:00',
-  'Vrijdag: 10:00u - 12:00 | 13:00 - 18:00',
-  'Zaterdag: 10:00u - 12:00 | 13:00 - 17:00',
-  'Zondag: Gesloten'
-]
+hero_title_bike = "Start een nieuw avontuur"
+hero_title_drive = "Geniet van een perfect verzorgde tuin."
+hero_intro_bike = "Herstelling van alle merken en verkoop van nieuwe fietsen"
+hero_intro_drive = "Herstelling van alle merken en verkoop van nieuwe en tuinmachines"
 +++
-
-Herstelling van alle merken, verkoop van nieuwe fietsen en tuinmachines

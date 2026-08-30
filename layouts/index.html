@@ -1,27 +1,41 @@
 {{ define "main" }}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" true "ShowOpeningHours" false "ShowTitle" true "ShowIntro" true) }}
 {{- $siteMode := partial "site-mode.html" . -}}
-{{- $openingHours := partial "opening-hours-data.html" (or .Params.opening_hours (slice)) -}}
+{{- $homeData := site.Data.home -}}
+{{- $bikeHighlights := slice -}}
+{{- with $homeData.bike_highlights -}}
+  {{- $config := . -}}
+  {{- with index site.Data.collecties $config.collection_mode -}}
+    {{- with index . $config.collection_key -}}
+      {{- range $name, $entry := .items -}}
+        {{- $bikeHighlights = $bikeHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "intro" $entry.intro "url" (or $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $bikeHighlights = first (or $config.limit 3) (sort $bikeHighlights "sortKey") -}}
+{{- end -}}
+{{- $driveHighlights := slice -}}
+{{- with $homeData.drive_highlights -}}
+  {{- $config := . -}}
+  {{- with index site.Data.collecties $config.collection_mode -}}
+    {{- with index . $config.collection_key -}}
+      {{- range $name, $entry := .items -}}
+        {{- $driveHighlights = $driveHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "intro" $entry.intro "url" (or $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $driveHighlights = first (or $config.limit 3) (sort $driveHighlights "sortKey") -}}
+{{- end -}}
+{{- $homePanels := slice
+  (dict "mode" "bike" "class" "home-overview__panel--bike" "cards" $siteMode.bikePanels "promos" $homeData.bike_promos "highlights" $bikeHighlights)
+  (dict "mode" "drive" "class" "home-overview__panel--drive" "cards" $siteMode.drivePanels "promos" $homeData.drive_promos "highlights" $driveHighlights)
+-}}
 <section class="home-overview home-overview--mode-aware" data-mode-transition-root="home-overview">
     <div class="container">
-        <div class="home-overview__panel home-overview__panel--bike" data-mode-panel="bike" data-mode-transition-panel="bike">
+        {{- range $panel := $homePanels }}
+        <div class="home-overview__panel {{ $panel.class }}" data-mode-panel="{{ $panel.mode }}" data-mode-transition-panel="{{ $panel.mode }}"{{ if eq $panel.mode "drive" }} hidden{{ end }}>
             <div class="home-overview__grid">
-                {{ range $siteMode.bikePanels }}
-                <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
-                    <span class="overview-card__media" aria-hidden="true">
-                        <img class="overview-card__image" src="{{ .image | relURL }}" alt="" decoding="async" fetchpriority="low">
-                        <span class="overview-card__overlay"></span>
-                    </span>
-                    <span class="overview-card__body">
-                        <span class="overview-card__title">{{ .title }}</span>
-                    </span>
-                </a>
-                {{ end }}
-            </div>
-        </div>
-        <div class="home-overview__panel home-overview__panel--drive" data-mode-panel="drive" data-mode-transition-panel="drive" hidden>
-            <div class="home-overview__grid">
-                {{ range $siteMode.drivePanels }}
+                {{ range $panel.cards }}
                 <a class="overview-card overview-card--{{ .key }}" href="{{ .href }}">
                     <span class="overview-card__media" aria-hidden="true">
                         <img class="overview-card__image" src="{{ .image | relURL }}" alt="" loading="lazy" decoding="async" fetchpriority="low">
@@ -29,35 +43,52 @@
                     </span>
                     <span class="overview-card__body">
                         <span class="overview-card__title">{{ .title }}</span>
-                        <span class="overview-card__summary">{{ .summary }}</span>
+                        {{ with .summary }}<span class="overview-card__summary">{{ . }}</span>{{ end }}
                     </span>
                 </a>
                 {{ end }}
             </div>
-        </div>
-    </div>
-</section>
-{{ with $openingHours }}
-<section class="opening-hours-section">
-    <div class="container">
-        <div class="opening-hours-card">
-            {{ with $.Params.opening_hours_title }}<h2 class="opening-hours-card__title">{{ . }}</h2>{{ end }}
-            <table class="opening-hours-table">
-                <tbody>
+            {{ with $panel.promos }}
+            <div class="home-mode-sections split-blocks">
+                {{ range $index, $item := . }}
+                <article class="split-block{{ if eq (mod $index 2) 0 }} split-block--reverse{{ end }}">
+                    <div class="split-block__media">
+                        <img class="split-block__image" src="{{ $item.image | relURL }}" alt="{{ $item.alt }}" loading="lazy">
+                    </div>
+                    <div class="split-block__content">
+                        <h2 class="split-block__title">{{ $item.title }}</h2>
+                        {{ with $item.text }}<p class="split-block__intro">{{ . }}</p>{{ end }}
+                        {{ if and $item.button_label $item.button_url }}
+                        <a class="split-block__button" href="{{ $item.button_url | relURL }}">{{ $item.button_label }}</a>
+                        {{ end }}
+                    </div>
+                </article>
+                {{ end }}
+            </div>
+            {{ end }}
+            {{ with $homeData.quote }}
+            <blockquote class="home-quote">
+                <p>{{ . }}</p>
+            </blockquote>
+            {{ end }}
+            {{ with $panel.highlights }}
+            <section class="home-highlights">
+                <h2>Highlights</h2>
+                <div class="home-highlights__grid">
                     {{ range . }}
-                    <tr>
-                        <th scope="row">{{ .day }}</th>
-                        <td>
-                            {{ range .slots }}
-                            <span class="opening-hours-slot">{{ . }}</span>
-                            {{ end }}
-                        </td>
-                    </tr>
+                    {{ if .url }}<a class="home-highlight" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ else }}<article class="home-highlight">{{ end }}
+                        <img class="home-highlight__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+                        <span class="home-highlight__body">
+                            <span class="home-highlight__title">{{ .title }}</span>
+                            {{ with .intro }}<span class="home-highlight__intro">{{ . }}</span>{{ end }}
+                        </span>
+                    {{ if .url }}</a>{{ else }}</article>{{ end }}
                     {{ end }}
-                </tbody>
-            </table>
+                </div>
+            </section>
+            {{ end }}
         </div>
+        {{- end }}
     </div>
 </section>
-{{ end }}
 {{ end }}

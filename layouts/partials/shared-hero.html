@@ -1,6 +1,9 @@
 {{- $page := .Page -}}
 {{- $siteMode := partial "site-mode.html" $page -}}
 {{- $showContent := .ShowContent -}}
+{{- $bikeHeroTitle := or $page.Params.hero_title_bike $page.Title -}}
+{{- $driveHeroTitle := or $page.Params.hero_title_drive $bikeHeroTitle -}}
+{{- $heroTitle := cond $siteMode.isDrive $driveHeroTitle $bikeHeroTitle -}}
 {{- $bikeHeroCopy := or $page.Params.hero_intro_bike ($page.Content | plainify) -}}
 {{- $driveHeroCopy := or $page.Params.hero_intro_drive $bikeHeroCopy -}}
 {{- $heroCopy := cond $siteMode.isDrive $driveHeroCopy $bikeHeroCopy -}}
@@ -11,7 +14,7 @@
     <div class="home-hero__overlay"></div>
     {{ if $showContent }}
     <div class="container home-hero__content">
-        {{ if .ShowTitle }}<h1>{{ $page.Title }}</h1>{{ end }}
+        {{ if .ShowTitle }}<h1 data-bike-title="{{ $bikeHeroTitle }}" data-drive-title="{{ $driveHeroTitle }}">{{ $heroTitle }}</h1>{{ end }}
         {{ if .ShowIntro }}<div class="page-copy page-copy--hero" data-bike-copy="{{ $bikeHeroCopy }}" data-drive-copy="{{ $driveHeroCopy }}"><p>{{ $heroCopy }}</p></div>{{ end }}
     </div>
     {{ end }}

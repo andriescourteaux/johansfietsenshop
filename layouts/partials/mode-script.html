@@ -34,6 +34,7 @@
 
   const logo = document.querySelector('.site-brand__logo');
   const heroImage = document.querySelector('.home-hero__image');
+  const heroTitle = document.querySelector('.home-hero h1[data-bike-title][data-drive-title]');
   const heroCopy = document.querySelector('.page-copy--hero');
   const modeToggle = document.querySelector('.site-nav__mode-toggle');
   const menu = document.querySelector('.site-nav__menu');
@@ -218,6 +219,10 @@
     if (heroImage) {
       heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
       requestHeroParallax();
+    }
+
+    if (heroTitle) {
+      heroTitle.textContent = activeMode === 'drive' ? heroTitle.dataset.driveTitle : heroTitle.dataset.bikeTitle;
     }
 
     applyHref('.site-brand');
