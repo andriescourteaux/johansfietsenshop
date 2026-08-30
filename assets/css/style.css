@@ -446,14 +446,14 @@ h1 {
 
 .home-overview__grid + .home-mode-sections {
     position: relative;
-    margin-top: clamp(9rem, 17vw, 14rem);
+    margin-top: clamp(4.5rem, 8.5vw, 7rem);
 }
 
 .home-overview__grid + .home-mode-sections::before {
     content: "";
     display: block;
     height: clamp(7.5rem, 15vw, 12rem);
-    margin-bottom: clamp(9rem, 17vw, 14rem);
+    margin-bottom: clamp(4.5rem, 8.5vw, 7rem);
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
     clip-path: inset(0 -100vmax);
@@ -796,19 +796,6 @@ h1 {
     margin: 0;
     color: var(--text);
     line-height: 1.7;
-}
-
-.winter-values {
-    margin: clamp(1.5rem, 5vw, 3.5rem) 0;
-}
-
-.winter-value.page-value {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.8rem;
-    min-height: clamp(12rem, 18vw, 15rem);
-    padding: clamp(1.75rem, 4vw, 2.75rem);
 }
 
 .winter-value.page-value p {
