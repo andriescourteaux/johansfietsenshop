@@ -452,7 +452,7 @@ h1 {
 .home-overview__grid + .home-mode-sections::before {
     content: "";
     display: block;
-    height: clamp(7.5rem, 15vw, 12rem);
+    height: clamp(11.25rem, 22.5vw, 18rem);
     margin-bottom: clamp(4.5rem, 8.5vw, 7rem);
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
