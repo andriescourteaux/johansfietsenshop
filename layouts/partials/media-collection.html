@@ -29,6 +29,7 @@
         {{- $specs := slice -}}
         {{- $tags := slice -}}
         {{- $url := "" -}}
+        {{- $buttonLabel := "" -}}
         {{- $weight := 9999 -}}
         {{- with index $metadata $name -}}
           {{- $title = or .title $title -}}
@@ -44,6 +45,9 @@
           {{- end -}}
           {{- with .url -}}
             {{- $url = . -}}
+          {{- end -}}
+          {{- with .button_label -}}
+            {{- $buttonLabel = . -}}
           {{- end -}}
           {{- with .weight -}}
             {{- $weight = . -}}
@@ -64,6 +68,7 @@
           "tags" $tags
           "tagsAttr" (delimit $tags "|")
           "url" $url
+          "button_label" $buttonLabel
           "sortKey" (printf "%06d-%s" $weight $name)
         ) -}}
       {{- end -}}
@@ -97,6 +102,7 @@
         {{- $tags = . -}}
       {{- end -}}
       {{- $url := or $entry.url "" -}}
+      {{- $buttonLabel := or $entry.button_label "" -}}
       {{- $weight := or $entry.weight 9999 -}}
       {{- range $tags -}}
         {{- if not (in $uniqueTags .) -}}
@@ -113,16 +119,56 @@
         "tags" $tags
         "tagsAttr" (delimit $tags "|")
         "url" $url
+        "button_label" $buttonLabel
         "sortKey" (printf "%06d-%s" $weight $name)
       ) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
+{{- if eq $collectionVariant "split-blocks" -}}
+  {{- $filteredItems := slice -}}
+  {{- range $items -}}
+    {{- if index $metadata .name -}}
+      {{- $filteredItems = $filteredItems | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $items = $filteredItems -}}
+{{- end -}}
+
 {{- $items = sort $items "sortKey" -}}
 {{- $uniqueTags = sort $uniqueTags -}}
 <section class="media-collection media-collection--{{ $collectionVariant }}" data-media-collection data-collection-variant="{{ $collectionVariant }}">
-    {{- if eq $collectionVariant "showcase" -}}
+    {{- if eq $collectionVariant "split-blocks" -}}
+        {{- if gt (len $items) 0 -}}
+    <div class="split-blocks">
+            {{- range $index, $item := $items -}}
+        <article class="split-block{{ if eq (mod $index 2) 1 }} split-block--reverse{{ end }}">
+            <div class="split-block__media">
+                    {{- if $item.url -}}
+                <a class="split-block__media-link" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $item.title }}">
+                    <img class="split-block__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
+                </a>
+                    {{- else -}}
+                <img class="split-block__image" src="{{ $item.src }}" alt="{{ $item.alt }}" loading="lazy">
+                    {{- end -}}
+            </div>
+            <div class="split-block__content">
+                <h2 class="split-block__title">{{ $item.title }}</h2>
+                    {{- with $item.intro -}}
+                <p class="split-block__intro">{{ . }}</p>
+                    {{- end -}}
+                    {{- if and $item.url $item.button_label -}}
+                <a class="split-block__button" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer">{{ $item.button_label }}</a>
+                    {{- end -}}
+            </div>
+        </article>
+            {{- end -}}
+    </div>
+        {{- else -}}
+    <p class="media-collection__empty">Afbeeldingen volgen binnenkort.</p>
+        {{- end -}}
+    {{- else if eq $collectionVariant "showcase" -}}
         {{- if gt (len $items) 0 -}}
     <div class="media-showcase">
             {{- range $index, $item := $items -}}
