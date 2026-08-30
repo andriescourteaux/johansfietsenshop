@@ -1,5 +1,6 @@
 .hugo_build.lock
 .test-public/
+.tmp-repro-public/
 public/
 resources/_gen/
 .worktrees/
