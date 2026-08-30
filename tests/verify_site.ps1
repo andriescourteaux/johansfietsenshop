@@ -889,6 +889,10 @@ $bikeBrandsHtml = Read-GeneratedText 'bikeshop/merken-en-verdelers/index.html'
 $driveBrandsHtml = Read-GeneratedText 'driveshop/merken-en-verdelers/index.html'
 $bikeModelsHtml = Read-GeneratedText 'bikeshop/modellen-in-de-kijker/index.html'
 $driveModelsHtml = Read-GeneratedText 'driveshop/modellen-in-de-kijker/index.html'
+$bikeLeasingHtml = Read-GeneratedText 'bikeshop/leasing-fietsen/index.html'
+$bikeAccessoriesHtml = Read-GeneratedText 'bikeshop/accessoires/index.html'
+$winterHtml = Read-GeneratedText 'driveshop/winteronderhoud-van-tuinmachines/index.html'
+$aboutHtml = Read-GeneratedText 'over-ons/index.html'
 
 $modeScriptTemplate = Read-RepoText 'layouts/partials/mode-script.html'
 $sharedHeroTemplate = Read-RepoText 'layouts/partials/shared-hero.html'
@@ -902,27 +906,60 @@ $bikeBrandsData = Read-RepoText 'data/collecties/bikeshop/merken-en-verdelers.to
 $driveBrandsData = Read-RepoText 'data/collecties/driveshop/merken-en-verdelers.toml'
 $bikeBrandsContent = Read-RepoText 'content/merken-en-verdelers-bikeshop.md'
 $driveBrandsContent = Read-RepoText 'content/merken-en-verdelers-driveshop.md'
-$homeFrontMatter = Get-FrontMatter 'content/_index.md'
+$homeContent = Read-RepoText 'content/_index.md'
 $cssContent = if ([string]::IsNullOrWhiteSpace($CssPath)) { $null } else { Read-RepoText $CssPath }
 
 
 $promoPopupEnabled = Get-TomlBooleanValue $promoPopupData 'enabled' 'data/promo-popup.toml'
 $promoPopupImage = Get-TomlStringValue $promoPopupData 'image' 'data/promo-popup.toml'
 $promoPopupAlt = Get-TomlStringValue $promoPopupData 'alt' 'data/promo-popup.toml'
+$promoPopupTitle = Get-TomlStringValue $promoPopupData 'title' 'data/promo-popup.toml'
+$promoPopupBody = Get-TomlStringArray $promoPopupData 'body' 'data/promo-popup.toml'
+$promoPopupBullets = Get-TomlStringArray $promoPopupData 'bullets' 'data/promo-popup.toml'
+$promoPopupCtaLabel = Get-TomlStringValue $promoPopupData 'cta_label' 'data/promo-popup.toml'
+$promoPopupCtaUrl = Get-TomlStringValue $promoPopupData 'cta_url' 'data/promo-popup.toml'
 $sharedContactData = Read-RepoText 'data/contact.toml'
 $sharedContactName = Get-TomlStringValue $sharedContactData 'name' 'data/contact.toml'
 $sharedContactAddress = Get-TomlStringValue $sharedContactData 'address' 'data/contact.toml'
 $sharedContactEmail = Get-TomlStringValue $sharedContactData 'email' 'data/contact.toml'
 $sharedContactPhone = Get-TomlStringValue $sharedContactData 'phone' 'data/contact.toml'
+$openingHours = Get-TomlStringArray $sharedContactData 'opening_hours' 'data/contact.toml'
 $bikeLandingBody = Get-MarkdownBody 'content/bikeshop.md'
 $driveLandingBody = Get-MarkdownBody 'content/driveshop.md'
-$homeOpeningHours = Get-TomlStringArray $homeFrontMatter 'opening_hours' 'content/_index.md front matter'
-$homeOpeningHoursPairs = Get-OpeningHoursPairs $homeOpeningHours 'content/_index.md'
 
 $homeHeaderSection = Get-SectionFragment $homeHtml '<header\b[^>]*class="[^"]*\bsite-header\b[^"]*"[^>]*>.*?</header>' 'index.html header'
 $homeHeroSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bshared-hero\b[^"]*"[^>]*>.*?</section>' 'index.html'
-$homeOverviewSection = Get-SectionFragment $homeHtml '<section\b[^>]*class="[^"]*\bhome-overview\b[^"]*"[^>]*>.*?</section>' 'index.html home overview'
 $homeFooterSection = Get-SectionFragment $homeHtml '<footer\b[^>]*class="[^"]*\bsite-footer\b[^"]*"[^>]*>.*?</footer>' 'index.html footer'
+$contactMainSection = Get-SectionFragment $contactHtml '<main\b[^>]*>.*?</main>' 'contact/index.html main'
+$bikeNavSection = Get-SectionFragment $homeHeaderSection '<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?</ul>' 'index.html bike header menu'
+$driveNavSection = Get-SectionFragment $homeHeaderSection '<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?</ul>' 'index.html drive header menu'
+
+# Feedback redesign target behavior.
+Assert-Matches $driveBrandsHtml '(?is)<body\b[^>]*data-site-mode="drive"' 'driveshop/merken-en-verdelers drive mode'
+Assert-Matches $driveModelsHtml '(?is)<body\b[^>]*data-site-mode="drive"' 'driveshop/modellen-in-de-kijker drive mode'
+Assert-Contains $aboutHtml 'Over ons' 'about page title'
+Assert-NotContains $homeContent 'opening_hours' 'content/_index.md opening hours moved'
+Assert-NotContains $homeHtml 'opening-hours-section' 'index.html opening hours moved'
+Assert-NotContains $contactHtml 'contact-form' 'contact form removed'
+Assert-NotMatches $contactHtml '(?is)<form\b' 'contact form removed'
+Assert-Contains $contactHtml 'Vragen, een nieuwe fiets kopen of onderhoud nodig?' 'contact intro'
+Assert-Matches $homeHeroSection '(?is)<h1\b(?=[^>]*\bdata-bike-title="Start een nieuw avontuur")(?=[^>]*\bdata-drive-title="Geniet van een perfect verzorgde tuin\.")[^>]*>' 'index.html shared hero h1 title switching'
+Assert-Contains $bikeBrandsHtml 'Onze merken' 'bike brands title'
+Assert-NotContains $bikeBrandsHtml 'data-media-filter=' 'bike brands filters disabled'
+Assert-Contains $homeHtml 'split-block' 'index.html split blocks'
+Assert-Contains $bikeBrandsHtml 'media-collection--split-blocks' 'bike brands split blocks'
+Assert-Contains $driveBrandsHtml 'media-collection--split-blocks' 'drive brands split blocks'
+Assert-Contains $bikeLeasingHtml 'media-collection--split-blocks' 'bike leasing split blocks'
+Assert-Contains $bikeAccessoriesHtml 'media-collection--split-blocks' 'bike accessories split blocks'
+Assert-NotContains $homeHtml '/bikeshop/modellen-in-de-kijker/' 'index.html old bike models link'
+Assert-NotContains $homeHtml '/driveshop/modellen-in-de-kijker/' 'index.html old drive models link'
+Assert-NotContains $homeHtml 'Enkele modellen in de kijker' 'index.html old bike models label'
+Assert-NotContains $homeHtml 'Modellen in de kijker' 'index.html old drive models label'
+Assert-Contains $contactHtml 'Betaal mogelijkheden' 'contact payment methods'
+Assert-Contains $contactHtml 'Vervangfiets' 'contact replacement bike block'
+Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
+Assert-Contains $winterHtml 'Maak je tuinmachines winterklaar' 'winter maintenance title'
+Assert-Contains $winterHtml 'Neem contact op' 'winter contact CTA'
 
 # Issue 1: shared-page footer links must be drive-mode aware in the mode script.
 Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
@@ -968,46 +1005,25 @@ foreach ($contentCheck in @(
     Assert-NotMatches $contentCheck.Content '(?m)^dealers\s*=' $contentCheck.Context
 }
 
-# Issue 6: homepage hours move below the cards, footer repeats them as plain text, cards use webp, and header toggle typography is centralized.
+# Issue 6: opening hours move to contact/footer, cards use webp, and header toggle typography is centralized.
 Assert-NotMatches $homeHeroSection '(?is)<(?:div|section)[^>]*class="[^"]*\bopening-hours\b[^"]*"' 'index.html shared hero'
 
-$afterHomeOverview = $null
-if ($null -ne $homeHtml -and $null -ne $homeOverviewSection) {
-    $homeOverviewIndex = $homeHtml.IndexOf($homeOverviewSection)
-    if ($homeOverviewIndex -ge 0) {
-        $afterHomeOverview = $homeHtml.Substring($homeOverviewIndex + $homeOverviewSection.Length)
-    }
-}
-
-Assert-True ($null -ne $afterHomeOverview) 'Unable to locate content after the home cards in index.html'
-
-$openingHoursTableSection = Get-SectionFragment `
-    $afterHomeOverview `
-    '(?is)<section\b[^>]*>.*?<table\b[^>]*>.*?</table>.*?</section>' `
-    'index.html after home cards'
-
-if ($null -ne $openingHoursTableSection) {
-    foreach ($hoursLine in $homeOpeningHours) {
-        $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
-        $parts = $serialized -split '\|\|', 2
-        $day = $parts[0]
+foreach ($hoursLine in $openingHours) {
+    $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
+    $parts = $serialized -split '\|\|', 2
+    $day = $parts[0]
+    $slots = @()
+    if ($parts.Count -gt 1) {
         $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-        $rowPattern = '(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day)
-
-        if ($slots.Count -gt 0) {
-            $rowPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
-        }
-
-        $rowPattern += '.*?</tr>'
-        Assert-Matches $openingHoursTableSection $rowPattern 'index.html opening-hours table rows'
-
-        $footerPattern = '(?is)' + [regex]::Escape($day)
-        if ($slots.Count -gt 0) {
-            $footerPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
-        }
-
-        Assert-Matches $homeFooterSection $footerPattern 'index.html footer'
     }
+
+    $hoursPattern = '(?is)' + [regex]::Escape($day)
+    if ($slots.Count -gt 0) {
+        $hoursPattern += '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?')
+    }
+
+    Assert-Matches $contactMainSection $hoursPattern 'contact/index.html opening hours'
+    Assert-Matches $homeFooterSection $hoursPattern 'index.html footer opening hours'
 }
 
 $overviewCardImageTags = @([regex]::Matches($homeHtml, '<img\b[^>]*\bclass="[^"]*\boverview-card__image\b[^"]*"[^>]*>'))
@@ -1059,43 +1075,15 @@ Assert-Matches `
     '@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)' `
     'assets/css/style.css reduced motion branch'
 
-# Issue 8: hero eyebrow removed, contact stays inside the dropdown, the home table splits midday slots, and the contact page exposes the expected hooks.
+# Issue 8: hero eyebrow removed, contact stays inside the dropdown, and the contact page exposes the expected hooks.
 Assert-NotContains $sharedHeroTemplate 'Site2' 'layouts/partials/shared-hero.html'
 Assert-NotContains $homeHeroSection 'Site2' 'index.html shared hero'
 Assert-NotContains $homeHeaderSection 'site-nav__contact' 'index.html header'
 Assert-NotContains $modeScriptTemplate "applyHref('.site-nav__contact');" 'layouts/partials/mode-script.html'
 Assert-Matches `
-    $homeHeaderSection `
-    '(?is)<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?>Contact<' `
-    'index.html bike header menu'
-Assert-Matches `
-    $homeHeaderSection `
-    '(?is)<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?>Contact<' `
-    'index.html drive header menu'
-Assert-Matches `
     $modeScriptTemplate `
     "(?s)const openMenu = \(\) => \{.*?menu\.hidden = false;.*?applyMenuState\('closed'\);.*?requestAnimationFrame\(\(\) => \{.*?applyMenuState\('opening'\);" `
     'layouts/partials/mode-script.html menu opening animation hook'
-
-Assert-NotContains $openingHoursTableSection '|' 'index.html opening-hours table'
-Assert-Contains $homeFooterSection '|' 'index.html footer opening hours'
-
-foreach ($hoursLine in @($homeOpeningHours | Where-Object { $_ -match '\|' })) {
-    $serialized = [regex]::Replace($hoursLine, '^([^:]+):\s*(.*)$', '$1||$2')
-    $parts = $serialized -split '\|\|', 2
-    $day = $parts[0]
-    $slots = @($parts[1] -split '\s*\|\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-
-    Assert-NotContains $openingHoursTableSection $hoursLine 'index.html opening-hours table'
-    Assert-NormalizedContains $homeFooterSection $hoursLine 'index.html footer opening hours'
-
-    if ($slots.Count -gt 0) {
-        Assert-Matches `
-            $openingHoursTableSection `
-            ('(?is)<tr\b[^>]*>.*?' + [regex]::Escape($day) + '.*?' + (($slots | ForEach-Object { [regex]::Escape($_) }) -join '.*?') + '.*?</tr>') `
-            'index.html split opening-hours table row'
-    }
-}
 
 Assert-Matches $contactHtml '(?is)\bcontact-panel__name\b' 'contact/index.html'
 Assert-Matches $contactHtml '(?is)\bcontact-panel__term\b' 'contact/index.html'
@@ -1105,15 +1093,19 @@ Assert-Matches `
     '(?is)<iframe\b[^>]*src="https://www\.google\.com/maps[^"]*"' `
     'contact/index.html Google Maps embed'
 
-# Issue 9: sticky header polish, raw footer hours, hover parity, uppercase filters, and mode-aware contact accents.
-Assert-Matches `
-    $homeHeaderSection `
-    '(?is)<ul\b[^>]*data-mode-nav="bike"[^>]*>.*?>Merken en verdelers<.*?>Accessoires<.*?>Enkele modellen in de kijker<.*?>Leasing fietsen<.*?>Contact<.*?</ul>' `
-    'index.html bike header menu order'
-Assert-Matches `
-    $homeHeaderSection `
-    '(?is)<ul\b[^>]*data-mode-nav="drive"[^>]*>.*?>Merken en verdelers<.*?>Modellen in de kijker<.*?>Winteronderhoud van tuinmachines<.*?>Contact<.*?</ul>' `
-    'index.html drive header menu order'
+# Issue 9: sticky header polish, raw footer hours, hover parity, uppercase filters, and mode-aware accents.
+foreach ($navLabel in @('Onze merken', 'Accessoires', 'Leasing fietsen', 'Over ons', 'Contact')) {
+    Assert-Contains $bikeNavSection $navLabel 'index.html bike header menu'
+}
+
+foreach ($navLabel in @('Onze merken', 'Winteronderhoud', 'Over ons', 'Contact')) {
+    Assert-Contains $driveNavSection $navLabel 'index.html drive header menu'
+}
+
+Assert-NotContains $homeHeaderSection 'Enkele modellen in de kijker' 'index.html header menu old bike models label'
+Assert-NotContains $homeHeaderSection 'Modellen in de kijker' 'index.html header menu old drive models label'
+Assert-NotContains $homeHeaderSection 'Winteronderhoud van tuinmachines' 'index.html header menu old winter label'
+Assert-NotContains $homeHeaderSection 'Merken en verdelers' 'index.html header menu old brands label'
 Assert-NotMatches $cssContent '(?is)\\.site-header--overlay\\s+\\.site-brand\\s*,\\s*\\.site-header--overlay\\s+\\.site-brand:hover\\s*,\\s*\\.site-header--overlay\\s+\\.site-brand:focus-visible\\s*\\{[^}]*opacity\\s*:' 'assets/css/style.css overlay logo opacity fade'
 Assert-Matches $cssContent '(?is)\.site-header\b[^{}]*\{[^}]*\bposition\s*:\s*sticky\b[^}]*\btop\s*:\s*0' 'assets/css/style.css sticky header hook'
 Assert-Matches $cssContent '(?is)\.site-header--overlay\b[^{}]*\{[^}]*\bposition\s*:\s*fixed\b[^}]*\btop\s*:\s*0\b[^}]*\bleft\s*:\s*0\b[^}]*\bright\s*:\s*0' 'assets/css/style.css overlay hero header positioning'
@@ -1128,10 +1120,6 @@ Assert-Matches $cssContent '(?is)body\[data-site-mode="bike"\][^{]*\{[^}]*--acce
 Assert-Matches $cssContent '(?is)body\[data-site-mode="bike"\][^{]*\{[^}]*--accent-rgb\s*:\s*255,\s*193,\s*0' 'assets/css/style.css bike accent rgb variable'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\][^{]*\{[^}]*--accent\s*:\s*#b93f33' 'assets/css/style.css drive accent variable'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\][^{]*\{[^}]*--accent-rgb\s*:\s*185,\s*63,\s*51' 'assets/css/style.css drive accent rgb variable'
-Assert-Matches $cssContent '(?is)\.contact-form label span\b[^{}]*\{[^}]*color\s*:\s*var\(--accent\)[^}]*font-weight\s*:\s*700' 'assets/css/style.css contact form label accent'
-Assert-Matches $cssContent '(?is)\.contact-form label span\b[^{}]*\{[^}]*color\s*:\s*var\(--accent\)[^}]*font-weight\s*:\s*700' 'assets/css/style.css contact form label accent'
-Assert-Matches $cssContent '(?is)\.contact-form input\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form input border contrast'
-Assert-Matches $cssContent '(?is)\.contact-form textarea\b[^{}]*\{[^}]*border\s*:\s*1px solid (?!var\()' 'assets/css/style.css contact form textarea border contrast'
 
 # Issue 10: session promo popup must be globally wired, data-driven, and honor enabled state.
 Assert-Contains $baseTemplate 'partial "promo-popup.html" .' 'layouts/_default/baseof.html'
@@ -1140,6 +1128,12 @@ Assert-Contains $promoPopupTemplate 'data-promo-popup="root"' 'layouts/partials/
 Assert-Contains $promoPopupTemplate 'data-promo-popup="backdrop"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'data-promo-popup="close"' 'layouts/partials/promo-popup.html'
 Assert-Contains $promoPopupTemplate 'data-promo-popup-key=' 'layouts/partials/promo-popup.html'
+Assert-Contains $promoPopupTemplate 'fileExists' 'layouts/partials/promo-popup.html local image priority'
+Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']title["'']|\$[a-z0-9_]*title\b|\.title\b)' 'layouts/partials/promo-popup.html title fallback'
+Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']body["'']|\$[a-z0-9_]*body\b|\.body\b)' 'layouts/partials/promo-popup.html body fallback'
+Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']bullets["'']|\$[a-z0-9_]*bullets\b|\.bullets\b)' 'layouts/partials/promo-popup.html bullets fallback'
+Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']cta_label["'']|\$[a-z0-9_]*(?:cta_label|ctaLabel)\b|\.(?:cta_label|ctaLabel)\b)' 'layouts/partials/promo-popup.html CTA label fallback'
+Assert-Matches $promoPopupTemplate '(?is)(?:index\s+[^}]+["'']cta_url["'']|\$[a-z0-9_]*(?:cta_url|ctaUrl)\b|\.(?:cta_url|ctaUrl)\b)' 'layouts/partials/promo-popup.html CTA URL fallback'
 Assert-Contains $promoPopupScriptTemplate 'root.dataset.promoPopupKey' 'layouts/partials/promo-popup-script.html'
 Assert-Contains $promoPopupScriptTemplate 'sessionStorage' 'layouts/partials/promo-popup-script.html'
 Assert-Matches $cssContent '(?is)\.promo-popup\[hidden\][^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css promo popup hidden display reset'
