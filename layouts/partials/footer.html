@@ -1,11 +1,10 @@
 {{- $siteMode := partial "site-mode.html" . -}}
-{{- $home := site.Home -}}
 {{- $contact := site.Data.contact -}}
 <footer class="site-footer">
     <div class="container site-footer__inner">
         <div class="site-footer__hours">
-            {{ with $home.Params.opening_hours_title }}<p class="site-footer__title">{{ . }}</p>{{ end }}
-            {{ with $home.Params.opening_hours }}
+            {{ with $contact.opening_hours_title }}<p class="site-footer__title">{{ . }}</p>{{ end }}
+            {{ with $contact.opening_hours }}
                 {{ range . }}
                 <p class="site-footer__hours-line">{{ . }}</p>
                 {{ end }}
@@ -16,15 +15,27 @@
             <dl class="site-footer__contact-list">
                 <div class="site-footer__contact-row">
                     <dt class="site-footer__contact-term">Adres</dt>
-                    <dd class="site-footer__contact-value">{{ $contact.address }}</dd>
+                    <dd class="site-footer__contact-value">
+                        <a href="{{ $contact.maps_url }}" target="_blank" rel="noopener noreferrer">{{ $contact.address }}</a>
+                    </dd>
                 </div>
                 <div class="site-footer__contact-row">
                     <dt class="site-footer__contact-term">E-mail</dt>
-                    <dd class="site-footer__contact-value">{{ $contact.email }}</dd>
+                    <dd class="site-footer__contact-value"><a href="mailto:{{ $contact.email }}">{{ $contact.email }}</a></dd>
                 </div>
                 <div class="site-footer__contact-row">
                     <dt class="site-footer__contact-term">Telefoon</dt>
-                    <dd class="site-footer__contact-value">{{ $contact.phone }}</dd>
+                    <dd class="site-footer__contact-value"><a href="tel:{{ replaceRE `[^0-9+]` `` $contact.phone }}">{{ $contact.phone }}</a></dd>
+                </div>
+                {{ with $contact.instagram_url }}
+                <div class="site-footer__contact-row">
+                    <dt class="site-footer__contact-term">Instagram</dt>
+                    <dd class="site-footer__contact-value"><a href="{{ . }}" target="_blank" rel="noopener noreferrer">Instagram</a></dd>
+                </div>
+                {{ end }}
+                <div class="site-footer__contact-row">
+                    <dt class="site-footer__contact-term">BTW</dt>
+                    <dd class="site-footer__contact-value">{{ $contact.vat }}</dd>
                 </div>
             </dl>
         </div>

@@ -457,6 +457,18 @@ h1 {
     line-height: 1.55;
 }
 
+.site-footer__contact-value a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
+
+.site-footer__contact-value a:hover,
+.site-footer__contact-value a:focus-visible {
+    color: var(--footer-link-hover);
+}
+
 .site-footer__links {
     margin: 0;
     padding: 0;
@@ -1554,6 +1566,51 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
     max-height: min(78vh, 48rem);
     height: auto;
     object-fit: contain;
+}
+
+.promo-popup__content {
+    display: grid;
+    gap: 1rem;
+    max-height: min(78vh, 48rem);
+    overflow: auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.promo-popup__title {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    line-height: 1.08;
+}
+
+.promo-popup__content p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+}
+
+.promo-popup__bullets {
+    margin: 0;
+    padding-left: 1.15rem;
+    color: var(--text);
+    line-height: 1.55;
+}
+
+.promo-popup__cta {
+    justify-self: start;
+    padding: 0.85rem 1rem;
+    background: var(--text);
+    color: var(--surface);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.promo-popup__cta:hover,
+.promo-popup__cta:focus-visible {
+    background: var(--accent);
+    color: var(--text);
 }
 
 .promo-popup__close {

@@ -1,3 +1,15 @@
 enabled = true
 image = "/images/promo/promo.webp"
 alt = "Promotie"
+title = "Voorkom startproblemen en dure herstellingen"
+body = [
+  "Wist je dat het jaarlijks onderhouden van je fiets en tuinmachines de levensduur aanzienlijk verlengt? Door stilstand in de winter of intensief gebruik in de zomer treden er ongemerkt slijtage en storingen op.",
+  "Met een jaarlijkse controle zorg je voor betrouwbaarheid, veiligheid en waardebehoud."
+]
+bullets = [
+  "Betrouwbaarheid: Altijd direct starten en soepel rijden.",
+  "Veiligheid: Remmen, kettingen en messen in topconditie.",
+  "Waardebehoud: Minder kans op onverwachte, dure kosten achteraf."
+]
+cta_label = "Maak nu een afspraak voor onderhoud"
+cta_url = "/contact/"

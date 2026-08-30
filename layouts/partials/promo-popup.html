@@ -2,12 +2,36 @@
 {{ if (index . "enabled") }}
 {{- $image := index . "image" -}}
 {{- $alt := index . "alt" -}}
-{{- $sessionKey := printf "promo-popup-%s" (md5 (printf "%s|%s" $image $alt)) -}}
+{{- $title := index . "title" -}}
+{{- $body := index . "body" -}}
+{{- $bullets := index . "bullets" -}}
+{{- $ctaLabel := index . "cta_label" -}}
+{{- $ctaUrl := index . "cta_url" -}}
+{{- $hasImage := false -}}
+{{- with $image -}}
+  {{- $hasImage = fileExists (printf "static%s" .) -}}
+{{- end -}}
+{{- $sessionKey := printf "promo-popup-%s" (md5 (printf "%s|%s|%s" $image $alt $title)) -}}
 <div class="promo-popup" data-promo-popup="root" data-promo-popup-key="{{ $sessionKey }}" hidden>
     <button class="promo-popup__backdrop" type="button" aria-label="Sluit promotie" data-promo-popup="backdrop"></button>
     <div class="promo-popup__dialog" role="dialog" aria-modal="true" aria-label="Promotie">
         <button class="promo-popup__close" type="button" aria-label="Sluit promotie" data-promo-popup="close">&times;</button>
+        {{ if $hasImage }}
         <img class="promo-popup__image" src="{{ $image }}" alt="{{ $alt }}" loading="eager" decoding="async">
+        {{ else }}
+        <div class="promo-popup__content">
+            {{ with $title }}<h2 class="promo-popup__title">{{ . }}</h2>{{ end }}
+            {{ range $body }}<p>{{ . }}</p>{{ end }}
+            {{ with $bullets }}
+            <ul class="promo-popup__bullets">
+                {{ range . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+            {{ end }}
+            {{ if and $ctaLabel $ctaUrl }}
+            <a class="promo-popup__cta" href="{{ $ctaUrl }}">{{ $ctaLabel }}</a>
+            {{ end }}
+        </div>
+        {{ end }}
     </div>
 </div>
 {{ end }}
