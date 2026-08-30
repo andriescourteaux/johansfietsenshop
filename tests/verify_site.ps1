@@ -1086,11 +1086,24 @@ Assert-NotContains $driveBrandsHtml '/images/merken-verdelers/' 'driveshop/merke
 Assert-NotContains $bikeBrandsHtml "L'Avenir" 'bikeshop/merken-en-verdelers/index.html removed LAvenir'
 Assert-NotContains $bikeBrandsHtml 'lavenir.svg' 'bikeshop/merken-en-verdelers/index.html removed LAvenir'
 Assert-Contains $bikeBrandsHtml 'class="split-block__logo"' 'bikeshop/merken-en-verdelers/index.html logo titles'
-Assert-Contains $bikeBrandsHtml 'data-collection-item="bfk.webp"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-Contains $bikeBrandsHtml 'data-collection-item="tb_bfk.jpg"' 'bikeshop/merken-en-verdelers/index.html'
 Assert-Matches $bikeBrandsHtml '(?is)<img class="split-block__logo" src="[^"]*/images/collecties/bikeshop/merken-en-verdelers/bfk\.webp" alt="BFK logo"' 'bikeshop/merken-en-verdelers/index.html'
 Assert-NotContains $bikeBrandsHtml '<h2 class="split-block__title">BFK</h2>' 'bikeshop/merken-en-verdelers/index.html BFK text title replaced'
 Assert-Contains $bikeBrandsHtml 'https://shop.vdbparts.be/collections/bike-fun-kids' 'bikeshop/merken-en-verdelers/index.html BFK link'
-Assert-NotMatches $bikeBrandsHtml '(?is)<article\b[^>]*data-collection-item="bfk\.webp"[^>]*>.*?href="https://flandersfietsen\.be/wp/"' 'bikeshop/merken-en-verdelers/index.html'
+Assert-NotMatches $bikeBrandsHtml '(?is)<article\b[^>]*data-collection-item="tb_bfk\.jpg"[^>]*>.*?href="https://flandersfietsen\.be/wp/"' 'bikeshop/merken-en-verdelers/index.html'
+foreach ($bikeTbImage in @(
+    'tb_swyff.jpg',
+    'tb_oxford.jpg',
+    'tb_thompson.jpg',
+    'tb_zannata.jpg',
+    'tb_gazelle.webp',
+    'tb_descheemaeker.jpg',
+    'tb_flanders.jpg',
+    'tb_bfk.jpg',
+    'tb_ravr.jpg'
+)) {
+    Assert-Matches $bikeBrandsHtml ('(?is)<img class="split-block__image" src="[^"]*/images/collecties/bikeshop/merken-en-verdelers/' + [regex]::Escape($bikeTbImage) + '"') 'bikeshop/merken-en-verdelers/index.html tb block images'
+}
 foreach ($driveLogo in @(
     'vegemac.webp',
     'iseki.webp',
