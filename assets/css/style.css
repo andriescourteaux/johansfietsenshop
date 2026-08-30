@@ -347,14 +347,6 @@ h1 {
     text-align: center;
 }
 
-.page-intro--winter h1 {
-    max-width: 52rem;
-    margin-right: auto;
-    margin-left: auto;
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    line-height: 1.05;
-}
-
 .opening-hours-section {
     padding: 2.5rem 0 0;
 }
@@ -791,36 +783,22 @@ body[data-site-mode="drive"] .content-highlights {
     display: grid;
     gap: clamp(1.5rem, 3vw, 2.5rem);
     margin-top: clamp(1.25rem, 3vw, 2rem);
-    margin-right: auto;
-    margin-left: auto;
-    padding: clamp(1.25rem, 3vw, 2rem);
-    background: #f4f4f4;
-    box-shadow: 0 0 0 100vmax #f4f4f4;
-    clip-path: inset(0 -100vmax);
     text-align: center;
 }
 
 .winter-page__copy {
-    max-width: 56rem;
+    max-width: 50rem;
     margin-right: auto;
     margin-left: auto;
-    padding: clamp(1rem, 2.5vw, 1.65rem);
-    background: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 16px 40px rgba(23, 18, 47, 0.08);
 }
 
 .winter-page__copy h2,
 .winter-values h2 {
     margin: 0 0 0.5rem;
-    color: #17122f;
-    font-size: clamp(1.35rem, 2vw, 1.85rem);
-    line-height: 1.1;
 }
 
 .winter-page__copy p {
-    max-width: 45rem;
-    margin: 0 auto;
+    margin: 0;
     color: var(--muted);
     line-height: 1.55;
 }
@@ -831,28 +809,12 @@ body[data-site-mode="drive"] .content-highlights {
 
 .winter-value.page-value h2 {
     margin-bottom: 0.25rem;
-    color: var(--accent);
-    font-size: clamp(0.85rem, 1.1vw, 1rem);
-    line-height: 1.2;
-}
-
-.winter-values {
-    display: grid;
-    gap: 0.75rem;
 }
 
 .winter-values__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-}
-
-.winter-values__grid > .page-value {
-    padding: clamp(1rem, 2vw, 1.35rem);
-    background: #fff;
-    border-radius: 0.5rem;
-    box-shadow: inset 0.3rem 0 0 var(--accent), 0 14px 32px rgba(23, 18, 47, 0.07);
-    text-align: left;
+    gap: 1rem;
 }
 
 .about-page__intro {
