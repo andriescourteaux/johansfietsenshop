@@ -401,11 +401,11 @@ h1 {
 }
 
 .home-overview__panel--bike .home-overview__grid {
-    grid-template-columns: repeat(3, minmax(0, 24rem));
+    grid-template-columns: repeat(3, minmax(0, 27rem));
 }
 
 .home-overview__panel--drive .home-overview__grid {
-    grid-template-columns: repeat(2, minmax(0, 24rem));
+    grid-template-columns: repeat(2, minmax(0, 27rem));
 }
 
 .overview-card {
@@ -434,6 +434,10 @@ h1 {
     margin-top: clamp(2rem, 5vw, 4rem);
 }
 
+.home-overview__grid + .home-mode-sections {
+    margin-top: clamp(3rem, 7vw, 5rem);
+}
+
 .home-highlights {
     padding: clamp(1.25rem, 3vw, 2rem) 0;
     border: 0;
@@ -444,10 +448,16 @@ h1 {
 
 .home-quote {
     max-width: 58rem;
+    margin-top: clamp(3.5rem, 8vw, 6rem);
+    margin-bottom: clamp(3.5rem, 8vw, 6rem);
     margin-right: auto;
     margin-left: auto;
     padding: 0;
     text-align: center;
+}
+
+.home-quote + .home-highlights {
+    margin-top: 0;
 }
 
 .home-quote p {
@@ -1137,7 +1147,7 @@ h1 {
 .overview-card {
     position: relative;
     display: grid;
-    min-height: 16rem;
+    min-height: 18rem;
     padding: 0;
     overflow: hidden;
     contain: paint;
@@ -1175,7 +1185,7 @@ h1 {
     display: grid;
     align-content: end;
     gap: 0.55rem;
-    min-height: 16rem;
+    min-height: 18rem;
     padding: 1.4rem;
 }
 
@@ -1393,6 +1403,11 @@ body.site-mode-switching .home-overview__panel:not([hidden]) {
 
 .media-collection--split-blocks[data-collection-key="leasing-fietsen"] .split-block__image {
     object-fit: contain;
+}
+
+.media-collection--split-blocks[data-collection-key="leasing-fietsen"] .split-block[data-collection-item="welease.svg"] .split-block__media {
+    border: 0;
+    background: #17122f;
 }
 
 .split-block__content {
