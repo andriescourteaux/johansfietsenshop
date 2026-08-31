@@ -428,7 +428,7 @@ h1 {
 .home-overview__grid {
     display: grid;
     gap: 1.5rem;
-    margin-top: -15rem;
+    margin-top: -8rem;
     justify-content: center;
 }
 
