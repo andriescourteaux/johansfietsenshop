@@ -1205,11 +1205,8 @@ else {
 
 Assert-True (-not [string]::IsNullOrWhiteSpace($CssPath)) 'Missing -CssPath for homepage issue 6 CSS checks'
 Assert-True ($null -ne $cssContent) ('Unable to read CSS content from ' + $CssPath)
-Assert-True (Test-Path (Join-Path $PublicDir 'fonts/Mont-ExtraLight.otf')) 'public Mont ExtraLight font'
-Assert-True (Test-Path (Join-Path $PublicDir 'fonts/Mont-Heavy.otf')) 'public Mont Heavy font'
-Assert-Matches $cssContent '(?is)@font-face\s*\{[^}]*font-family\s*:\s*"Mont"[^}]*Mont-ExtraLight\.otf[^}]*font-weight\s*:\s*200' 'assets/css/style.css Mont ExtraLight font'
-Assert-Matches $cssContent '(?is)@font-face\s*\{[^}]*font-family\s*:\s*"Mont"[^}]*Mont-Heavy\.otf' 'assets/css/style.css Mont Heavy font'
-Assert-Matches $cssContent '(?is)\bbody\b[^{}]*\{[^}]*font-family\s*:\s*"Mont",\s*Arial,\s*sans-serif' 'assets/css/style.css Mont body font'
+Assert-NotMatches $cssContent '(?is)\bMont\b' 'assets/css/style.css Mont font removed'
+Assert-Matches $cssContent '(?is)\bbody\b[^{}]*\{[^}]*font-family\s*:\s*Arial,\s*sans-serif' 'assets/css/style.css Arial body font'
 Assert-NotMatches $cssContent '(?is)font-family\s*:\s*"Roboto"' 'assets/css/style.css Roboto font override removed'
 Assert-Matches $cssContent '(?is)\.site-nav__item\s*,\s*\.site-nav__menu-toggle\s*,\s*\.site-nav__menu-link\b[^{}]*\{[^}]*font-weight\s*:\s*200' 'assets/css/style.css light top menu font'
 Assert-Matches $cssContent '(?is)\.site-nav__mode-toggle\b[^{}]*\{[^}]*font-weight\s*:\s*200' 'assets/css/style.css light mode chip font'
