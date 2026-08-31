@@ -1,5 +1,5 @@
 +++
-title = 'Onze merken'
+title = ''
 draft = false
 url = '/driveshop/merken-en-verdelers/'
 collection_mode = 'driveshop'

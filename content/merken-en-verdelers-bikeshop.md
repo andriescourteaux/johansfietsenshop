@@ -1,5 +1,5 @@
 +++
-title = 'Onze merken'
+title = ''
 draft = false
 url = '/bikeshop/merken-en-verdelers/'
 collection_mode = 'bikeshop'

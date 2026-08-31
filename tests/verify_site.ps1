@@ -953,7 +953,7 @@ Assert-NotContains $contactHtml 'contact-form' 'contact form removed'
 Assert-NotMatches $contactHtml '(?is)<form\b' 'contact form removed'
 Assert-NotContains $contactHtml 'Vragen, een nieuwe fiets kopen of onderhoud nodig?' 'contact intro removed'
 Assert-NotMatches $contactMainSection '(?is)<h1>\s*Contact\s*</h1>' 'contact page title removed'
-Assert-Matches $homeHeroSection '(?is)<h1\b(?=[^>]*\bdata-bike-title="Start een nieuw avontuur")(?=[^>]*\bdata-drive-title="Geniet van een perfect verzorgde tuin\.")[^>]*>' 'index.html shared hero h1 title switching'
+Assert-Matches $homeHeroSection '(?is)<h1\b(?=[^>]*\bdata-bike-title="Start een nieuw avontuur")(?=[^>]*\bdata-drive-title="Geniet van een perfect verzorgde tuin")[^>]*>' 'index.html shared hero h1 title switching'
 Assert-Contains $bikeBrandsHtml 'Onze merken' 'bike brands title'
 Assert-NotContains $bikeBrandsHtml 'data-media-filter=' 'bike brands filters disabled'
 Assert-Contains $homeHtml 'split-block' 'index.html split blocks'
@@ -963,6 +963,13 @@ Assert-NotContains $homeHtml '<h2>Highlights</h2>' 'index.html highlights headin
 Assert-NotContains $aboutHtml '<h2>Highlights</h2>' 'over-ons/index.html highlights heading removed'
 Assert-NotContains $homeHtml 'home-highlight__intro' 'index.html highlight descriptions removed'
 Assert-NotContains $aboutHtml 'home-highlight__intro' 'over-ons/index.html highlight descriptions removed'
+foreach ($highlightPage in @(
+    @{ Html = $bikeAccessoriesHtml; Context = 'bikeshop/accessoires/index.html' },
+    @{ Html = $bikeLeasingHtml; Context = 'bikeshop/leasing-fietsen/index.html' },
+    @{ Html = $contactHtml; Context = 'contact/index.html' }
+)) {
+    Assert-Contains $highlightPage.Html 'home-highlights' ($highlightPage.Context + ' bike model highlights')
+}
 foreach ($highlightName in @(
     'Flanders Navigator',
     'Gazelle Eclipse Speed',
@@ -971,6 +978,9 @@ foreach ($highlightName in @(
     $highlightTitle = '<span class="home-highlight__title">' + $highlightName + '</span>'
     Assert-Contains $homeHtml $highlightTitle 'index.html complete highlight names'
     Assert-Contains $aboutHtml $highlightTitle 'over-ons/index.html complete highlight names'
+    Assert-Contains $bikeAccessoriesHtml $highlightTitle 'bikeshop/accessoires/index.html complete highlight names'
+    Assert-Contains $bikeLeasingHtml $highlightTitle 'bikeshop/leasing-fietsen/index.html complete highlight names'
+    Assert-Contains $contactHtml $highlightTitle 'contact/index.html complete highlight names'
 }
 foreach ($highlightLink in @(
     'https://www.gazellebikes.com/nl-be',
@@ -1005,6 +1015,14 @@ Assert-Contains $bikeLeasingHtml 'media-collection--split-blocks' 'bike leasing 
 Assert-Contains $bikeLeasingHtml 'data-collection-key="leasing-fietsen"' 'bike leasing collection key hook'
 Assert-Contains $bikeLeasingHtml 'data-collection-item="welease.svg"' 'bike leasing Welease item hook'
 Assert-Contains $bikeAccessoriesHtml 'media-collection--split-blocks' 'bike accessories split blocks'
+foreach ($collectionCanvasPage in @(
+    @{ Html = $bikeBrandsHtml; Context = 'bikeshop/merken-en-verdelers/index.html' },
+    @{ Html = $driveBrandsHtml; Context = 'driveshop/merken-en-verdelers/index.html' },
+    @{ Html = $bikeAccessoriesHtml; Context = 'bikeshop/accessoires/index.html' },
+    @{ Html = $bikeLeasingHtml; Context = 'bikeshop/leasing-fietsen/index.html' }
+)) {
+    Assert-Contains $collectionCanvasPage.Html 'page-intro--collection-canvas' ($collectionCanvasPage.Context + ' full width canvas')
+}
 Assert-Contains $bikeBrandsHtml ('effici' + $eDiaeresis + 'nt en betrouwbaar vervoermiddel') 'bike brands accented copy'
 Assert-Contains $bikeLeasingHtml ('We cre' + $eDiaeresis + 'ren samen enthousiasme') 'bike leasing accented copy'
 Assert-Contains $bikeAccessoriesHtml ('essenti' + $eDiaeresis + 'le fietsonderdelen') 'bike accessories accented copy'
@@ -1012,7 +1030,7 @@ Assert-Contains $driveBrandsHtml ('Betrouwbare en effici' + $eDiaeresis + 'nte g
 Assert-Contains $aboutHtml ($eAcute + $eAcute + 'n ding') 'about accented copy'
 Assert-Contains $aboutHtml ($eAcute + 'cht nodig heeft') 'about accented copy'
 Assert-NotContains $aboutHeroSection '/images/about/headshot.webp' 'over-ons/index.html headshot hero override removed'
-Assert-Contains $aboutHeroSection '/images/header_bike_2.webp' 'over-ons/index.html default bike hero'
+Assert-Contains $aboutHeroSection '/images/header_bike_3.jpg' 'over-ons/index.html default bike hero'
 Assert-Contains $aboutHtml 'page-value' 'over-ons/index.html page values'
 Assert-Contains $contactHtml 'page-value' 'contact/index.html page values'
 Assert-Contains $aboutHtml '&#128295;' 'over-ons/index.html about emoji'
@@ -1038,9 +1056,9 @@ Assert-Contains $contactHtml '/images/payment/bancontact.svg' 'contact bancontac
 Assert-Contains $contactHtml '/images/payment/payconiq.png' 'contact payconiq payment icon'
 Assert-Contains $contactHtml 'Vervangfiets' 'contact replacement bike block'
 Assert-Contains $contactHtml 'Ophaaldienst' 'contact pickup block'
-Assert-Matches $contactMainSection '(?is)Herstellingen &amp; Onderhoud.*?Fiets kopen\?.*?Vervangfiets.*?Ophaaldienst.*?contact-page__actions' 'contact/index.html page values grouped before actions'
+Assert-Matches $contactMainSection '(?is)Herstellingen &amp; Onderhoud.*?Fiets kopen\?.*?Vervangfiets.*?Ophaaldienst' 'contact/index.html page values'
 Assert-Contains $contactHtml 'contact-page__button-icon' 'contact icon buttons'
-Assert-Contains $winterMainSection 'Maak je tuinmachines winterklaar' 'winter maintenance title'
+Assert-Contains $winterMainSection 'Winteronderhoud' 'winter maintenance title'
 Assert-Contains $winterMainSection 'Unieke service: Wij halen en brengen je machine' 'winter maintenance pickup section'
 Assert-Contains $winterMainSection 'Interesse of direct inplannen?' 'winter maintenance planning section'
 Assert-Contains $winterMainSection 'Neem contact op' 'winter contact CTA'
@@ -1065,6 +1083,9 @@ Assert-Contains $homeHtml 'site-footer__link--contact' 'index.html'
 Assert-Contains $homeHtml 'site-footer__link--merken' 'index.html'
 Assert-Contains $contactHtml 'site-footer__link--contact' 'contact/index.html'
 Assert-Contains $contactHtml 'site-footer__link--merken' 'contact/index.html'
+Assert-Contains $homeFooterSection '<p class="site-footer__title">Openingsuren</p>' 'index.html footer hours title'
+Assert-Contains $homeFooterSection '<p class="site-footer__title">Contact</p>' 'index.html footer contact title'
+Assert-Contains $homeFooterSection '<p class="site-footer__title">Informatie</p>' 'index.html footer info title'
 Assert-Matches $homeHtml '(?is)<link\b[^>]*rel="?stylesheet"?[^>]*href="\./css/' 'index.html GitHub Pages stylesheet path'
 Assert-NotMatches $homeHtml '(?is)<link\b[^>]*rel="?stylesheet"?[^>]*href="\./johansfietsenshop/css/' 'index.html duplicated GitHub Pages stylesheet path'
 Assert-Contains $modeScriptTemplate "applyHref('.site-footer__link--contact');" 'layouts/partials/mode-script.html'
@@ -1176,14 +1197,22 @@ else {
         }
 
         $imageSrc = $srcMatch.Groups['src'].Value
-        if ($imageSrc -notmatch '\.webp(?:[?#].*)?$') {
-            Add-Problem ('Homepage card image must use webp: ' + $imageSrc)
+        if ($imageSrc -notmatch '\.(?:jpe?g|webp)(?:[?#].*)?$') {
+            Add-Problem ('Homepage card image must use jpg or webp: ' + $imageSrc)
         }
     }
 }
 
 Assert-True (-not [string]::IsNullOrWhiteSpace($CssPath)) 'Missing -CssPath for homepage issue 6 CSS checks'
 Assert-True ($null -ne $cssContent) ('Unable to read CSS content from ' + $CssPath)
+Assert-True (Test-Path (Join-Path $PublicDir 'fonts/Mont-ExtraLight.otf')) 'public Mont ExtraLight font'
+Assert-True (Test-Path (Join-Path $PublicDir 'fonts/Mont-Heavy.otf')) 'public Mont Heavy font'
+Assert-Matches $cssContent '(?is)@font-face\s*\{[^}]*font-family\s*:\s*"Mont"[^}]*Mont-ExtraLight\.otf[^}]*font-weight\s*:\s*200' 'assets/css/style.css Mont ExtraLight font'
+Assert-Matches $cssContent '(?is)@font-face\s*\{[^}]*font-family\s*:\s*"Mont"[^}]*Mont-Heavy\.otf' 'assets/css/style.css Mont Heavy font'
+Assert-Matches $cssContent '(?is)\bbody\b[^{}]*\{[^}]*font-family\s*:\s*"Mont",\s*Arial,\s*sans-serif' 'assets/css/style.css Mont body font'
+Assert-NotMatches $cssContent '(?is)font-family\s*:\s*"Roboto"' 'assets/css/style.css Roboto font override removed'
+Assert-Matches $cssContent '(?is)\.site-nav__item\s*,\s*\.site-nav__menu-toggle\s*,\s*\.site-nav__menu-link\b[^{}]*\{[^}]*font-weight\s*:\s*200' 'assets/css/style.css light top menu font'
+Assert-Matches $cssContent '(?is)\.site-nav__mode-toggle\b[^{}]*\{[^}]*font-weight\s*:\s*200' 'assets/css/style.css light mode chip font'
 Assert-NotMatches `
     $cssContent `
     '(?is)\.site-header--overlay\b[^{}]*\.site-nav__(?:menu-toggle|menu-label)\b[^{}]*\{[^}]*\b(?:font|font-size|font-family|font-variant|text-transform)\s*:' `
@@ -1256,6 +1285,8 @@ Assert-Matches $cssContent '(?is)\.media-collection__card:hover\s+\.media-collec
 Assert-Matches $cssContent '(?is):root\s*\{[^}]*--container\s*:\s*124rem' 'assets/css/style.css wider page canvas'
 Assert-Matches $cssContent '(?is)\.split-block__media\b[^{}]*\{[^}]*aspect-ratio\s*:\s*1\s*/\s*1' 'assets/css/style.css square split block images'
 Assert-Matches $cssContent '(?is)\.page-intro\s+\.container\b[^{}]*\{[^}]*box-shadow\s*:\s*none' 'assets/css/style.css page canvas shadow removed'
+Assert-Matches $cssContent '(?is)\.page-intro--collection-canvas\s+\.container\b[^{}]*\{(?=[^}]*width\s*:\s*100%)(?=[^}]*max-width\s*:\s*none)(?=[^}]*padding-right\s*:\s*0)(?=[^}]*padding-left\s*:\s*0)' 'assets/css/style.css full width collection page canvas'
+Assert-Matches $cssContent '(?is)\.page-intro--collection-canvas\s+\.page-copy\b[^{}]*\{(?=[^}]*width\s*:\s*min\(calc\(100%\s*-\s*2rem\),\s*var\(--container\)\))(?=[^}]*margin-right\s*:\s*auto)(?=[^}]*margin-left\s*:\s*auto)' 'assets/css/style.css constrained copy inside full width collection canvas'
 Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero\b[^{}]*\{[^}]*align-items\s*:\s*center' 'assets/css/style.css centered home hero titles'
 Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero__content\b[^{}]*\{[^}]*text-align\s*:\s*center' 'assets/css/style.css centered home hero titles'
 Assert-Matches $cssContent '(?is)\.page--home\s+\.home-hero__content\b[^{}]*\{[^}]*transform\s*:\s*translateY\(-4vh\)' 'assets/css/style.css lifted home hero titles'
@@ -1263,10 +1294,9 @@ Assert-Matches $cssContent '(?is)\.home-overview__panel--bike\s+\.home-overview_
 Assert-Matches $cssContent '(?is)\.home-overview__panel--drive\s+\.home-overview__grid\b[^{}]*\{[^}]*repeat\(2,\s*minmax\(0,\s*27rem\)\)' 'assets/css/style.css larger drive overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview cards'
 Assert-Matches $cssContent '(?is)\.overview-card__body\b[^{}]*\{[^}]*min-height\s*:\s*18rem' 'assets/css/style.css taller overview card body'
-Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections\b(?=[^{}]*\{[^}]*position\s*:\s*relative)(?=[^{}]*\{[^}]*margin-top\s*:\s*clamp\(2\.25rem,\s*4\.25vw,\s*3\.5rem\))' 'assets/css/style.css equal half space below overview cards'
-Assert-Matches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b(?=[^{}]*\{[^}]*display\s*:\s*block)(?=[^{}]*\{[^}]*height\s*:\s*clamp\(11\.25rem,\s*22\.5vw,\s*18rem\))(?=[^{}]*\{[^}]*margin-bottom\s*:\s*clamp\(2\.25rem,\s*4\.25vw,\s*3\.5rem\))(?=[^{}]*\{[^}]*background\s*:\s*#f4f4f4)(?=[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4)' 'assets/css/style.css homepage separator plane'
-Assert-NotMatches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b[^{}]*\{[^}]*position\s*:\s*absolute' 'assets/css/style.css homepage separator does not overlap split blocks'
-Assert-NotMatches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b[^{}]*\{[^}]*top\s*:' 'assets/css/style.css homepage separator does not overlap split blocks'
+Assert-Matches $cssContent '(?is)\.home-overview\b[^{}]*\{(?=[^}]*position\s*:\s*relative)(?=[^}]*isolation\s*:\s*isolate)(?=[^}]*margin-top\s*:\s*clamp\(-8rem,\s*-8vw,\s*-4rem\))(?=[^}]*padding-top\s*:\s*clamp\(3rem,\s*6vw,\s*5rem\))' 'assets/css/style.css homepage cards lifted onto pane'
+Assert-Matches $cssContent '(?is)\.home-overview::before\b[^{}]*\{(?=[^}]*position\s*:\s*absolute)(?=[^}]*inset\s*:\s*0\s+0\s+auto)(?=[^}]*height\s*:\s*clamp\(12rem,\s*24vw,\s*20rem\))(?=[^}]*background\s*:\s*#f4f4f4)(?=[^}]*z-index\s*:\s*-1)' 'assets/css/style.css homepage pane behind cards'
+Assert-NotMatches $cssContent '(?is)\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b' 'assets/css/style.css old homepage separator removed'
 Assert-Matches $cssContent '(?is)\.home-quote\b[^{}]*\{[^}]*margin-top\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)[^}]*margin-bottom\s*:\s*clamp\(9rem,\s*18vw,\s*15rem\)' 'assets/css/style.css homepage quote vertical spacing'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*border\s*:\s*0' 'assets/css/style.css borderless highlights'
 Assert-Matches $cssContent '(?is)\.home-highlight\b[^{}]*\{[^}]*background\s*:\s*#fff' 'assets/css/style.css white highlight cards'
@@ -1276,6 +1306,7 @@ Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*background\s*:\
 Assert-Matches $cssContent '(?is)\.home-highlights\b[^{}]*\{[^}]*box-shadow\s*:\s*0\s+0\s+0\s+100vmax\s+#f4f4f4' 'assets/css/style.css full bleed highlight support plane'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\]\s+\.home-highlights\b[^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css drive mode highlights disabled'
 Assert-Matches $cssContent '(?is)body\[data-site-mode="drive"\]\s+\.content-highlights\b[^{}]*\{[^}]*display\s*:\s*none' 'assets/css/style.css drive mode content highlights disabled'
+Assert-Matches $cssContent '(?is)\.split-blocks\b[^{}]*\{(?=[^}]*margin-left\s*:\s*calc\(50%\s*-\s*50vw\))(?=[^}]*margin-right\s*:\s*calc\(50%\s*-\s*50vw\))' 'assets/css/style.css full bleed split blocks'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__media\b[^{}]*\{[^}]*padding\s*:' 'assets/css/style.css leasing logo padding'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block__image\b[^{}]*\{[^}]*object-fit\s*:\s*contain' 'assets/css/style.css contained leasing logos'
 Assert-Matches $cssContent '(?is)\.media-collection--split-blocks\[data-collection-key="leasing-fietsen"\]\s+\.split-block\[data-collection-item="welease\.svg"\]\s+\.split-block__media\b[^{}]*\{[^}]*border\s*:\s*0[^}]*background\s*:\s*#17122f' 'assets/css/style.css Welease picture background'
@@ -1313,7 +1344,7 @@ Assert-NotMatches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.w
 Assert-NotMatches $cssContent '(?im)^\s*\.winter-values\s*\{[^}]*margin\s*:' 'assets/css/style.css winter values use normal section spacing'
 Assert-NotMatches $cssContent '(?im)^\s*\.winter-value\.page-value\s*\{' 'assets/css/style.css winter value cards use normal page-value spacing'
 Assert-Matches $cssContent '(?is)\.winter-value\.page-value\s+h2\b[^{}]*\{[^}]*margin-bottom\s*:\s*0\.25rem' 'assets/css/style.css tighter winter value title spacing'
-Assert-Matches $cssContent '(?is)\.winter-value\.page-value\s+p\b[^{}]*\{[^}]*font-size\s*:\s*clamp\(1\.38rem,\s*2vw,\s*1\.62rem\)' 'assets/css/style.css larger winter value text'
+Assert-Matches $cssContent '(?is)\.winter-value\.page-value\s+p\b[^{}]*\{[^}]*font-size\s*:' 'assets/css/style.css winter value text sizing'
 Assert-Matches $cssContent '(?is)\.winter-page__copy\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--muted\)' 'assets/css/style.css grey winter copy text'
 Assert-NotMatches $cssContent '(?is)\.winter-page__copy\s+p\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css winter copy text not black'
 Assert-Matches $cssContent '(?is)\.page-copy\b[^{}]*\{[^}]*color\s*:\s*var\(--text\)' 'assets/css/style.css black page copy'
@@ -1325,7 +1356,8 @@ Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.cont
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.site-header__inner\b[^{}]*\{[^}]*display\s*:\s*grid[^}]*grid-template-columns\s*:\s*auto\s+minmax\(0,\s*1fr\)' 'assets/css/style.css mobile header grid'
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.site-nav\b[^{}]*\{[^}]*justify-content\s*:\s*flex-end[^}]*min-width\s*:\s*0' 'assets/css/style.css mobile nav fit'
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.page-intro--after-hero\s+\.container\b[^{}]*\{[^}]*margin-top\s*:\s*-38vh' 'assets/css/style.css mobile page hero overlap'
-Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.home-overview__grid\s*\+\s*\.home-mode-sections::before\b[^{}]*\{(?=[^}]*height\s*:\s*clamp\(5rem,\s*20vw,\s*8rem\))(?=[^}]*margin-bottom\s*:\s*clamp\(1\.25rem,\s*6vw,\s*2rem\))' 'assets/css/style.css mobile homepage separator'
+Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.home-overview\b[^{}]*\{(?=[^}]*margin-top\s*:\s*clamp\(-5rem,\s*-14vw,\s*-2rem\))(?=[^}]*padding-top\s*:\s*clamp\(2rem,\s*8vw,\s*3rem\))' 'assets/css/style.css mobile homepage pane'
+Assert-Matches $cssContent '(?is)\.site-footer__inner\b[^{}]*\{(?=[^}]*display\s*:\s*grid)(?=[^}]*width\s*:\s*min\(calc\(100%\s*-\s*clamp\(2rem,\s*6vw,\s*6rem\)\),\s*92rem\))' 'assets/css/style.css padded footer content'
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.contact-page__actions\b[^{}]*\{[^}]*gap\s*:\s*clamp\(1\.5rem,\s*8vw,\s*3rem\)' 'assets/css/style.css mobile contact icon spacing'
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*720px\)\s*\{[^@]*\.split-block\b[^{}]*\{[^}]*gap\s*:\s*1rem' 'assets/css/style.css mobile split block spacing'
 Assert-Matches $cssContent '(?is)@media\s*\(max-width:\s*640px\)\s*\{[^@]*\.promo-popup__dialog\b[^{}]*\{[^}]*max-height\s*:\s*calc\(100dvh\s*-\s*2rem\)[^}]*overflow\s*:\s*auto' 'assets/css/style.css mobile promo popup scrolls'

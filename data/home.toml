@@ -1,29 +1,29 @@
 quote = "De aankoop van een fiets is het begin van een nieuw avontuur. Je koopt bij ons niet alleen een fiets, maar ook de garantie dat je bij onderhoud en service altijd direct en vakkundig wordt geholpen."
 
 [[bike_promos]]
-title = "Love to move life"
+title = "LOVE TO MOVE LIFE"
 text = "Het echte gevoel? Dat ervaar je tijdens een proefrit. Kom langs wanneer jij wil."
 button_label = "Plan proefrit"
 button_url = "/contact/?mode=bike"
-image = "/images/home-cards/bike-modellen.webp"
+image = "/images/home-cards/bike-brands.webp"
 alt = "Fiets proefrit"
 
 [[bike_promos]]
-title = "Hulp nodig?"
-text = "Persoonlijk fietsadvies? Kom naar onze winkel en laat je helpen door ons."
+title = "HULP NODIG? PERSOONLIJK FIETSADVIES?"
+text = "Kom naar onze winkel en laat je helpen door ons."
 button_label = "Plan Adviesafspraak"
 button_url = "/contact/?mode=bike"
 image = "/images/home/advies.jpg"
 alt = "Persoonlijk fietsadvies"
 
 [[drive_promos]]
-title = "Voor elk werk de juiste machine"
-text = "Voor elk werk de juiste machine."
+title = "VOOR ELK WERK DE JUISTE MACHINE"
+text = ""
 image = "/images/home-cards/drive-tool.jpg"
 alt = "Tuinmachine"
 
 [[drive_promos]]
-title = "Hulp nodig?"
+title = "HULP NODIG?"
 text = "Persoonlijk advies voor jouw tuinonderhoud? Kom naar onze winkel en laat je helpen door ons."
 button_label = "Plan afspraak"
 button_url = "/contact/?mode=drive"

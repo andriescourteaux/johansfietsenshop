@@ -1,8 +1,22 @@
 {{ define "main" }}
 {{- $contact := site.Data.contact -}}
 {{- $siteMode := partial "site-mode.html" . -}}
+{{- $bikePageHighlights := slice -}}
+{{- if and (not $siteMode.isDrive) .Params.show_bike_highlights -}}
+  {{- with site.Data.home.bike_highlights -}}
+    {{- $config := . -}}
+    {{- with index site.Data.collecties $config.collection_mode -}}
+      {{- with index . $config.collection_key -}}
+        {{- range $name, $entry := .items -}}
+          {{- $bikePageHighlights = $bikePageHighlights | append (dict "title" $entry.title "alt" (or $entry.alt $entry.title) "src" ($entry.image | relURL) "url" (or $entry.highlight_url $entry.url "") "sortKey" (printf "%06d-%s" (or $entry.weight 9999) $name)) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $bikePageHighlights = first (or $config.limit 3) (sort $bikePageHighlights "sortKey") -}}
+  {{- end -}}
+{{- end -}}
 {{ partial "shared-hero.html" (dict "Page" . "ShowContent" false "ShowOpeningHours" false "ShowTitle" false "ShowIntro" false) }}
-<section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}">
+<section class="page-intro page-intro--after-hero{{ if .Params.center_copy }} page-intro--center{{ end }}{{ if eq .Params.collection_variant "split-blocks" }} page-intro--collection-canvas{{ end }}">
     <div class="container">
         {{ if not .Params.hide_page_intro }}
         <!-- <p class="eyebrow">Pagina</p> -->
@@ -59,6 +73,14 @@
         {{ if .Params.showContactPage }}
         {{- $openingHours := partial "opening-hours-data.html" (or $contact.opening_hours (slice)) -}}
         <section class="contact-page">
+            <div class="contact-page__actions">
+                <a class="contact-page__button" href="tel:{{ replaceRE `[^0-9+]` `` $contact.phone }}" aria-label="Bel {{ $contact.phone }}">
+                    <svg class="contact-page__button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.89.66 2.79a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.29-1.29a2 2 0 0 1 2.11-.45c.9.31 1.83.53 2.79.66A2 2 0 0 1 22 16.92Z"/></svg>
+                </a>
+                <a class="contact-page__button" href="mailto:{{ $contact.email }}" aria-label="Mail {{ $contact.email }}">
+                    <svg class="contact-page__button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m22 7-10 6L2 7"/></svg>
+                </a>
+            </div>
             <div class="contact-page__grid">
                 <article class="contact-page__block page-value">
                     <h2>Herstellingen &amp; Onderhoud</h2>
@@ -77,14 +99,14 @@
                     <p>Niet in de mogelijkheid om je fiets te brengen? Wij kunnen deze in overleg bij je ophalen.</p>
                 </article>
             </div>
-            <div class="contact-page__actions">
-                <a class="contact-page__button" href="tel:{{ replaceRE `[^0-9+]` `` $contact.phone }}" aria-label="Bel {{ $contact.phone }}">
-                    <svg class="contact-page__button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.89.66 2.79a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.29-1.29a2 2 0 0 1 2.11-.45c.9.31 1.83.53 2.79.66A2 2 0 0 1 22 16.92Z"/></svg>
-                </a>
-                <a class="contact-page__button" href="mailto:{{ $contact.email }}" aria-label="Mail {{ $contact.email }}">
-                    <svg class="contact-page__button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m22 7-10 6L2 7"/></svg>
-                </a>
-            </div>
+            <section class="contact-page__payments">
+                <h2>Betaal mogelijkheden</h2>
+                <ul>
+                    <li><img src="{{ "/images/payment/cash.png" | relURL }}" alt="Cash"><span>Cash</span></li>
+                    <li><img src="{{ "/images/payment/bancontact.svg" | relURL }}" alt="Bancontact"><span>Bancontact</span></li>
+                    <li><img src="{{ "/images/payment/payconiq.png" | relURL }}" alt="Payconiq"><span>Payconiq</span></li>
+                </ul>
+            </section>
             {{ with $openingHours }}
             <section class="contact-page__hours">
                 <h2>{{ or $contact.opening_hours_title "Openingsuren" }}</h2>
@@ -104,14 +126,6 @@
                 </table>
             </section>
             {{ end }}
-            <section class="contact-page__payments">
-                <h2>Betaal mogelijkheden</h2>
-                <ul>
-                    <li><img src="{{ "/images/payment/cash.png" | relURL }}" alt="Cash"><span>Cash</span></li>
-                    <li><img src="{{ "/images/payment/bancontact.svg" | relURL }}" alt="Bancontact"><span>Bancontact</span></li>
-                    <li><img src="{{ "/images/payment/payconiq.png" | relURL }}" alt="Payconiq"><span>Payconiq</span></li>
-                </ul>
-            </section>
             <div class="contact-panel__map">
                 <iframe src="https://www.google.com/maps?q=Kalve%2062%2C%209185%20Wachtebeke&z=15&output=embed" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps kaart van Johan Alliet"></iframe>
             </div>
@@ -212,6 +226,23 @@
             </section>
             {{ end }}
         </section>
+        {{ end }}
+
+        {{ if and (not $siteMode.isDrive) .Params.show_bike_highlights }}
+        {{ with $bikePageHighlights }}
+        <section class="home-highlights">
+            <div class="home-highlights__grid">
+                {{ range . }}
+                {{ if .url }}<a class="home-highlight" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ else }}<article class="home-highlight">{{ end }}
+                    <img class="home-highlight__image" src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+                    <span class="home-highlight__body">
+                        <span class="home-highlight__title">{{ .title }}</span>
+                    </span>
+                {{ if .url }}</a>{{ else }}</article>{{ end }}
+                {{ end }}
+            </div>
+        </section>
+        {{ end }}
         {{ end }}
 
         {{ if or .Params.cta_title .Params.cta_label }}

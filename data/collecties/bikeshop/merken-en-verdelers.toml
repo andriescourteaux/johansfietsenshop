@@ -8,7 +8,7 @@ intro = "Zoek je een efficiënt en betrouwbaar vervoermiddel dat jouw dagelijks 
 tags = ["elektrische fietsen"]
 url = "https://www.swyff.com/nl/fietsen-1.htm"
 button_label = "Meer info"
-weight = 10
+weight = 15
 
 [items."tb_oxford.jpg"]
 title = "Oxford"
@@ -20,7 +20,7 @@ intro = "Oxford fietsen, gemaakt voor speelvogels, doorzetters en levensgenieter
 tags = ["city", "elektrische fietsen", "kinderfietsen", "hybride", "vouwfietsen"]
 url = "https://www.oxfordbikes.be/"
 button_label = "Meer info"
-weight = 20
+weight = 10
 
 [items."tb_thompson.jpg"]
 title = "Thompson"
@@ -56,7 +56,7 @@ intro = "De absolute standaard in comfort en premium afwerking; een slimme inves
 tags = ["city", "elektrische fietsen", "hybride"]
 url = "https://www.gazellebikes.com/nl-be"
 button_label = "Meer info"
-weight = 50
+weight = 5
 
 [items."tb_descheemaeker.jpg"]
 title = "Descheemaeker"

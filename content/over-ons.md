@@ -1,5 +1,5 @@
 +++
-title = 'Over ons'
+title = ''
 draft = false
 showAboutPage = true
 +++

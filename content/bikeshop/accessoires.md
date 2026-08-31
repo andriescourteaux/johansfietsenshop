@@ -1,9 +1,10 @@
 +++
-title = 'Accessoires'
+title = ''
 draft = false
 url = '/bikeshop/accessoires/'
 collection_mode = 'bikeshop'
 collection_key = 'accessoires'
 collection_variant = 'split-blocks'
 collection_filters = false
+show_bike_highlights = true
 +++

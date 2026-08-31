@@ -1,5 +1,5 @@
 +++
-title = 'Maak je tuinmachines winterklaar (inclusief haal- en brengservice!)'
+title = 'Winteronderhoud'
 draft = false
 url = '/driveshop/winteronderhoud-van-tuinmachines/'
 cta_label = 'Neem contact op'

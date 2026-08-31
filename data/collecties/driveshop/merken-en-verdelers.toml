@@ -1,3 +1,27 @@
+[items."stiga_tb.png"]
+title = "Stiga"
+alt = "Stiga"
+image = "/images/collecties/driveshop/merken-en-verdelers/stiga_tb.png"
+logo_image = "/images/collecties/driveshop/merken-en-verdelers/stiga.webp"
+logo_alt = "Stiga logo"
+intro = "Innovatieve tuinmachines en geavanceerde accumaaiers die ergonomisch comfort combineren met een strak maairesultaat voor elke tuin."
+url = "https://www.stiga.com/int/"
+button_label = "Meer info"
+tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
+weight = 8
+
+[items."makita_tb.jpg"]
+title = "Makita"
+alt = "Makita"
+image = "/images/collecties/driveshop/merken-en-verdelers/makita_tb.jpg"
+logo_image = "/images/collecties/driveshop/merken-en-verdelers/makita.png"
+logo_alt = "Makita logo"
+intro = "De absolute standaard in krachtig accu-tuingereedschap, waarmee je snoeit, zaagt en trimt met de flexibiliteit van een accu en de kracht van benzine."
+url = "https://www.makita.be/"
+button_label = "Meer info"
+tags = ["tuinmachine"]
+weight = 5
+
 [items."vegemac_tb.webp"]
 title = "Vegemac"
 alt = "Vegemac"
@@ -33,27 +57,3 @@ url = "https://www.castelgarden.com/be_nl/"
 button_label = "Meer info"
 tags = ["grasmaaiers"]
 weight = 30
-
-[items."stiga_tb.png"]
-title = "Stiga"
-alt = "Stiga"
-image = "/images/collecties/driveshop/merken-en-verdelers/stiga_tb.png"
-logo_image = "/images/collecties/driveshop/merken-en-verdelers/stiga.webp"
-logo_alt = "Stiga logo"
-intro = "Innovatieve tuinmachines en geavanceerde accumaaiers die ergonomisch comfort combineren met een strak maairesultaat voor elke tuin."
-url = "https://www.stiga.com/int/"
-button_label = "Meer info"
-tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
-weight = 40
-
-[items."makita_tb.jpg"]
-title = "Makita"
-alt = "Makita"
-image = "/images/collecties/driveshop/merken-en-verdelers/makita_tb.jpg"
-logo_image = "/images/collecties/driveshop/merken-en-verdelers/makita.png"
-logo_alt = "Makita logo"
-intro = "De absolute standaard in krachtig accu-tuingereedschap, waarmee je snoeit, zaagt en trimt met de flexibiliteit van een accu en de kracht van benzine."
-url = "https://www.makita.be/"
-button_label = "Meer info"
-tags = ["tuinmachine"]
-weight = 50
