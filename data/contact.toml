@@ -8,10 +8,10 @@ vat = "BE 0898284633"
 opening_hours_title = "Openingsuren"
 opening_hours = [
   "Maandag: Gesloten",
-  "Dinsdag: 10u00 - 12u00 | 14u00 - 19u00",
-  "Woensdag: 10u00 - 12u00 | 14u00 - 18u00",
-  "Donderdag: 10u00 - 12u00 | 14u00 - 19u00",
-  "Vrijdag: 10u00 - 12u00 | 14u00 - 18u00",
-  "Zaterdag: 10u00 - 12u00 | 14u00 - 17u00",
+  "Dinsdag: 10u00 - 12u00 | 13u00 - 19u00",
+  "Woensdag: 10u00 - 12u00 | 13u00 - 18u00",
+  "Donderdag: 10u00 - 12u00 | 13u00 - 19u00",
+  "Vrijdag: 10u00 - 12u00 | 13u00 - 18u00",
+  "Zaterdag: 10u00 - 12u00 | 13u00 - 17u00",
   "Zondag en feestdagen: Gesloten"
 ]
