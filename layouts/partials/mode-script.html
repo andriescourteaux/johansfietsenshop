@@ -32,7 +32,7 @@
     activeMode = 'bike';
   }
 
-  const logo = document.querySelector('.site-brand__logo');
+  const logos = Array.from(document.querySelectorAll('.site-brand__logo, .promo-popup__logo'));
   const heroImage = document.querySelector('.home-hero__image');
   const heroTitle = document.querySelector('.home-hero h1[data-bike-title][data-drive-title]');
   const heroCopy = document.querySelector('.page-copy--hero');
@@ -211,10 +211,10 @@
     window.localStorage.setItem('site-mode', activeMode);
     persistModeUrl();
 
-    if (logo) {
+    logos.forEach((logo) => {
       logo.src = activeMode === 'drive' ? logo.dataset.driveSrc : logo.dataset.bikeSrc;
       logo.alt = activeMode === 'drive' ? 'Driveshop logo' : 'Bikeshop logo';
-    }
+    });
 
     if (heroImage) {
       heroImage.src = activeMode === 'drive' ? heroImage.dataset.driveSrc : heroImage.dataset.bikeSrc;
