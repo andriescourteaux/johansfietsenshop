@@ -306,7 +306,8 @@ h1 {
 }
 
 .page-intro .container {
-    padding: 3rem;
+    --page-intro-padding: 3rem;
+    padding: var(--page-intro-padding);
     border: 0px solid var(--border);
     background: white;
     box-shadow: none;
@@ -466,6 +467,12 @@ h1 {
     background: #f4f4f4;
     box-shadow: 0 0 0 100vmax #f4f4f4;
     clip-path: inset(0 -100vmax);
+}
+
+.winter-values {
+    margin-inline: calc(var(--page-intro-padding, 3rem) * -1);
+    padding: clamp(1.25rem, 3vw, 2rem) var(--page-intro-padding, 3rem);
+    background: #f4f4f4;
 }
 
 .home-quote {
@@ -684,7 +691,8 @@ body[data-site-mode="drive"] .content-highlights {
     }
 
     .page-intro .container {
-        padding: clamp(1.25rem, 6vw, 2rem);
+        --page-intro-padding: clamp(1.25rem, 6vw, 2rem);
+        padding: var(--page-intro-padding);
     }
 
     .page-intro--after-hero .container:has(.winter-page),
@@ -963,6 +971,26 @@ body[data-site-mode="drive"] .content-highlights {
     text-transform: uppercase;
     /*letter-spacing: 0.06em;*/
     font-weight: 800;
+}
+
+@media (max-width: 720px) {
+    .page-value {
+        min-width: 0;
+        padding: clamp(0.85rem, 4vw, 1.1rem);
+    }
+
+    .page-value h2 {
+        font-size: clamp(0.92rem, 4.8vw, 1.08rem);
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+    }
+
+    .page-value p,
+    .winter-value.page-value p {
+        font-size: clamp(0.9rem, 4.2vw, 1rem);
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+    }
 }
 
 .contact-form {

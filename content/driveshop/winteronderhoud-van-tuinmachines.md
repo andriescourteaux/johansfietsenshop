@@ -9,7 +9,6 @@ hide_page_copy = true
 center_copy = true
 winter_intro_title = 'Waarom winteronderhoud?'
 winter_intro = 'Een tuinmachine die maandenlang stilstaat met oude brandstof of vuil, start in het voorjaar vaak moeizaam of loopt schade op. Winteronderhoud voorkomt dure herstellingen en zorgt ervoor dat je machine direct startklaar is zodra het gras weer begint te groeien.'
-winter_benefits_title = 'De voordelen op een rij:'
 winter_service_title = 'Unieke service: Wij halen en brengen je machine'
 winter_service_intro = 'Geen zin of geen geschikt vervoer om je grasmaaier, zitmaaier of andere tuinmachine naar de winkel te brengen? Geen probleem. Tijdens de winterperiode maken we het je extra gemakkelijk.'
 winter_outro_title = 'Interesse of direct inplannen?'
