@@ -28,7 +28,7 @@
             </ul>
             {{ end }}
             {{ if and $ctaLabel $ctaUrl }}
-            <a class="promo-popup__cta" href="{{ $ctaUrl }}">{{ $ctaLabel }}</a>
+            <a class="promo-popup__cta" href="{{ $ctaUrl }}" data-promo-popup="cta">{{ $ctaLabel }}</a>
             {{ end }}
         </div>
         {{ end }}

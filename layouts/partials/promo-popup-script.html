@@ -7,6 +7,7 @@
 
   const closeButton = root.querySelector('[data-promo-popup="close"]');
   const backdrop = root.querySelector('[data-promo-popup="backdrop"]');
+  const cta = root.querySelector('[data-promo-popup="cta"]');
   const storageKey = root.dataset.promoPopupKey || 'promo-popup-dismissed';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let closeTimer = null;
@@ -21,8 +22,12 @@
     root.dataset.state = 'closed';
   };
 
-  const closePopup = () => {
+  const dismissPopup = () => {
     window.sessionStorage.setItem(storageKey, '1');
+  };
+
+  const closePopup = () => {
+    dismissPopup();
 
     if (reducedMotion) {
       finishClose();
@@ -55,5 +60,6 @@
 
   closeButton?.addEventListener('click', closePopup);
   backdrop?.addEventListener('click', closePopup);
+  cta?.addEventListener('click', dismissPopup);
 })();
 </script>
