@@ -36,7 +36,7 @@
   const heroImage = document.querySelector('.home-hero__image');
   const heroTitle = document.querySelector('.home-hero h1[data-bike-title][data-drive-title]');
   const heroCopy = document.querySelector('.page-copy--hero');
-  const modeToggle = document.querySelector('.site-nav__mode-toggle');
+  const modeToggles = Array.from(document.querySelectorAll('.site-nav__mode-toggle'));
   const menu = document.querySelector('.site-nav__menu');
   const menuToggle = document.querySelector('.site-nav__menu-toggle');
   const parallaxImage = document.querySelector('[data-hero-parallax]');
@@ -236,7 +236,7 @@
       heroCopy.replaceChildren(paragraph);
     }
 
-    if (modeToggle) {
+    modeToggles.forEach((modeToggle) => {
       const nextLabel = activeMode === 'drive' ? modeToggle.dataset.driveLabel : modeToggle.dataset.bikeLabel;
       const modeText = modeToggle.querySelector('.site-nav__mode-text');
 
@@ -246,7 +246,7 @@
       if (modeText) {
         modeText.textContent = nextLabel;
       }
-    }
+    });
 
     syncModePanels();
     syncModeMenus();
@@ -311,11 +311,11 @@
     });
   }
 
-  if (modeToggle && isShared && isHomePage) {
-    modeToggle.addEventListener('click', (event) => {
+  if (isShared && isHomePage) {
+    modeToggles.forEach((modeToggle) => modeToggle.addEventListener('click', (event) => {
       event.preventDefault();
       switchMode(activeMode === 'drive' ? 'bike' : 'drive');
-    });
+    }));
   }
 
   window.addEventListener('scroll', syncScrolledHeader, { passive: true });

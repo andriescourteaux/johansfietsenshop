@@ -6,7 +6,7 @@
         </a>
         <nav class="site-nav" aria-label="Hoofdnavigatie">
             <a class="site-nav__item site-nav__mode-toggle" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="Naar Johan's Driveshop" data-drive-label="Naar Johan's Fietsenshop" data-mode-state="{{ $siteMode.mode }}">
-                <span class="site-nav__mode-text">{{ if $siteMode.isDrive }}Naar Johan's Fietsshop{{ else }}Naar Johan's Driveshop{{ end }}</span>
+                <span class="site-nav__mode-text">{{ if $siteMode.isDrive }}Naar Johan's Fietsenshop{{ else }}Naar Johan's Driveshop{{ end }}</span>
                 <span class="site-nav__mode-track" aria-hidden="true">
                     <span class="site-nav__mode-thumb"></span>
                 </span>
@@ -22,6 +22,12 @@
                 </button>
                 <div id="site-nav-menu" class="site-nav__menu" hidden>
                     <div class="site-nav__menu-panel">
+                        <a class="site-nav__menu-mode site-nav__item site-nav__mode-toggle" href="{{ $siteMode.switchHref }}" data-bike-href="{{ $siteMode.switchBikeHref }}" data-drive-href="{{ $siteMode.switchDriveHref }}" data-bike-label="Naar Johan's Driveshop" data-drive-label="Naar Johan's Fietsenshop" data-mode-state="{{ $siteMode.mode }}">
+                            <span class="site-nav__mode-text">{{ if $siteMode.isDrive }}Naar Johan's Fietsenshop{{ else }}Naar Johan's Driveshop{{ end }}</span>
+                            <span class="site-nav__mode-track" aria-hidden="true">
+                                <span class="site-nav__mode-thumb"></span>
+                            </span>
+                        </a>
                         <ul class="site-nav__menu-list" data-mode-nav="bike"{{ if $siteMode.isDrive }} hidden{{ end }}>
                             {{ range $siteMode.bikeMenuItems }}
                             <li><a class="site-nav__menu-link site-nav__menu-link--{{ .key }}" href="{{ .href }}">{{ .title }}</a></li>
