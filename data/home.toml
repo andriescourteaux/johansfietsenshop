@@ -13,13 +13,13 @@ title = "HULP NODIG? PERSOONLIJK FIETSADVIES?"
 text = "Kom naar onze winkel en laat je helpen door ons."
 button_label = "Plan Adviesafspraak"
 button_url = "/contact/?mode=bike"
-image = "/images/home/advies.jpg"
+image = "/images/home/advies.webp"
 alt = "Persoonlijk fietsadvies"
 
 [[drive_promos]]
 title = "VOOR ELK WERK DE JUISTE MACHINE"
 text = ""
-image = "/images/home-cards/drive-tool.jpg"
+image = "/images/home-cards/drive-tool.webp"
 alt = "Tuinmachine"
 
 [[drive_promos]]

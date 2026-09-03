@@ -1,7 +1,7 @@
-[items."stiga_tb.png"]
+[items."stiga_tb.webp"]
 title = "Stiga"
 alt = "Stiga"
-image = "/images/collecties/driveshop/merken-en-verdelers/stiga_tb.png"
+image = "/images/collecties/driveshop/merken-en-verdelers/stiga_tb.webp"
 logo_image = "/images/collecties/driveshop/merken-en-verdelers/stiga.webp"
 logo_alt = "Stiga logo"
 intro = "Innovatieve tuinmachines en geavanceerde accumaaiers die ergonomisch comfort combineren met een strak maairesultaat voor elke tuin."
@@ -10,10 +10,10 @@ button_label = "Meer info"
 tags = ["tuinmachine", "grasmaaiers", "robotmaaiers"]
 weight = 8
 
-[items."makita_tb.jpg"]
+[items."makita_tb.webp"]
 title = "Makita"
 alt = "Makita"
-image = "/images/collecties/driveshop/merken-en-verdelers/makita_tb.jpg"
+image = "/images/collecties/driveshop/merken-en-verdelers/makita_tb.webp"
 logo_image = "/images/collecties/driveshop/merken-en-verdelers/makita.png"
 logo_alt = "Makita logo"
 intro = "De absolute standaard in krachtig accu-tuingereedschap, waarmee je snoeit, zaagt en trimt met de flexibiliteit van een accu en de kracht van benzine."
@@ -34,10 +34,10 @@ button_label = "Meer info"
 tags = ["tuinmachine"]
 weight = 10
 
-[items."iseki_tb.jpg"]
+[items."iseki_tb.webp"]
 title = "Iseki"
 alt = "Iseki"
-image = "/images/collecties/driveshop/merken-en-verdelers/iseki_tb.jpg"
+image = "/images/collecties/driveshop/merken-en-verdelers/iseki_tb.webp"
 logo_image = "/images/collecties/driveshop/merken-en-verdelers/iseki.webp"
 logo_alt = "Iseki logo"
 intro = "Hoogwaardige en professionele maaimachines van Japanse topkwaliteit, gebouwd voor het zwaardere werk en intensief terreinbeheer."

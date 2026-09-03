@@ -1,7 +1,7 @@
-[items."tb_swyff.jpg"]
+[items."tb_swyff.webp"]
 title = "Swyff"
 alt = "Swyff"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_swyff.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_swyff.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/swyff.webp"
 logo_alt = "Swyff logo"
 intro = "Zoek je een efficiënt en betrouwbaar vervoermiddel dat jouw dagelijks woon-werkverkeer transformeert in een vlotte, zweetvrije rit?"
@@ -10,10 +10,10 @@ url = "https://www.swyff.com/nl/fietsen-1.htm"
 button_label = "Meer info"
 weight = 15
 
-[items."tb_oxford.jpg"]
+[items."tb_oxford.webp"]
 title = "Oxford"
 alt = "Oxford"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_oxford.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_oxford.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/oxford.webp"
 logo_alt = "Oxford logo"
 intro = "Oxford fietsen, gemaakt voor speelvogels, doorzetters en levensgenieters."
@@ -22,10 +22,10 @@ url = "https://www.oxfordbikes.be/"
 button_label = "Meer info"
 weight = 10
 
-[items."tb_thompson.jpg"]
+[items."tb_thompson.webp"]
 title = "Thompson"
 alt = "Thompson"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_thompson.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_thompson.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/thompson.webp"
 logo_alt = "Thompson logo"
 intro = "Belgisch vakmanschap op maat: kies voor een hoogwaardige fiets die tot in het kleinste detail en in de gewenste kleur voor jou wordt opgebouwd."
@@ -34,10 +34,10 @@ url = "https://thompson-bikebuilder.be/en/"
 button_label = "Meer info"
 weight = 30
 
-[items."tb_zannata.jpg"]
+[items."tb_zannata.webp"]
 title = "Zannata"
 alt = "Zannata"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_zannata.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_zannata.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/zannata.webp"
 logo_alt = "Zannata logo"
 intro = "Gebouwd op een fundament van wereldtitels en profsucces: kies met Zannata voor een hoogtechnologische, op-en-top Belgische koersfiets met pure winnaarsmentaliteit."
@@ -58,10 +58,10 @@ url = "https://www.gazellebikes.com/nl-be"
 button_label = "Meer info"
 weight = 5
 
-[items."tb_descheemaeker.jpg"]
+[items."tb_descheemaeker.webp"]
 title = "Descheemaeker"
 alt = "Descheemaeker"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_descheemaeker.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_descheemaeker.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/descheemaeker.svg"
 logo_alt = "Descheemaeker logo"
 intro = "De referentie voor fietsen en fietsonderdelen voor de vakhandel: kies voor de bewezen kwaliteit, betrouwbaarheid en expertise waar fietsenmakers op vertrouwen."
@@ -70,10 +70,10 @@ url = "https://www.descheemaeker.be/nl"
 button_label = "Meer info"
 weight = 60
 
-[items."tb_flanders.jpg"]
+[items."tb_flanders.webp"]
 title = "Flanders"
 alt = "Flanders"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_flanders.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_flanders.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/flanders.webp"
 logo_alt = "Flanders logo"
 intro = "Kies met Fietsen Flanders voor hoogwaardige Belgische kwaliteit op elk terrein: van vlijmscherpe racefietsen en veelzijdige gravelbikes tot robuuste mountainbikes, volledig gebouwd voor maximale sportieve prestaties."
@@ -82,10 +82,10 @@ url = "https://flandersfietsen.be/wp/"
 button_label = "Meer info"
 weight = 70
 
-[items."tb_bfk.jpg"]
+[items."tb_bfk.webp"]
 title = "BFK"
 alt = "BFK"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_bfk.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_bfk.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/bfk.webp"
 logo_alt = "BFK logo"
 intro = "Veilige, ergonomische en schokbestendige kinderfietsen die tegen een stootje kunnen."
@@ -94,10 +94,10 @@ url = "https://shop.vdbparts.be/collections/bike-fun-kids"
 button_label = "Meer info"
 weight = 80
 
-[items."tb_ravr.jpg"]
+[items."tb_ravr.webp"]
 title = "RAVR"
 alt = "RAVR"
-image = "/images/collecties/bikeshop/merken-en-verdelers/tb_ravr.jpg"
+image = "/images/collecties/bikeshop/merken-en-verdelers/tb_ravr.webp"
 logo_image = "/images/collecties/bikeshop/merken-en-verdelers/ravr.webp"
 logo_alt = "RAVR logo"
 intro = "Comfortabele, betrouwbare en innovatieve e-bikes die technologie combineren met maximale actieradius en rijcomfort."
