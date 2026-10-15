@@ -51,3 +51,12 @@ intro = "Op zoek naar een straffe fietsleasing? In 93% van de gevallen biedt wel
 url = "https://www.welease.be/"
 button_label = "Meer informatie"
 weight = 60
+
+[items."Logo_Joule.svg"]
+title = "Joule"
+alt = "Joule"
+image = "/images/collecties/bikeshop/leasing-fietsen/Logo_Joule.svg"
+intro = "Fietsleasing. Simpel geregeld, maximaal ontzorgd. We got your back. En je fietsleasing."
+url = "https://www.joule.be/"
+button_label = "Meer informatie"
+weight = 35
