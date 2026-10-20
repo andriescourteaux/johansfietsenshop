@@ -25,6 +25,15 @@ url = "https://www.lease-a-bike.be/"
 button_label = "Meer informatie"
 weight = 30
 
+[items."b2bike-logo.svg"]
+title = "B2Bike"
+alt = "B2Bike"
+image = "/images/collecties/bikeshop/leasing-fietsen/b2bike-logo.svg"
+intro = "Een zakelijk fietsplan zonder zorgen. Fiets samen de toekomst tegemoet"
+url = "https://b2bike.be/nl"
+button_label = "Meer informatie"
+weight = 33
+
 [items."cyclevalley.gif"]
 title = "Cycle Valley"
 alt = "Cycle Valley"
