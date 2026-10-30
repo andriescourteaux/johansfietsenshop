@@ -21,12 +21,12 @@ specs = [
   "Bereik: 100+ km"
 ]
 
-[items."gazelle_eclipse_speed.webp"]
-title = "Gazelle Eclipse Speed"
-alt = "Gazelle Eclipse Speed"
-image = "/images/collecties/bikeshop/modellen-in-de-kijker/gazelle_eclipse_speed.webp"
-highlight_url = "https://www.gazellebikes.com/nl-be/elektrische-fietsen/eclipse-speed"
-intro = "De Gazelle Eclipse Speed is de highspeed variant van de bekroonde Eclipse e-bike, verkozen tot fiets van het jaar 2024 door VAB. Met zijn strakke lijnen, clean design en krachtige Bosch Performance Line Speed middenmotor, is deze fiets ontworpen om je woon-werkverkeer naar een hoger niveau te tillen. "
+[items."oxford-s-pedelec_d1125.webp"]
+title = "Oxford S-Pedelec D1125"
+alt = "Oxford S-Pedelec D1125"
+image = "/images/collecties/bikeshop/modellen-in-de-kijker/oxford-s-pedelec_d1125.webp"
+highlight_url = "https://shop.oxfordbikes.be/collections/speed-pedelec/products/s-pedelec-d1125-heer-50-briliant-blauw-500wh-625wh"
+intro = "///"
 specs = [
   "Motor: Performance Line Speed",
   "Batterij: 750 Wh",
